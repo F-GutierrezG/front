@@ -84,9 +84,6 @@ function Header({ ...props }) {
             {makeBrand()}
           </Button>
         </div>
-        <Hidden smDown implementation="css">
-          <HeaderLinks rtlActive={rtlActive} />
-        </Hidden>
         <Hidden mdUp implementation="css">
           <Button
             className={classes.appResponsive}
