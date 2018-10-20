@@ -2,7 +2,7 @@ version: '2'
 
 services:
   sample-app-prod:
-    container_name: sample-app-prod
+    container_name: one-like-client-front
     build:
       context: .
       dockerfile: Dockerfile-prod

@@ -49,75 +49,25 @@ class PagesHeader extends React.Component {
     const appBarClasses = cx({
       [" " + classes[color]]: color
     });
-    var list = (
-      <List className={classes.list}>
-        <ListItem className={classes.listItem}>
-          <NavLink to={"/dashboard"} className={classes.navLink}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <Dashboard />
-            </ListItemIcon>
-            <ListItemText
-              primary={"Dashboard"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        {pagesRoutes.map((prop, key) => {
-          if (prop.redirect) {
-            return null;
-          }
-          const navLink =
-            classes.navLink +
-            cx({
-              [" " + classes.navLinkActive]: this.activeRoute(prop.path)
-            });
-          return (
-            <ListItem key={key} className={classes.listItem}>
-              <NavLink to={prop.path} className={navLink}>
-                <ListItemIcon className={classes.listItemIcon}>
-                  <prop.icon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={prop.short}
-                  disableTypography={true}
-                  className={classes.listItemText}
-                />
-              </NavLink>
-            </ListItem>
-          );
-        })}
-      </List>
-    );
     return (
       <AppBar position="static" className={classes.appBar + appBarClasses}>
         <Toolbar className={classes.container}>
           <Hidden smDown>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">
-                Material Dashboard Pro React
+                OneLike
               </Button>
             </div>
           </Hidden>
           <Hidden mdUp>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">
-                MD Pro React
+                OneLike
               </Button>
             </div>
           </Hidden>
-          <Hidden smDown>{list}</Hidden>
-          <Hidden mdUp>
-            <Button
-              className={classes.sidebarButton}
-              color="transparent"
-              justIcon
-              aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
-            >
-              <Menu />
-            </Button>
-          </Hidden>
+
+          
           <Hidden mdUp>
             <Hidden mdUp>
               <Drawer
@@ -132,7 +82,6 @@ class PagesHeader extends React.Component {
                   keepMounted: true // Better open performance on mobile.
                 }}
               >
-                {list}
               </Drawer>
             </Hidden>
           </Hidden>

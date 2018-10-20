@@ -2,7 +2,7 @@ version: '2'
 
 services:
   material-dashboard-pro-react:
-    container_name: material-dashboard-pro-react
+    container_name: one-like-client-front
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,5 +13,3 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=development
-
-
