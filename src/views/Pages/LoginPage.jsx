@@ -7,7 +7,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
-import Face from "@material-ui/icons/Face";
 import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
 
@@ -23,12 +22,18 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
+import axios from "axios";
+
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimaton: "cardHidden",
+      email: "",
+      password: "",
+      emailError: false,
+      passwordError: false
     };
   }
   componentDidMount() {
@@ -44,6 +49,51 @@ class LoginPage extends React.Component {
     clearTimeout(this.timeOutFunction);
     this.timeOutFunction = null;
   }
+
+  validateLogin(email, password) {
+    let emailError = false;
+    let passwordError = false;
+
+    if (email.trim() == "") emailError = true;
+    if (password.trim() == "") passwordError = true;
+
+    this.setState({
+      emailError,
+      passwordError
+    });
+
+    return !(emailError && passwordError);
+  }
+
+  doLogin(email, password) {
+    axios
+      .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/auth/login`, {
+        email,
+        password
+      })
+      .then(response => {
+        const { history } = this.props;
+        localStorage.setItem("token", response.data.data);
+        history.push("/dashboard");
+      })
+      .catch(error => {
+        console.log("ERROR", error);
+      });
+  }
+
+  handleOnLogin = () => {
+    const { email, password } = this.state;
+    if (this.validateLogin(email, password)) {
+      this.doLogin(email, password);
+    }
+  };
+
+  handleOnChange = (field, evt) => {
+    const newState = {};
+    newState[field] = evt.target.value;
+    this.setState(newState);
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -60,25 +110,29 @@ class LoginPage extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <CustomInput
-                    labelText="Email..."
+                    labelText="E-Mail"
                     id="email"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    error={this.state.emailError}
                     inputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <Email className={classes.inputAdornmentIcon} />
                         </InputAdornment>
-                      )
+                      ),
+                      onChange: evt => this.handleOnChange("email", evt),
+                      value: this.state.email
                     }}
                   />
                   <CustomInput
-                    labelText="Password"
+                    labelText="Contraseña"
                     id="password"
                     formControlProps={{
                       fullWidth: true
                     }}
+                    error={this.state.passwordError}
                     inputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -86,12 +140,21 @@ class LoginPage extends React.Component {
                             lock_outline
                           </Icon>
                         </InputAdornment>
-                      )
+                      ),
+                      type: "password",
+                      onChange: evt => this.handleOnChange("password", evt),
+                      value: this.state.password
                     }}
                   />
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
-                  <Button color="rose" simple size="lg" block>
+                  <Button
+                    color="rose"
+                    simple
+                    size="lg"
+                    block
+                    onClick={this.handleOnLogin}
+                  >
                     Ingresar
                   </Button>
                 </CardFooter>
@@ -105,7 +168,8 @@ class LoginPage extends React.Component {
 }
 
 LoginPage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default withStyles(loginPageStyle)(LoginPage);

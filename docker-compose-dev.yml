@@ -1,15 +1,38 @@
 version: '2'
 
 services:
-  material-dashboard-pro-react:
-    container_name: one-like-client-front
+  front:
+    container_name: client-front
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     volumes:
       - '.:/usr/src/app'
       - '/usr/src/app/node_modules'
     ports:
-      - '3000:3000'
+      - 3001:3000
     environment:
       - NODE_ENV=development
+      - REACT_APP_USERS_SERVICE_URL=http://localhost:5001
+    depends_on:
+      - users-service
+
+  users-service:
+    container_name: mock-users-service
+    build:
+      context: ./mockServices/users-service
+      dockerfile: Dockerfile
+    ports:
+      - 5001:80
+
+  users-service-swagger:
+    container_name: users-service-swagger
+    build:
+      context: "https://gitlab+deploy-token-25488:zkcGJFdvCN6KCfmWtnAU@gitlab.com/gusisoft/OneLike/client/users-service.git#devel:swagger"
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8080
+    environment:
+      - API_URL=definitions/users-service.yml
+    depends_on:
+      - users-service

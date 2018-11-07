@@ -1,0 +1,204 @@
+{
+  "users": [
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "valid@test.com",
+      "id": 1,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid@test.com",
+      "id": 2,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid3@test.com",
+      "id": 3,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid4@test.com",
+      "id": 4,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid5@test.com",
+      "id": 5,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid6@test.com",
+      "id": 6,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid7@test.com",
+      "id": 7,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid8@test.com",
+      "id": 8,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid9@test.com",
+      "id": 9,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid10@test.com",
+      "id": 10,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid11@test.com",
+      "id": 11,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid12@test.com",
+      "id": 12,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid13@test.com",
+      "id": 13,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid14@test.com",
+      "id": 14,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid15@test.com",
+      "id": 15,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid16@test.com",
+      "id": 16,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    },
+    {
+      "first_name": "Francisco",
+      "last_name": "Gutiérrez",
+      "email": "invalid17@test.com",
+      "id": 17,
+      "active": true,
+      "created": "2018-11-07T19:26:10.258Z",
+      "created_by": 0,
+      "updated": "2018-11-07T19:26:10.258Z",
+      "updated_by": 0
+    }
+  ],
+  "companies": [
+    {
+      "id": 1,
+      "name": "Company 1"
+    },
+    {
+      "id": 2,
+      "name": "Company 2"
+    }
+  ],
+  "health": {
+    "message": "healthy"
+  }
+}

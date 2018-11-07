@@ -1,0 +1,7 @@
+{
+  "name": "mock-users-service",
+  "dependencies": {
+    "json-server": "^0.14.0",
+    "require-uncached": "^1.0.3"
+  }
+}
