@@ -1,7 +1,7 @@
 image: docker:git
 
 services:
-  - docker:dind
+  - gusisoft/dind-git
 
 variables:
   #DOCKER_HOST: tcp://127.0.0.1:2375
@@ -14,7 +14,7 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base
+  - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
   - netstat -ant
 
