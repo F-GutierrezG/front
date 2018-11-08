@@ -1,7 +1,8 @@
 image: docker
 
 services:
-  - gusisoft/dind-git
+  - docker:dind
+  - alpine/git
 
 stages:
 #  - unit_test
