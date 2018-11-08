@@ -1,4 +1,4 @@
-image: git
+image: alpine/git
 
 services:
   - docker:dind
