@@ -10,16 +10,13 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base git
+  - apk add --no-cache python python-dev py-pip build-base
   - pip install docker-compose
-  - git submodule sync --recursive
-  - git submodule update --init --recursive
 
 
 unit_test:
   stage: unit_test
   script:
-    - git --version
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
