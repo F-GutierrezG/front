@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -54,8 +55,8 @@ class LoginPage extends React.Component {
     let emailError = false;
     let passwordError = false;
 
-    if (email.trim() == "") emailError = true;
-    if (password.trim() == "") passwordError = true;
+    if (email.trim() === "") emailError = true;
+    if (password.trim() === "") passwordError = true;
 
     this.setState({
       emailError,
@@ -95,6 +96,11 @@ class LoginPage extends React.Component {
   };
 
   render() {
+    if (localStorage.getItem("token")) {
+      // TODO: Validar la autenticidad del token contra el server
+      return <Redirect to="/dashboard" />
+    }
+
     const { classes } = this.props;
     return (
       <div className={classes.container}>

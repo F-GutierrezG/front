@@ -87,6 +87,11 @@ class Dashboard extends React.Component {
     }
   }
   render() {
+    if (!localStorage.getItem("token")) {
+      // TODO: Validar la autenticidad del token contra el server
+      return <Redirect to="/pages/login-page" />
+    }
+
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +

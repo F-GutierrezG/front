@@ -143,7 +143,7 @@ class Dashboard extends React.Component {
                 <div className={classes.cardHoverUnder}>
                   <Tooltip
                     id="tooltip-top"
-                    title="Refresh"
+                    title="Actualizar"
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >
@@ -183,7 +183,7 @@ class Dashboard extends React.Component {
                 <div className={classes.cardHoverUnder}>
                   <Tooltip
                     id="tooltip-top"
-                    title="Refresh"
+                    title="Actualizar"
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >
@@ -222,7 +222,7 @@ class Dashboard extends React.Component {
                 <div className={classes.cardHoverUnder}>
                   <Tooltip
                     id="tooltip-top"
-                    title="Refresh"
+                    title="Actualizar"
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >

@@ -78,6 +78,13 @@ class Sidebar extends React.Component {
     st[collapse] = !this.state[collapse];
     this.setState(st);
   }
+
+  closeSession = () => {
+    const { history } = this.props;
+    localStorage.removeItem("token");
+    history.push("/pages/login-page");
+  };
+
   render() {
     const {
       classes,
@@ -163,67 +170,17 @@ class Sidebar extends React.Component {
             </NavLink>
             <Collapse in={this.state.openAvatar} unmountOnExit>
               <List className={classes.list + " " + classes.collapseList}>
-                <ListItem className={classes.collapseItem}>
+                <ListItem
+                  className={classes.collapseItem}
+                  onClick={this.closeSession}
+                >
                   <NavLink
                     to="#"
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
                   >
-                    <span className={collapseItemMini}>
-                      {"MP"}
-                    </span>
-                    <ListItemText
-                      primary={"Mi Perfil"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"EP"}
-                    </span>
-                    <ListItemText
-                      primary={"Editar Perfil"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"CO"}
-                    </span>
-                    <ListItemText
-                      primary={"Configuraciones"}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {"CS"}
-                    </span>
+                    <span className={collapseItemMini}>CS</span>
                     <ListItemText
                       primary={"Cerrar Sesión"}
                       disableTypography={true}
