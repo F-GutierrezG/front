@@ -1,8 +1,11 @@
-image: docker
+image: docker:git
 
 services:
   - docker:dind
-  - alpine/git
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay
 
 stages:
   - unit_test
