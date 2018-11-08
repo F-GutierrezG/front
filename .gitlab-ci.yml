@@ -1,7 +1,7 @@
 image: docker:git
 
 services:
-  - docker:dind
+  - docker:git
 
 variables:
   DOCKER_HOST: tcp://docker:2375
