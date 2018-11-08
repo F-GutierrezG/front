@@ -1,7 +1,7 @@
 image: docker
 
 services:
-  - docker:dind
+  - docker:git
 
 stages:
   - unit_test
