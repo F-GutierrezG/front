@@ -5,7 +5,7 @@ services:
   - alpine/git
 
 stages:
-#  - unit_test
+  - unit_test
   - build_test
 
 before_script:
