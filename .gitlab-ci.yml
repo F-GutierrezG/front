@@ -1,7 +1,7 @@
 image: docker:git
 
 services:
-  - gitlab/gitlab-runner
+  - gusisoft/dind-git:latest
 
 stages:
   - unit_test
