@@ -16,6 +16,7 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base
   - pip install docker-compose
+  - netstat -ant
 
 
 unit_test:
