@@ -1,7 +1,7 @@
-image: docker
+image: gusisoft/dind-git
 
 services:
-  - gusisoft/dind-git
+  - docker:dind
 
 variables:
   #DOCKER_HOST: tcp://127.0.0.1:2375
