@@ -19,6 +19,7 @@ before_script:
 unit_test:
   stage: unit_test
   script:
+    - git --version
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
