@@ -10,7 +10,7 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add python python-dev py-pip build-base
+  - apk add python python-dev py-pip build-base git  
   - pip install docker-compose
 
 unit_test:
