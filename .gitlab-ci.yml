@@ -1,4 +1,4 @@
-image: gusisoft/dind-git
+image: docker
 
 services:
   - gusisoft/dind-git
