@@ -15,10 +15,10 @@ before_script:
   - pip install docker-compose
 
 
-#unit_test:
-#  stage: unit_test
-#  script:
-#    - docker-compose -f docker-compose-dev.yml up -d --build
+unit_test:
+  stage: unit_test
+  script:
+    - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
   stage: build_test
