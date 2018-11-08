@@ -10,9 +10,8 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base git
+  - apk add --no-cache python python-dev py-pip build-base
   - pip install docker-compose
-  - git --version
 
 unit_test:
   stage: unit_test
