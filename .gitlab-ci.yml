@@ -22,4 +22,4 @@ before_script:
 build_test:
   stage: build_test
   script:
-    - docker-compose -f docker-compose.yml build --no-cache
+    - docker-compose -f docker-compose-prod.yml build --no-cache
