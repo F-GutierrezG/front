@@ -1,5 +1,8 @@
 image: docker:git
 
+services:
+  - gitlab/gitlab-runner
+
 stages:
   - unit_test
   - build_test
