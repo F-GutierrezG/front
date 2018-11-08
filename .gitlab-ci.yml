@@ -12,7 +12,9 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
-  - git --version
+  - git submodule sync --recursive
+  - git submodule update --init --recursive
+
 
 unit_test:
   stage: unit_test
