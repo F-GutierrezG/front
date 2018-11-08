@@ -1,7 +1,7 @@
 image: docker
 
 services:
-  - gusisoft/dind-git
+  - docker:dind
 
 stages:
   - unit_test
