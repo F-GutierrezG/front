@@ -21,7 +21,6 @@ import Calendar from "views/Calendar/Calendar.jsx";
 import Widgets from "views/Widgets/Widgets.jsx";
 import UserProfile from "views/Pages/UserProfile.jsx";
 import TimelinePage from "views/Pages/Timeline.jsx";
-import RTLSupport from "views/Pages/RTLSupport.jsx";
 
 import pagesRoutes from "./pages.jsx";
 
@@ -41,19 +40,19 @@ var pages = pagesRoutes;
 var dashRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Panel",
     icon: DashboardIcon,
     component: Dashboard
   },
   {
     collapse: true,
     path: "-page",
-    name: "Pages",
+    name: "Páginas",
     state: "openPages",
     icon: Image,
     views: pages
   },
-  { path: "/calendar", name: "Calendar", icon: DateRange, component: Calendar },
+  { path: "/calendar", name: "Calendario", icon: DateRange, component: Calendar },
   { redirect: true, path: "/", pathTo: "/dashboard", name: "Dashboard" }
 ];
 export default dashRoutes;

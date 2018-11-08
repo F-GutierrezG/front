@@ -12,9 +12,9 @@ import LockOpen from "@material-ui/icons/LockOpen";
 const pagesRoutes = [
   {
     path: "/pages/login-page",
-    name: "Login Page",
+    name: "Login",
     short: "Login",
-    mini: "LP",
+    mini: "LO",
     icon: Fingerprint,
     component: LoginPage
   }

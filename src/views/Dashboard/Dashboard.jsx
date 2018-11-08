@@ -15,6 +15,7 @@ import Icon from "@material-ui/core/Icon";
 import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 import Warning from "@material-ui/icons/Warning";
+import CheckCircle from "@material-ui/icons/CheckCircle";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
@@ -32,6 +33,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Table from "components/Table/Table.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Danger from "components/Typography/Danger.jsx";
+import Success from "components/Typography/Success.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
@@ -90,21 +92,17 @@ class Dashboard extends React.Component {
             <Card>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
-                  <Icon>content_copy</Icon>
+                  <i className="fab fa-instagram" />
                 </CardIcon>
-                <p className={classes.cardCategory}>Used Space</p>
-                <h3 className={classes.cardTitle}>
-                  49/50 <small>GB</small>
-                </h3>
+                <p className={classes.cardCategory}>Followers</p>
+                <h3 className={classes.cardTitle}>-78</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
                   </Danger>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Get more space
-                  </a>
+                  Últimas 24 horas
                 </div>
               </CardFooter>
             </Card>
@@ -112,16 +110,18 @@ class Dashboard extends React.Component {
           <GridItem xs={12} sm={6} md={6} lg={3}>
             <Card>
               <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <Store />
+                <CardIcon color="primary">
+                  <i className="fab fa-facebook" />
                 </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
+                <p className={classes.cardCategory}>Followers</p>
+                <h3 className={classes.cardTitle}>+34</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
+                  <Success>
+                    <CheckCircle />
+                  </Success>
+                  Últimas 24 horas
                 </div>
               </CardFooter>
             </Card>
@@ -130,15 +130,17 @@ class Dashboard extends React.Component {
             <Card>
               <CardHeader color="danger" stats icon>
                 <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
+                  <i className="fab fa-google-plus" />
                 </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
+                <p className={classes.cardCategory}>Followers</p>
+                <h3 className={classes.cardTitle}>+75</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
+                  <Success>
+                    <CheckCircle />
+                  </Success>
+                  Últimas 24 horas
                 </div>
               </CardFooter>
             </Card>
@@ -154,8 +156,10 @@ class Dashboard extends React.Component {
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
-                  <Update />
-                  Just Updated
+                  <Success>
+                    <CheckCircle />
+                  </Success>
+                  Últimas 24 horas
                 </div>
               </CardFooter>
             </Card>
@@ -185,28 +189,18 @@ class Dashboard extends React.Component {
                       <Refresh className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Change Date"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
                 </div>
-                <h4 className={classes.cardTitle}>Daily Sales</h4>
+                <h4 className={classes.cardTitle}>Followers Diarios</h4>
                 <p className={classes.cardCategory}>
                   <span className={classes.successText}>
                     <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                   </span>{" "}
-                  increase in today sales.
+                  Aumento de followers.
                 </p>
               </CardBody>
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> updated 4 minutes ago
+                  <AccessTime /> Actualizado hace 4 minutos
                 </div>
               </CardFooter>
             </Card>
@@ -235,25 +229,18 @@ class Dashboard extends React.Component {
                       <Refresh className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Change Date"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
                 </div>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
+                <h4 className={classes.cardTitle}>Followers Mensuales</h4>
                 <p className={classes.cardCategory}>
-                  Last Campaign Performance
+                  <span className={classes.successText}>
+                    <ArrowUpward className={classes.upArrowCardCategory} /> 12%
+                  </span>{" "}
+                  Aumento de followers.
                 </p>
               </CardBody>
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
+                  <AccessTime /> Actualizado hace 1 día
                 </div>
               </CardFooter>
             </Card>
@@ -281,30 +268,20 @@ class Dashboard extends React.Component {
                       <Refresh className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Change Date"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
                 </div>
-                <h4 className={classes.cardTitle}>Completed Tasks</h4>
+                <h4 className={classes.cardTitle}>Última Publicación</h4>
                 <p className={classes.cardCategory}>
-                  Last Campaign Performance
+                  Rendimiento de la última publicación
                 </p>
               </CardBody>
               <CardFooter chart>
                 <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
+                  <AccessTime /> Publicación vigente desde hace 2 días
                 </div>
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>        
+        </GridContainer>
       </div>
     );
   }
