@@ -1,7 +1,7 @@
-image: docker:git
+image: git
 
 services:
-  - docker:git
+  - docker
 
 variables:
   DOCKER_HOST: tcp://docker:2375
