@@ -1,8 +1,8 @@
 image: docker:git
 
-variables:
+#variables:
   #DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay
+  #DOCKER_DRIVER: overlay
 
 services:
   - gusisoft/dind-git:latest
