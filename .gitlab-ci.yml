@@ -1,7 +1,4 @@
-image: docker:git
-
-services:
-  - docker:git
+image: alpine
 
 stages:
   - unit_test
