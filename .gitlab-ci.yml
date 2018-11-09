@@ -13,6 +13,9 @@ before_script:
 unit_test:
   stage: unit_test
   script:
+    - apk update
+    - apk upgrade
+    - apk add --no-cache python python-dev py-pip build-base git docker
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
