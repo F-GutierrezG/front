@@ -4,8 +4,8 @@ image: docker:git
   #DOCKER_HOST: tcp://docker:2375
   #DOCKER_DRIVER: overlay
 
-#services:
-#  - docker:dind
+services:
+  - docker:dind
 
 stages:
   - unit_test
@@ -14,9 +14,8 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base git docker openrc
+  - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
-  - service docker start
   - docker info
   - docker container ls -a
   - docker image ls -a
