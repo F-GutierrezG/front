@@ -1,9 +1,5 @@
 image: docker:git
 
-variables:
-  DOCKER_HOST: tcp://dockerdind:2375
-  DOCKER_DRIVER: overlay2
-
 stages:
   - unit_test
   - build_test
@@ -17,11 +13,9 @@ before_script:
 unit_test:
   stage: unit_test
   script:
-    - export DOCKER_HOST="tcp://dockerdind:2375"
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
   stage: build_test
   script:
-    - export DOCKER_HOST="tcp://dockerdind:2375"
     - docker-compose -f docker-compose-prod.yml build --no-cache
