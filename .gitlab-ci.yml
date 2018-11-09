@@ -16,12 +16,7 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
-
-unit_test:
-  stage: unit_test
-  script:
-    - docker container ls -a
-    - docker-compose -f docker-compose-dev.yml up -d --build
+  - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
   stage: build_test
