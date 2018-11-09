@@ -1,4 +1,4 @@
-image: docker:git
+image: docker
 
 services:
   - gusisoft/dind-git:latest
