@@ -16,6 +16,7 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
+  - docker info
 
 unit_test:
   stage: unit_test
