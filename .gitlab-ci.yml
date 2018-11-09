@@ -1,14 +1,9 @@
 image: docker:git
 
-variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
-
 services:
-  - gusisoft/dind-git
+  - docker:dind
 
 stages:
-  - unit_test
   - build_test
 
 before_script:
@@ -16,8 +11,6 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
-  - docker-compose -f docker-compose-prod.yml up -d --build
-  - docker container ls
 
 build_test:
   stage: build_test
