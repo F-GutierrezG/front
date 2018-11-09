@@ -1,4 +1,5 @@
 [[runners]]
-   executor = "docker"
-   [runners.docker]
-     privileged = true
+  executor = "docker"
+  [runners.docker]
+    image = "docker:git"
+    privileged = true
