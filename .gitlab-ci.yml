@@ -13,9 +13,9 @@ unit_test:
   stage: unit_test
   script:
 
-    - docker-compose -f docker-compose-dev.yml up -d --build
+    - sudo docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
   stage: build_test
   script:
-    - docker-compose -f docker-compose-prod.yml build --no-cache
+    - sudo docker-compose -f docker-compose-prod.yml build --no-cache
