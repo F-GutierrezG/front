@@ -1,11 +1,14 @@
 image: docker:git
 
+services:
+  - docker:dind
+
 stages:
   - unit_test
   - build_test
 
 variables:
-  DOCKER_HOST: tcp6://localhost:2375
+  DOCKER_HOST: tcp://localhost:2375
 
 before_script:
   - apk update
