@@ -5,7 +5,7 @@ stages:
   - build_test
 
 before_script:
-  - apt update
+  - sudo apt update
   - apt upgrade
   - apk add --no-cache python python-dev py-pip build-base git docker
   - pip install docker-compose
