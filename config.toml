@@ -1,5 +1,5 @@
 [[runners]]
-  name = "docker-git"
+  name = "gitlab-runner"
   url = "https://gitlab.com/"
   token = "P6nqnyf35Jzz6L_nM2ww"
   executor = "docker"
