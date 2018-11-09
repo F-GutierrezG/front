@@ -14,7 +14,7 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base git
+  - apk add --no-cache python python-dev py-pip build-base git sudo
   - pip install docker-compose
   - sudo docker info
 
