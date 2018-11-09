@@ -1,4 +1,5 @@
 [[runners]]
+  name = "docker-git"
   executor = "docker"
   [runners.docker]
     image = "docker:git"
