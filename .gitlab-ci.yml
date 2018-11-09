@@ -8,6 +8,7 @@ unit_test:
   stage: unit_test
   script:
     - sudo apt-get update -qy
+    - sudo docker info
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
