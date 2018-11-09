@@ -1,25 +1,25 @@
 image: alpine
 
 stages:
-  #- unit_test
-  #- build_test
+  - unit_test
+  - build_test
   - cleanup
 
-#unit_test:
-#  stage: unit_test
-#  script:
-#    - docker-compose -f docker-compose-dev.yml build --no-cache
-#    - docker-compose -f docker-compose-dev.yml up -d
-#    - docker-compose -f docker-compose-dev.yml down
-#
-#build_test:
-#  stage: build_test
-#  script:
-#    - docker-compose -f docker-compose-prod.yml build --no-cache
-#    - docker-compose -f docker-compose-prod.yml down
+unit_test:
+  stage: unit_test
+  script:
+    - docker-compose -f docker-compose-dev.yml build --no-cache
+    - docker-compose -f docker-compose-dev.yml up -d
+    - docker-compose -f docker-compose-dev.yml down
+
+build_test:
+  stage: build_test
+  script:
+    - docker-compose -f docker-compose-prod.yml build --no-cache
+    - docker-compose -f docker-compose-prod.yml down
 
 cleanup:
   stage: cleanup
   script:
-    - docker image rm $(docker image ls -qa) &> /dev/null
-    - docker volume rm -f $(docker volume ls -qa) &> /dev/null
+    - docker image rm $(docker image ls -q)
+    - docker volume rm -f $(docker volume ls -q)
