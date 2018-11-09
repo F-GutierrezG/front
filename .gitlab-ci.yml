@@ -21,5 +21,5 @@ build_test:
 cleanup:
   stage: cleanup
   script:
-    - docker image rm -f $(docker image ls -aq)
+    - docker image rm $(docker image ls -q)
     - docker volume rm -f $(docker volume ls -q)
