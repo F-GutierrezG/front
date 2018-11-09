@@ -4,7 +4,7 @@ stages:
   - unit_test
   - build_test
 
-environment:
+variables:
   DOCKER_HOST: tcp://docker
 
 before_script:
