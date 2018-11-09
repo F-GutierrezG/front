@@ -15,12 +15,8 @@ before_script:
 
 unit_test:
   stage: unit_test
-  tags:
-    - docker-git
   script:
     - docker-compose -f docker-compose-dev.yml up -d --build
-  only:
-    - tags
 
 build_test:
   stage: build_test
