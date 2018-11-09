@@ -16,7 +16,7 @@ before_script:
 unit_test:
   stage: unit_test
   tags:
-    - ansible
+    - docker-git
   script:
     - docker-compose -f docker-compose-dev.yml up -d --build
   only:
