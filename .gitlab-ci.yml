@@ -5,7 +5,7 @@ variables:
   DOCKER_DRIVER: overlay2
 
 services:
-  - docker:git
+  - docker:dind
 
 stages:
   - unit_test
@@ -16,7 +16,8 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git
   - pip install docker-compose
-  - docker-compose -f docker-compose-dev.yml up -d --build
+  - docker-compose -f docker-compose-prod.yml up -d --build
+  - docker container ls
 
 build_test:
   stage: build_test
