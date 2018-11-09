@@ -14,8 +14,9 @@ stages:
 before_script:
   - apk update
   - apk upgrade
-  - apk add --no-cache python python-dev py-pip build-base git
+  - apk add --no-cache python python-dev py-pip build-base git docker openrc
   - pip install docker-compose
+  - service docker start
   - docker info
   - docker container ls -a
   - docker image ls -a
