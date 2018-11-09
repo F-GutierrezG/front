@@ -4,6 +4,9 @@ stages:
   - unit_test
   - build_test
 
+environment:
+  - DOCKER_HOST=tcp://docker
+
 before_script:
   - apk update
   - apk upgrade
