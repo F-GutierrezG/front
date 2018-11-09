@@ -16,8 +16,7 @@ before_script:
   - apk upgrade
   - apk add --no-cache python python-dev py-pip build-base git openrc docker
   - pip install docker-compose
-  - service docker stop
-  - service docker start
+  - sleep 1000
   - docker info
 
 unit_test:
