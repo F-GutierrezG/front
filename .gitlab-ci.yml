@@ -18,9 +18,11 @@ before_script:
 unit_test:
   stage: unit_test
   script:
+    - export DOCKER_HOST="tcp://localhost:2375"
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:
   stage: build_test
   script:
+    - export DOCKER_HOST="tcp://localhost:2375"
     - docker-compose -f docker-compose-prod.yml build --no-cache
