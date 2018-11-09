@@ -3,16 +3,24 @@ image: alpine
 stages:
   - unit_test
   - build_test
-
-before_script:
-  - sudo usermod -aG docker $(whoami)
+  - cleanup
 
 unit_test:
   stage: unit_test
   script:
-    - docker-compose -f docker-compose-dev.yml up -d --build
+    - whoami
+    - docker-compose -f docker-compose-dev.yml build --no-cache
+    - docker-compose -f docker-compose-dev.yml up -d
+    - docker-compose -f docker-compose-dev.yml down
 
 build_test:
   stage: build_test
   script:
     - docker-compose -f docker-compose-prod.yml build --no-cache
+    - docker-compose -f docker-compose-prod.yml down
+
+cleanup:
+  stage: cleanup
+  script:
+    - docker container rm -f $(docker container ls -aq)
+    - docker image rm -f $(docker image ls -aq)
