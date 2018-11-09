@@ -4,15 +4,10 @@ stages:
   - unit_test
   - build_test
 
-before_script:
-  - sudo apt update
-  - apt upgrade
-  - apk add --no-cache python python-dev py-pip build-base git docker
-  - pip install docker-compose
-
 unit_test:
   stage: unit_test
   script:
+    - sudo apt-get update -qy
     - docker-compose -f docker-compose-dev.yml up -d --build
 
 build_test:

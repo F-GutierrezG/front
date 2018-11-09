@@ -2,7 +2,8 @@
   name = "gitlab-runner"
   url = "https://gitlab.com/"
   token = "P6nqnyf35Jzz6L_nM2ww"
-  executor = "docker"
+  executor = "shell"
+  shell = "bash"
   [runners.docker]
-    image = "docker:git"
+    image = ""
     privileged = true
