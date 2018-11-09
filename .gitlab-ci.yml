@@ -4,8 +4,8 @@ image: docker:git
   #DOCKER_HOST: tcp://docker:2375
   #DOCKER_DRIVER: overlay
 
-services:
-  - docker:dind
+#services:
+#  - docker:dind
 
 stages:
   - unit_test
@@ -19,7 +19,6 @@ before_script:
   - docker info
   - docker container ls -a
   - docker image ls -a
-  - docker-machine ls
 
 unit_test:
   stage: unit_test
