@@ -463,6 +463,13 @@ Sidebar.defaultProps = {
   bgColor: "blue"
 };
 
+SidebarWrapper.propTypes = {
+  className: PropTypes.string,
+  user: PropTypes.object,
+  headerLinks: PropTypes.object,
+  links: PropTypes.object
+};
+
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
   bgColor: PropTypes.oneOf(["white", "black", "blue"]),
@@ -479,7 +486,12 @@ Sidebar.propTypes = {
   logo: PropTypes.string,
   logoText: PropTypes.string,
   image: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object)
+  routes: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.object,
+  location: PropTypes.object,
+  miniActive: PropTypes.bool,
+  open: PropTypes.bool,
+  handleDrawerToggle: PropTypes.func
 };
 
 export default withStyles(sidebarStyle)(Sidebar);

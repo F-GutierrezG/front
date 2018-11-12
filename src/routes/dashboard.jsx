@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard/Dashboard.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
+import Users from "views/Management/Users";
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -18,6 +19,21 @@ var dashRoutes = [
     name: "Publicaciones",
     icon: DateRange,
     component: Calendar
+  },
+  {
+    collapse: true,
+    path: "/management",
+    name: "Administración",
+    state: "openManagement",
+    icon: "settings",
+    views: [
+      {
+        path: "/management/users",
+        name: "Usuarios",
+        mini: "US",
+        component: Users
+      }
+    ]
   },
   { redirect: true, path: "/", pathTo: "/dashboard", name: "Dashboard" }
 ];
