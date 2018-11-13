@@ -6,19 +6,7 @@ import Delete from "@material-ui/icons/Delete";
 import Visibility from "@material-ui/icons/Visibility";
 import Add from "@material-ui/icons/Add";
 
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-
-import Button from "components/CustomButtons/Button.jsx";
-import AddButton from "views/Components/AddButton.jsx";
-
-import ReactTable from "react-table";
-import "./TableStyle.css";
+import Management, { ActionButton } from "views/Components/Management";
 
 const users = [
   {
@@ -159,36 +147,25 @@ class Users extends Component {
           email: user.email,
           actions: (
             <div className="actions-right">
-              <Button
-                justIcon
-                round
-                simple
+              <ActionButton
                 onClick={() => alert("VER")}
                 color="info"
-                className="view"
-              >
-                <Visibility />
-              </Button>
-              <Button
-                justIcon
-                round
-                simple
+                name="view"
+                icon={<Visibility />}
+              />
+              <ActionButton
                 onClick={() => alert("EDITAR")}
                 color="primary"
-                className="edit"
-              >
-                <Create />
-              </Button>
-              <Button
-                justIcon
-                round
-                simple
+                name="edit"
+                icon={<Create />}
+              />
+
+              <ActionButton
                 onClick={() => alert("ELIMINAR")}
                 color="danger"
-                className="delete"
-              >
-                <Delete />
-              </Button>
+                name="delete"
+                icon={<Delete />}
+              />
             </div>
           )
         };
@@ -197,62 +174,39 @@ class Users extends Component {
   }
 
   render() {
+    const columns = [
+      {
+        Header: "Nombre",
+        accessor: "first_name"
+      },
+      {
+        Header: "Apellido",
+        accessor: "last_name"
+      },
+      {
+        Header: "E-Mail",
+        accessor: "email"
+      },
+      {
+        Header: "Acciones",
+        accessor: "actions",
+        sortable: false,
+        filterable: false
+      }
+    ];
+
     return (
-      <div>
-        <GridContainer>
-          <GridItem xs={12}>
-            <Card>
-              <CardHeader color="primary" icon>
-                <CardIcon color="primary">
-                  <Person />
-                </CardIcon>
-              </CardHeader>
-              <CardBody>
-                <ReactTable
-                  data={this.state.users}
-                  noDataText={"No existen Usuarios"}
-                  minRows={0}
-                  filterable
-                  columns={[
-                    {
-                      Header: "Nombre",
-                      accessor: "first_name"
-                    },
-                    {
-                      Header: "Apellido",
-                      accessor: "last_name"
-                    },
-                    {
-                      Header: "E-Mail",
-                      accessor: "email"
-                    },
-                    {
-                      Header: "Acciones",
-                      accessor: "actions",
-                      sortable: false,
-                      filterable: false
-                    }
-                  ]}
-                  defaultPageSize={10}
-                  showPaginationTop
-                  showPaginationBottom={false}
-                  className="-striped -highlight"
-                  previousText={"Anterior"}
-                  nextText={"Siguiente"}
-                  pageText={"Página"}
-                  ofText={"de"}
-                  rowsText={"filas"}
-                />
-                <AddButton
-                  text="Agregar Usuario"
-                  icon={<Add />}
-                  color="success"
-                />
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
+      <Management
+        icon={<Person />}
+        color="info"
+        elements={this.state.users}
+        noDataText="No existen Usuarios"
+        columns={columns}
+        addButtonText="Agregar Usuario"
+        addButtonIcon={<Add />}
+        addButtonColor="success"
+        addButtonOnClick={() => alert("AGREGAR USUARIO")}
+      />
     );
   }
 }
