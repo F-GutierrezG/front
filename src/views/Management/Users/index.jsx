@@ -4,6 +4,7 @@ import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
 import Visibility from "@material-ui/icons/Visibility";
+import Add from "@material-ui/icons/Add";
 
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -14,8 +15,10 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 
 import Button from "components/CustomButtons/Button.jsx";
+import AddButton from "views/Components/AddButton.jsx";
 
 import ReactTable from "react-table";
+import "./TableStyle.css";
 
 const users = [
   {
@@ -195,54 +198,61 @@ class Users extends Component {
 
   render() {
     return (
-      <GridContainer>
-        <GridItem xs={12}>
-          <Card>
-            <CardHeader color="primary" icon>
-              <CardIcon color="primary">
-                <Person />
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              <ReactTable
-                data={this.state.users}
-                noDataText={"No existen Usuarios"}
-                minRows={0}
-                filterable
-                columns={[
-                  {
-                    Header: "Nombre",
-                    accessor: "first_name"
-                  },
-                  {
-                    Header: "Apellido",
-                    accessor: "last_name"
-                  },
-                  {
-                    Header: "E-Mail",
-                    accessor: "email"
-                  },
-                  {
-                    Header: "Acciones",
-                    accessor: "actions",
-                    sortable: false,
-                    filterable: false
-                  }
-                ]}
-                defaultPageSize={10}
-                showPaginationTop
-                showPaginationBottom={false}
-                className="-striped -highlight"
-                previousText={"Anterior"}
-                nextText={"Siguiente"}
-                pageText={"Página"}
-                ofText={"de"}
-                rowsText={"filas"}
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <div>
+        <GridContainer>
+          <GridItem xs={12}>
+            <Card>
+              <CardHeader color="primary" icon>
+                <CardIcon color="primary">
+                  <Person />
+                </CardIcon>
+              </CardHeader>
+              <CardBody>
+                <ReactTable
+                  data={this.state.users}
+                  noDataText={"No existen Usuarios"}
+                  minRows={0}
+                  filterable
+                  columns={[
+                    {
+                      Header: "Nombre",
+                      accessor: "first_name"
+                    },
+                    {
+                      Header: "Apellido",
+                      accessor: "last_name"
+                    },
+                    {
+                      Header: "E-Mail",
+                      accessor: "email"
+                    },
+                    {
+                      Header: "Acciones",
+                      accessor: "actions",
+                      sortable: false,
+                      filterable: false
+                    }
+                  ]}
+                  defaultPageSize={10}
+                  showPaginationTop
+                  showPaginationBottom={false}
+                  className="-striped -highlight"
+                  previousText={"Anterior"}
+                  nextText={"Siguiente"}
+                  pageText={"Página"}
+                  ofText={"de"}
+                  rowsText={"filas"}
+                />
+                <AddButton
+                  text="Agregar Usuario"
+                  icon={<Add />}
+                  color="success"
+                />
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
     );
   }
 }
