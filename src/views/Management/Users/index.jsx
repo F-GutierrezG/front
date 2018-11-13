@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
+import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
 import Visibility from "@material-ui/icons/Visibility";
-import Add from "@material-ui/icons/Add";
 
 import Management, { ActionButton } from "views/Components/Management";
 
@@ -134,7 +134,9 @@ const users = [
 class Users extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      users: []
+    };
   }
 
   componentDidMount() {
