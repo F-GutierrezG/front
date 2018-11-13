@@ -43,8 +43,8 @@ const Management = ({
             showPaginationTop
             showPaginationBottom={false}
             className="-striped -highlight"
-            previousText={"Anterior"}
-            nextText={"Siguiente"}
+            previousText={"<"}
+            nextText={">"}
             pageText={"Página"}
             ofText={"de"}
             rowsText={"filas"}

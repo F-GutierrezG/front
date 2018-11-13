@@ -24,10 +24,10 @@ const localizer = BigCalendar.momentLocalizer(moment);
 
 const messages = {
   today: "Hoy",
-  previous: "Atrás",
-  next: "Siguiente",
+  previous: "<",
+  next: ">",
   month: "Mes",
-  week: "Semana",
+  week: "Sem.",
   day: "Día",
   date: "Fecha",
   time: "Hora",
