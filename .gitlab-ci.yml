@@ -1,25 +1,63 @@
 image: alpine
 
+variables:
+  COMMIT: ${CI_COMMIT_SHA}
+  TAG: ${CI_COMMIT_REF_NAME}
+  REGISTRY_REPO: registry.gitlab.com/gusisoft/onelike/client/front
+  FRONT: client-front
+
 stages:
   - unit_test
   - build_test
+  - registry
   - cleanup
+  - deploy
 
-unit_test:
+Tests:
   stage: unit_test
   script:
     - docker-compose -f docker-compose-dev.yml build --no-cache
     - docker-compose -f docker-compose-dev.yml up -d
     - docker-compose -f docker-compose-dev.yml down
 
-build_test:
+Build:
   stage: build_test
+  #only:
+  #  - stage
   script:
     - docker-compose -f docker-compose-prod.yml build --no-cache
     - docker-compose -f docker-compose-prod.yml down
 
-cleanup:
+Front:
+  stage: registry
+  #only:
+  #  - stage
+  before_script:
+    - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
+    - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/client/front.git"
+    - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}:client-front"
+  script:
+    - docker build $FRONT_REPO -t $FRONT:$COMMIT -f Dockerfile
+    - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
+    - docker push $REGISTRY_REPO/$SWAGGER:$TAG
+
+Cleaning:
   stage: cleanup
+  #only:
+  #  - stage
   script:
     - docker image rm $(docker image ls -q)
     - docker volume rm -f $(docker volume ls -q)
+
+Stage:
+  stage: deploy
+  #only:
+  #  - stage
+  before_script:
+    - rm -rf ~/.ssh
+    - mkdir -p ~/.ssh
+    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - bash ./stage-deploy.sh
