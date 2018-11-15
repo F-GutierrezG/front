@@ -10,4 +10,4 @@ ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker container rm $FRO
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker image rm $REGISTRY_REPO/$FRONT:$TAG"
 
-ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker run -d -p 3000:3000 --name client-front --network client-front-network registry.gitlab.com/gusisoft/onelike/client/front/$FRONT:$TAG"
+ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker run -d -p 3000:80 --name client-front --network client-front-network registry.gitlab.com/gusisoft/onelike/client/front/$FRONT:$TAG"
