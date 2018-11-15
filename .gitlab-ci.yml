@@ -3,7 +3,7 @@ image: alpine
 variables:
   COMMIT: ${CI_COMMIT_SHA}
   TAG: ${CI_COMMIT_REF_NAME}
-  REGISTRY_REPO: registry.gitlab.com/gusisoft/onelike/client
+  REGISTRY_REPO: registry.gitlab.com/gusisoft/onelike/client/front
   FRONT: client-front
 
 stages:
