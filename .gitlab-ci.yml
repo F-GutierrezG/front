@@ -7,21 +7,21 @@ variables:
   FRONT: client-front
 
 stages:
-  - unit_test
-  - build_test
+  - test
+  - build
   - registry
   - cleanup
   - deploy
 
 Tests:
-  stage: unit_test
+  stage: test
   script:
     - docker-compose -f docker-compose-dev.yml build --no-cache
     - docker-compose -f docker-compose-dev.yml up -d
     - docker-compose -f docker-compose-dev.yml down
 
 Build:
-  stage: build_test
+  stage: build
   #only:
   #  - stage
   script:
