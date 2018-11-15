@@ -35,7 +35,7 @@ Front:
   before_script:
     - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/client/front.git"
-    - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}:front"
+    - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
     - docker build $FRONT_REPO -t $FRONT:$COMMIT -f Dockerfile
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
