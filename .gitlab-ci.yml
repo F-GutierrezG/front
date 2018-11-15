@@ -37,9 +37,9 @@ Front:
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/client/front.git"
     - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT -f Dockerfile
+    - docker build $FRONT_REPO -t $FRONT:$COMMIT -f Dockerfile-prod
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
-    - docker push $REGISTRY_REPO/$SWAGGER:$TAG
+    - docker push $REGISTRY_REPO/$FRONT:$TAG
 
 Cleaning:
   stage: cleanup
