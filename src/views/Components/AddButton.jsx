@@ -8,7 +8,7 @@ import Button from "components/CustomButtons/Button.jsx";
 
 const AddButton = ({ color, text, icon, onClick }) => (
   <GridContainer justify={"flex-end"}>
-    <GridItem xs={12} md={4} lg={2} xl={1}>
+    <GridItem xs={12} md={4} lg={2}>
       <Button color={color} fullWidth onClick={onClick}>
         {icon} {text}
       </Button>
