@@ -8,6 +8,8 @@ import Visibility from "@material-ui/icons/Visibility";
 
 import Management, { ActionButton } from "views/Components/Management";
 
+import CreateUserDialog from "./CreateUserDialog.jsx";
+
 const users = [
   {
     first_name: "Usuario1",
@@ -135,7 +137,20 @@ class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: []
+      users: [],
+      createUserDialogOpen: false,
+      createUserErrors: {
+        email: null,
+        firstName: null,
+        lastName: null,
+        password: null
+      },
+      newUser: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: ""
+      }
     };
   }
 
@@ -175,6 +190,36 @@ class Users extends Component {
     });
   }
 
+  handleOnCloseCreateUserDialog = () => {
+    this.setState({
+      createUserDialogOpen: false
+    });
+  };
+
+  handleCreateUserButton = () => {
+    this.setState({
+      createUserDialogOpen: true
+    });
+  };
+
+  handleOnCancelCreateUserDialog = () => {
+    this.setState({
+      createUserDialogOpen: false
+    });
+  };
+
+  handleOnAcceptCreateUserDialog = () => {
+    this.setState({
+      createUserDialogOpen: false
+    });
+  };
+
+  handleOnChangeCreateUserDialog = (field, evt) => {
+    const newUser = {};
+    newUser[field] = evt.target.value;
+    this.setState({ newUser });
+  };
+
   render() {
     const columns = [
       {
@@ -198,17 +243,28 @@ class Users extends Component {
     ];
 
     return (
-      <Management
-        icon={<Person />}
-        color="info"
-        elements={this.state.users}
-        noDataText="No existen Usuarios"
-        columns={columns}
-        addButtonText="Agregar Usuario"
-        addButtonIcon={<Add />}
-        addButtonColor="success"
-        addButtonOnClick={() => alert("AGREGAR USUARIO")}
-      />
+      <span>
+        <CreateUserDialog
+          open={this.state.createUserDialogOpen}
+          errors={this.state.createUserErrors}
+          user={this.state.newUser}
+          handleOnChange={this.handleOnChangeCreateUserDialog}
+          onClose={this.handleOnCloseCreateUserDialog}
+          onCancel={this.handleOnCancelCreateUserDialog}
+          onAccept={this.handleOnAcceptCreateUserDialog}
+        />
+        <Management
+          icon={<Person />}
+          color="info"
+          elements={this.state.users}
+          noDataText="No existen Usuarios"
+          columns={columns}
+          addButtonText="Crear Usuario"
+          addButtonIcon={<Add />}
+          addButtonColor="success"
+          addButtonOnClick={this.handleCreateUserButton}
+        />
+    </span>
     );
   }
 }
