@@ -8,7 +8,8 @@ import Visibility from "@material-ui/icons/Visibility";
 
 import Management, { ActionButton } from "views/Components/Management";
 
-import CreateUserDialog from "./CreateUserDialog.jsx";
+import CreateUserDialog from "./CreateUserDialog";
+import DeleteUserDialog from "./DeleteUserDialog";
 
 const users = [
   {
@@ -139,6 +140,7 @@ class Users extends Component {
     this.state = {
       users: [],
       createUserDialogOpen: false,
+      deleteUserDialogOpen: false,
       createUserErrors: {
         email: null,
         firstName: null,
@@ -150,7 +152,8 @@ class Users extends Component {
         firstName: "",
         lastName: "",
         password: ""
-      }
+      },
+      selectedUser: null
     };
   }
 
@@ -178,7 +181,7 @@ class Users extends Component {
               />
 
               <ActionButton
-                onClick={() => alert("ELIMINAR")}
+                onClick={() => this.handleOnDeleteUserClick(key)}
                 color="danger"
                 name="delete"
                 icon={<Delete />}
@@ -220,6 +223,34 @@ class Users extends Component {
     this.setState({ newUser });
   };
 
+  handleOnDeleteUserClick = id => {
+    this.setState({
+      selectedUser: id,
+      deleteUserDialogOpen: true
+    });
+  };
+
+  handleOnCloseDeleteUserDialog = () => {
+    this.setState({
+      selectedUser: null,
+      deleteUserDialogOpen: false
+    });
+  };
+
+  handleOnCancelDeleteUserDialog = () => {
+    this.setState({
+      selectedUser: null,
+      deleteUserDialogOpen: false
+    });
+  };
+
+  handleOnAcceptDeleteUserDialog = () => {
+    this.setState({
+      selectedUser: null,
+      deleteUserDialogOpen: false
+    });
+  };
+
   render() {
     const columns = [
       {
@@ -243,7 +274,7 @@ class Users extends Component {
     ];
 
     return (
-      <span>
+      <div>
         <CreateUserDialog
           open={this.state.createUserDialogOpen}
           errors={this.state.createUserErrors}
@@ -252,6 +283,13 @@ class Users extends Component {
           onClose={this.handleOnCloseCreateUserDialog}
           onCancel={this.handleOnCancelCreateUserDialog}
           onAccept={this.handleOnAcceptCreateUserDialog}
+        />
+        <DeleteUserDialog
+          open={this.state.deleteUserDialogOpen}
+          user={this.state.selectedUser}
+          onClose={this.handleOnCloseDeleteUserDialog}
+          onCancel={this.handleOnCancelDeleteUserDialog}
+          onAccept={this.handleOnAcceptDeleteUserDialog}
         />
         <Management
           icon={<Person />}
@@ -264,7 +302,7 @@ class Users extends Component {
           addButtonColor="success"
           addButtonOnClick={this.handleCreateUserButton}
         />
-    </span>
+      </div>
     );
   }
 }

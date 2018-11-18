@@ -10,11 +10,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 
 const CreateUserDialog = props => (
-  <Dialog
-    open={props.open}
-    onClose={props.onClose}
-    aria-labelledby="form-dialog-title"
-  >
+  <Dialog open={props.open} onClose={props.onClose}>
     <DialogTitle>Crear Usuario</DialogTitle>
     <DialogContent>
       <CustomInput
