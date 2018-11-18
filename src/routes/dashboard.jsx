@@ -1,6 +1,7 @@
 import Dashboard from "views/Dashboard/Dashboard.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
 import Users from "views/Management/Users";
+import Companies from "views/Management/Companies";
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -32,6 +33,12 @@ var dashRoutes = [
         name: "Usuarios",
         mini: "US",
         component: Users
+      },
+      {
+        path: "/management/companies",
+        name: "Compañias",
+        mini: "CO",
+        component: Companies
       }
     ]
   },
