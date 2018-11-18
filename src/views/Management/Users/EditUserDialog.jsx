@@ -10,9 +10,9 @@ import Button from "components/CustomButtons/Button.jsx";
 
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 
-const CreateUserDialog = props => (
+const EditUserDialog = props => (
   <Dialog open={props.open} onClose={props.onClose}>
-    <DialogTitle>Crear Usuario</DialogTitle>
+    <DialogTitle>Editar Usuario</DialogTitle>
     <DialogContent>
       <CustomInput
         labelText="E-Mail"
@@ -52,31 +52,17 @@ const CreateUserDialog = props => (
           value: props.user.lastName
         }}
       />
-
-      <CustomInput
-        labelText="Contraseña"
-        formControlProps={{
-          fullWidth: true,
-          margin: "dense"
-        }}
-        error={props.errors.password}
-        inputProps={{
-          type: "password",
-          onChange: evt => props.handleOnChange("password", evt),
-          value: props.user.password
-        }}
-      />
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
-      <Button onClick={props.onAccept} color="success">
-        Crear
+      <Button onClick={props.onAccept} color="primary">
+        Editar
       </Button>
     </DialogActions>
   </Dialog>
 );
 
-CreateUserDialog.propTypes = {
+EditUserDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
@@ -84,16 +70,14 @@ CreateUserDialog.propTypes = {
   errors: PropTypes.shape({
     email: PropTypes.string,
     firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    password: PropTypes.string
+    lastName: PropTypes.string
   }).isRequired,
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
+    lastName: PropTypes.string.isRequired
   }).isRequired,
   handleOnChange: PropTypes.func.isRequired
 };
 
-export default CreateUserDialog;
+export default EditUserDialog;

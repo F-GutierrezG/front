@@ -28,7 +28,7 @@ const DeleteUserDialog = props => (
 
 DeleteUserDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired
 };
