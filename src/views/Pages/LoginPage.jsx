@@ -34,7 +34,8 @@ class LoginPage extends React.Component {
       email: "",
       password: "",
       emailError: false,
-      passwordError: false
+      passwordError: false,
+      userPasswordError: false
     };
   }
   componentDidMount() {
@@ -77,8 +78,12 @@ class LoginPage extends React.Component {
         localStorage.setItem("token", response.data);
         history.push("/dashboard");
       })
-      .catch(error => {
-        console.log("ERROR", error);
+      .catch(() => {
+        this.setState({
+          emailError: true,
+          passwordError: true,
+          userPasswordError: true
+        });
       });
   }
 
@@ -92,13 +97,14 @@ class LoginPage extends React.Component {
   handleOnChange = (field, evt) => {
     const newState = {};
     newState[field] = evt.target.value;
+    newState["userPasswordError"] = false;
     this.setState(newState);
   };
 
   render() {
     if (localStorage.getItem("token")) {
       // TODO: Validar la autenticidad del token contra el server
-      return <Redirect to="/dashboard" />
+      return <Redirect to="/dashboard" />;
     }
 
     const { classes } = this.props;
@@ -152,6 +158,14 @@ class LoginPage extends React.Component {
                       value: this.state.password
                     }}
                   />
+                  {this.state.userPasswordError && (
+                    <GridContainer
+                      justify="center"
+                      style={{ color: "#f44336" }}
+                    >
+                      Usuario y/o Contraseña incorrectas.
+                    </GridContainer>
+                  )}
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
                   <Button
