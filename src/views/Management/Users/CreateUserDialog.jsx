@@ -22,6 +22,7 @@ const CreateUserDialog = props => (
         }}
         error={props.errors.email}
         inputProps={{
+          type: "email",
           onChange: evt => props.handleOnChange("email", evt),
           value: props.user.email
         }}
@@ -82,10 +83,10 @@ CreateUserDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
   errors: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    password: PropTypes.string
+    email: PropTypes.bool,
+    firstName: PropTypes.bool,
+    lastName: PropTypes.bool,
+    password: PropTypes.bool
   }).isRequired,
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,

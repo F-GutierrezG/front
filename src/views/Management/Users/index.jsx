@@ -14,129 +14,6 @@ import CreateUserDialog from "./CreateUserDialog";
 import EditUserDialog from "./EditUserDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
 
-const users = [
-  {
-    firstName: "Usuario1",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
-  },
-  {
-    firstName: "Usuario2",
-    lastName: "Apellido2",
-    email: "email2@gmail.com"
-  },
-  {
-    firstName: "Usuario3",
-    lastName: "Apellido3",
-    email: "email3@gmail.com"
-  },
-  {
-    firstName: "Usuario4",
-    lastName: "Apellido4",
-    email: "email4@gmail.com"
-  },
-  {
-    firstName: "Usuario5",
-    lastName: "Apellido5",
-    email: "email5@gmail.com"
-  },
-  {
-    firstName: "Usuario6",
-    lastName: "Apellido6",
-    email: "email6@gmail.com"
-  },
-  {
-    firstName: "Usuario7",
-    lastName: "Apellido7",
-    email: "email7@gmail.com"
-  },
-  {
-    firstName: "Usuario8",
-    lastName: "Apellido8",
-    email: "email8@gmail.com"
-  },
-  {
-    firstName: "Usuario9",
-    lastName: "Apellido9",
-    email: "email9@gmail.com"
-  },
-  {
-    firstName: "Usuario10",
-    lastName: "Apellido10",
-    email: "email10@gmail.com"
-  },
-  {
-    firstName: "Usuario11",
-    lastName: "Apellido11",
-    email: "email11@gmail.com"
-  },
-  {
-    firstName: "Usuario12",
-    lastName: "Apellido12",
-    email: "email12@gmail.com"
-  },
-  {
-    firstName: "Usuario13",
-    lastName: "Apellido13",
-    email: "email13@gmail.com"
-  },
-  {
-    firstName: "Usuario14",
-    lastName: "Apellido14",
-    email: "email14@gmail.com"
-  },
-  {
-    firstName: "Usuario15",
-    lastName: "Apellido15",
-    email: "email15@gmail.com"
-  },
-  {
-    firstName: "Usuario16",
-    lastName: "Apellido16",
-    email: "email16@gmail.com"
-  },
-  {
-    firstName: "Usuario17",
-    lastName: "Apellido17",
-    email: "email17@gmail.com"
-  },
-  {
-    firstName: "Usuario18",
-    lastName: "Apellido18",
-    email: "email18@gmail.com"
-  },
-  {
-    firstName: "Usuario19",
-    lastName: "Apellido19",
-    email: "email19@gmail.com"
-  },
-  {
-    firstName: "Usuario20",
-    lastName: "Apellido20",
-    email: "email20@gmail.com"
-  },
-  {
-    firstName: "Usuario21",
-    lastName: "Apellido21",
-    email: "email21@gmail.com"
-  },
-  {
-    firstName: "Usuario22",
-    lastName: "Apellido22",
-    email: "email22@gmail.com"
-  },
-  {
-    firstName: "Usuario23",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
-  },
-  {
-    firstName: "Usuario24",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
-  }
-];
-
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -146,10 +23,10 @@ class Users extends Component {
       deleteUserDialogOpen: false,
       editUserDialogOpen: false,
       createUserErrors: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        password: null
+        email: false,
+        firstName: false,
+        lastName: false,
+        password: false
       },
       editUserErrors: {
         email: null,
@@ -226,18 +103,92 @@ class Users extends Component {
 
   handleOnCancelCreateUserDialog = () => {
     this.setState({
-      createUserDialogOpen: false
+      createUserDialogOpen: false,
+      createUserErrors: {
+        firstName: false,
+        lastName: false,
+        email: false,
+        password: false
+      },
+      newUser: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: ""
+      }
     });
   };
 
   handleOnAcceptCreateUserDialog = () => {
+    const user = this.state.newUser;
+
+    if (this.validateCreateUser(user)) {
+      const token = localStorage.getItem("token");
+      axios
+        .post(
+          `${process.env.REACT_APP_USERS_SERVICE_URL}/users`,
+          {
+            first_name: user.firstName,
+            last_name: user.lastName,
+            email: user.email,
+            password: user.password
+          },
+          {
+            headers: { Authorization: "Bearer " + token }
+          }
+        )
+        .then(response => {
+          const users = [...this.state.users];
+          users.push({
+            id: response.data.id,
+            firstName: response.data.first_name,
+            lastName: response.data.last_name,
+            email: response.data.email
+          });
+          this.setState({
+            users,
+            newUser: {
+              email: "",
+              firstName: "",
+              lastName: "",
+              password: ""
+            }
+          });
+        })
+        .catch(error => {
+          console.log("ERROR", error);
+        });
+      this.setState({
+        createUserDialogOpen: false
+      });
+    }
+  };
+
+  validateCreateUser = user => {
+    let firstNameError = false;
+    let lastNameError = false;
+    let emailError = false;
+    let passwordError = false;
+
+    if (user.firstName.trim() === "") firstNameError = true;
+    if (user.lastName.trim() === "") lastNameError = true;
+    if (user.email.trim() === "") emailError = true;
+    if (user.password.trim() === "") passwordError = true;
+
     this.setState({
-      createUserDialogOpen: false
+      createUserErrors: {
+        firstName: firstNameError,
+        lastName: lastNameError,
+        email: emailError,
+        password: passwordError
+      }
     });
+
+    return !(firstNameError || lastNameError || emailError || passwordError);
   };
 
   handleOnChangeCreateUserDialog = (field, evt) => {
-    const newUser = {};
+    const newUser = { ...this.state.newUser };
     newUser[field] = evt.target.value;
     this.setState({ newUser });
   };
