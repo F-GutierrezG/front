@@ -74,7 +74,7 @@ class LoginPage extends React.Component {
       })
       .then(response => {
         const { history } = this.props;
-        localStorage.setItem("token", response.data.data);
+        localStorage.setItem("token", response.data);
         history.push("/dashboard");
       })
       .catch(error => {
