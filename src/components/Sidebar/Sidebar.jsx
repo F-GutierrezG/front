@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+import axios from "axios";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
@@ -18,8 +20,6 @@ import Icon from "@material-ui/core/Icon";
 
 // core components
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
-
-import avatar from "assets/img/faces/avatar.jpg";
 
 var ps;
 
@@ -63,10 +63,38 @@ class Sidebar extends React.Component {
       openTables: this.activeRoute("/tables"),
       openMaps: this.activeRoute("/maps"),
       openPages: this.activeRoute("-page"),
-      miniActive: true
+      miniActive: true,
+      user: {
+        id: 0,
+        firstName: "",
+        lastName: "",
+        email: ""
+      }
     };
     this.activeRoute.bind(this);
   }
+
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/auth/status`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({
+          user: {
+            id: response.data.id,
+            firstName: response.data.first_name,
+            lastName: response.data.last_name,
+            email: response.data.email
+          }
+        });
+      })
+      .catch(error => {
+        console.log("ERROR", error);
+      });
+  }
+
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
@@ -137,11 +165,10 @@ class Sidebar extends React.Component {
       cx({
         [classes.photoRTL]: rtlActive
       });
+    const { firstName, lastName } = this.state.user;
     var user = (
       <div className={userWrapperClass}>
-        <div className={photo}>
-          <img src={avatar} className={classes.avatarImg} alt="..." />
-        </div>
+        <div className={photo} />
         <List className={classes.list}>
           <ListItem className={classes.item + " " + classes.userItem}>
             <NavLink
@@ -150,7 +177,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={"Tania Andrew"}
+                primary={`${firstName} ${lastName}`}
                 secondary={
                   <b
                     className={

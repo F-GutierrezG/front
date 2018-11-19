@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import axios from "axios";
+
 import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
@@ -171,39 +173,49 @@ class Users extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      users: users.map((user, key) => {
-        return {
-          id: key,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          actions: (
-            <div className="actions-right">
-              <ActionButton
-                onClick={() => alert("VER")}
-                color="info"
-                name="view"
-                icon={<Visibility />}
-              />
-              <ActionButton
-                onClick={() => this.handleOnEditUserClick(key)}
-                color="primary"
-                name="edit"
-                icon={<Create />}
-              />
-
-              <ActionButton
-                onClick={() => this.handleOnDeleteUserClick(key)}
-                color="danger"
-                name="delete"
-                icon={<Delete />}
-              />
-            </div>
-          )
-        };
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, {
+        headers: { Authorization: "Bearer " + token }
       })
-    });
+      .then(response => {
+        this.setState({
+          users: response.data.map(user => {
+            return {
+              id: user.id,
+              firstName: user.first_name,
+              lastName: user.last_name,
+              email: user.email,
+              actions: (
+                <div className="actions-right">
+                  <ActionButton
+                    onClick={() => alert("VER")}
+                    color="info"
+                    name="view"
+                    icon={<Visibility />}
+                  />
+                  <ActionButton
+                    onClick={() => this.handleOnEditUserClick(user.id)}
+                    color="primary"
+                    name="edit"
+                    icon={<Create />}
+                  />
+
+                  <ActionButton
+                    onClick={() => this.handleOnDeleteUserClick(user.id)}
+                    color="danger"
+                    name="delete"
+                    icon={<Delete />}
+                  />
+                </div>
+              )
+            };
+          })
+        });
+      })
+      .catch(error => {
+        console.log("ERROR", error)
+      });
   }
 
   handleCreateUserButton = () => {

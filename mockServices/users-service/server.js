@@ -47,12 +47,21 @@ server.get("/users-service/health", (req, res) => {
 
 server.post("/auth/login", (req, res) => {
   if (req.body.email == "valid@test.com") {
-    res.status(200).jsonp({
-      data: token
-    });
+    res.status(200).send(token);
   } else {
     res.status(400).jsonp({
       message: "forbidden"
+    });
+  }
+});
+
+server.get("/auth/status", (req, res) => {
+  if (checkAuth(req)) {
+    res.status(200).jsonp({
+      id: 1,
+      first_name: "Francisco",
+      last_name: "Gutiérrez",
+      email: "valid@test.com"
     });
   }
 });
