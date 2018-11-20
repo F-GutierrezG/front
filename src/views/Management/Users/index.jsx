@@ -49,6 +49,38 @@ class Users extends Component {
     };
   }
 
+  mapUser = user => {
+    return {
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      actions: (
+        <div className="actions-right">
+          <ActionButton
+            onClick={() => alert("VER")}
+            color="info"
+            name="view"
+            icon={<Visibility />}
+          />
+          <ActionButton
+            onClick={() => this.handleOnEditUserClick(user.id)}
+            color="primary"
+            name="edit"
+            icon={<Create />}
+          />
+
+          <ActionButton
+            onClick={() => this.handleOnDeleteUserClick(user.id)}
+            color="danger"
+            name="delete"
+            icon={<Delete />}
+          />
+        </div>
+      )
+    };
+  };
+
   componentDidMount() {
     const token = localStorage.getItem("token");
     axios
@@ -58,35 +90,7 @@ class Users extends Component {
       .then(response => {
         this.setState({
           users: response.data.map(user => {
-            return {
-              id: user.id,
-              firstName: user.first_name,
-              lastName: user.last_name,
-              email: user.email,
-              actions: (
-                <div className="actions-right">
-                  <ActionButton
-                    onClick={() => alert("VER")}
-                    color="info"
-                    name="view"
-                    icon={<Visibility />}
-                  />
-                  <ActionButton
-                    onClick={() => this.handleOnEditUserClick(user.id)}
-                    color="primary"
-                    name="edit"
-                    icon={<Create />}
-                  />
-
-                  <ActionButton
-                    onClick={() => this.handleOnDeleteUserClick(user.id)}
-                    color="danger"
-                    name="delete"
-                    icon={<Delete />}
-                  />
-                </div>
-              )
-            };
+            return this.mapUser(user);
           })
         });
       })
@@ -139,12 +143,7 @@ class Users extends Component {
         )
         .then(response => {
           const users = [...this.state.users];
-          users.push({
-            id: response.data.id,
-            firstName: response.data.first_name,
-            lastName: response.data.last_name,
-            email: response.data.email
-          });
+          users.push(this.mapUser(response.data));
           this.setState({
             users,
             newUser: {
@@ -220,15 +219,27 @@ class Users extends Component {
   };
 
   handleOnAcceptDeleteUserDialog = () => {
-    this.setState({
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      deleteUserDialogOpen: false
-    });
+    const id = this.state.selectedUser.id;
+    const token = localStorage.getItem("token");
+
+    axios
+      .delete(`${process.env.REACT_APP_USERS_SERVICE_URL}/users/${id}`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(() => {
+        const users = this.state.users.filter(user => user.id !== id);
+
+        this.setState({
+          users: users,
+          selectedUser: {
+            email: "",
+            firstName: "",
+            lastName: "",
+            password: ""
+          },
+          deleteUserDialogOpen: false
+        });
+      });
   };
 
   handleOnEditUserClick = id => {
