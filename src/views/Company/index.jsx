@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import axios from "axios";
 
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -18,9 +21,23 @@ import companyStyle from "./jss/companyStyle";
 class Company extends Component {
   setupFacebook = () => {
     const { company_id } = this.props.match.params;
-    window.location = `${
-      process.env.REACT_APP_SOCIAL_SERVICE_URL
-    }/social/facebook/oauth/${company_id}`;
+    const token = localStorage.getItem("token");
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_SOCIAL_SERVICE_URL
+        }/social/facebook/oauth/${company_id}`,
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const url = response.data.data;
+        window.location = url;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   render() {
@@ -60,5 +77,9 @@ class Company extends Component {
     );
   }
 }
+
+Company.propTypes = {
+  company_id: PropTypes.number.isRequired
+};
 
 export default withStyles(companyStyle)(Company);
