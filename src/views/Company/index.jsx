@@ -6,7 +6,7 @@ import axios from "axios";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
+import CardHeader from "components/ActionsCard/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
@@ -17,6 +17,8 @@ import Settings from "@material-ui/icons/Settings";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import companyStyle from "./jss/companyStyle";
+
+import SocialNetwork from "./SocialNetwork";
 
 class Company extends Component {
   setupFacebook = () => {
@@ -40,38 +42,34 @@ class Company extends Component {
       });
   };
 
+  deleteFacebook = () => {
+    alert("DELETE FACEBOOK");
+  };
+
+  setupInstagram = () => {
+    alert("SETUP INSTAGRAM");
+  };
+
+  deleteInstagram = () => {
+    alert("DELETE INSTAGRAM");
+  };
+
   render() {
-    const { classes } = this.props;
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="primary">
-                  <i className="fab fa-facebook" />
-                </CardIcon>
-                <p className={classes.cardCategory}>Opciones</p>
-                <h3 className={classes.cardTitle}>
-                  <ActionButton
-                    onClick={this.setupFacebook}
-                    color="success"
-                    name="setup"
-                    icon={<Settings />}
-                  />
-                  <ActionButton
-                    onClick={() => alert(1)}
-                    color="danger"
-                    name="delete"
-                    icon={<Delete />}
-                  />
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>Últimas 24 horas</div>
-              </CardFooter>
-            </Card>
-          </GridItem>
+          <SocialNetwork
+            classes={this.props.classes}
+            color="primary"
+            icon="fa-facebook"
+            onSetup={this.setupFacebook}
+            onDelete={this.deleteFacebook} />
+          <SocialNetwork
+            classes={this.props.classes}
+            color="warning"
+            icon="fa-instagram"
+            onSetup={this.setupInstagram}
+            onDelete={this.deleteInstagram} />
         </GridContainer>
       </div>
     );
