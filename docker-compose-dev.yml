@@ -14,6 +14,7 @@ services:
     environment:
       - NODE_ENV=development
       - REACT_APP_USERS_SERVICE_URL=http://localhost:5001
+      - REACT_APP_SOCIAL_SERVICE_URL=https://stage.onelike.gusisoft.cl
     depends_on:
       - users-service
 

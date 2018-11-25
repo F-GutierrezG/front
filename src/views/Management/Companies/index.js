@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { Link } from "react-router-dom";
+
 import Add from "@material-ui/icons/Add";
 import Business from "@material-ui/icons/Business";
 import Create from "@material-ui/icons/Create";
@@ -8,126 +10,14 @@ import Visibility from "@material-ui/icons/Visibility";
 
 import Management, { ActionButton } from "views/Components/Management";
 
-const users = [
+const companies = [
   {
-    firstName: "Usuario1",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
+    identifier: "11.111.111-1",
+    name: "Compañía 1"
   },
   {
-    firstName: "Usuario2",
-    lastName: "Apellido2",
-    email: "email2@gmail.com"
-  },
-  {
-    firstName: "Usuario3",
-    lastName: "Apellido3",
-    email: "email3@gmail.com"
-  },
-  {
-    firstName: "Usuario4",
-    lastName: "Apellido4",
-    email: "email4@gmail.com"
-  },
-  {
-    firstName: "Usuario5",
-    lastName: "Apellido5",
-    email: "email5@gmail.com"
-  },
-  {
-    firstName: "Usuario6",
-    lastName: "Apellido6",
-    email: "email6@gmail.com"
-  },
-  {
-    firstName: "Usuario7",
-    lastName: "Apellido7",
-    email: "email7@gmail.com"
-  },
-  {
-    firstName: "Usuario8",
-    lastName: "Apellido8",
-    email: "email8@gmail.com"
-  },
-  {
-    firstName: "Usuario9",
-    lastName: "Apellido9",
-    email: "email9@gmail.com"
-  },
-  {
-    firstName: "Usuario10",
-    lastName: "Apellido10",
-    email: "email10@gmail.com"
-  },
-  {
-    firstName: "Usuario11",
-    lastName: "Apellido11",
-    email: "email11@gmail.com"
-  },
-  {
-    firstName: "Usuario12",
-    lastName: "Apellido12",
-    email: "email12@gmail.com"
-  },
-  {
-    firstName: "Usuario13",
-    lastName: "Apellido13",
-    email: "email13@gmail.com"
-  },
-  {
-    firstName: "Usuario14",
-    lastName: "Apellido14",
-    email: "email14@gmail.com"
-  },
-  {
-    firstName: "Usuario15",
-    lastName: "Apellido15",
-    email: "email15@gmail.com"
-  },
-  {
-    firstName: "Usuario16",
-    lastName: "Apellido16",
-    email: "email16@gmail.com"
-  },
-  {
-    firstName: "Usuario17",
-    lastName: "Apellido17",
-    email: "email17@gmail.com"
-  },
-  {
-    firstName: "Usuario18",
-    lastName: "Apellido18",
-    email: "email18@gmail.com"
-  },
-  {
-    firstName: "Usuario19",
-    lastName: "Apellido19",
-    email: "email19@gmail.com"
-  },
-  {
-    firstName: "Usuario20",
-    lastName: "Apellido20",
-    email: "email20@gmail.com"
-  },
-  {
-    firstName: "Usuario21",
-    lastName: "Apellido21",
-    email: "email21@gmail.com"
-  },
-  {
-    firstName: "Usuario22",
-    lastName: "Apellido22",
-    email: "email22@gmail.com"
-  },
-  {
-    firstName: "Usuario23",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
-  },
-  {
-    firstName: "Usuario24",
-    lastName: "Apellido1",
-    email: "email1@gmail.com"
+    identifier: "22.222.222-2",
+    name: "Compañía 2"
   }
 ];
 
@@ -135,7 +25,7 @@ class Companies extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      companiess: [],
       createUserDialogOpen: false,
       deleteUserDialogOpen: false,
       editUserDialogOpen: false,
@@ -168,20 +58,21 @@ class Companies extends Component {
 
   componentDidMount() {
     this.setState({
-      users: users.map((user, key) => {
+      companies: companies.map((company, key) => {
         return {
           id: key,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
+          identifier: company.identifier,
+          name: company.name,
           actions: (
             <div className="actions-right">
-              <ActionButton
-                onClick={() => alert("VER")}
-                color="info"
-                name="view"
-                icon={<Visibility />}
-              />
+              <Link
+                to={{
+                  pathname: `/companies/${key}`,
+                  state: { title: company.name }
+                }}
+              >
+                <ActionButton color="info" name="view" icon={<Visibility />} />
+              </Link>
               <ActionButton
                 onClick={() => this.handleOnEditUserClick(key)}
                 color="primary"
@@ -288,16 +179,11 @@ class Companies extends Component {
     const columns = [
       {
         Header: "Rut",
-        accessor: "firstName"
+        accessor: "identifier"
       },
       {
         Header: "Razón Social",
-        accessor: "lastName",
-        sortable: false
-      },
-      {
-        Header: "E-Mail",
-        accessor: "email"
+        accessor: "name"
       },
       {
         Header: "Acciones",
@@ -312,7 +198,7 @@ class Companies extends Component {
         <Management
           icon={<Business />}
           color="success"
-          elements={[]}
+          elements={this.state.companies}
           noDataText="No existen Compañías"
           columns={columns}
           addButtonText="Crear Compañía"

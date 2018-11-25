@@ -1,4 +1,5 @@
 import React from "react";
+import { matchPath } from "react-router";
 import PropTypes from "prop-types";
 import cx from "classnames";
 
@@ -19,38 +20,46 @@ import Button from "components/CustomButtons/Button.jsx";
 import headerStyle from "assets/jss/material-dashboard-pro-react/components/headerStyle.jsx";
 
 function Header({ ...props }) {
+  function arePathEqual(path1, path2) {
+    const match = matchPath(path2, {
+      path: path1,
+      exact: true,
+      strict: false
+    });
+    if (!match) return false;
+    return match.isExact;
+  }
+
   function makeBrand() {
+    if (props.location && props.location.state && props.location.state.title) {
+      return props.location.state.title;
+    }
     var name;
-    props.routes.map((prop, key) => {
+    props.routes.map(prop => {
       if (prop.collapse) {
-        prop.views.map((prop, key) => {
-          if (prop.path === props.location.pathname) {
+        prop.views.map(prop => {
+          if (arePathEqual(prop.path, props.location.pathname)) {
             name = prop.name;
           }
           return null;
         });
       }
-      if (prop.path === props.location.pathname) {
+      if (arePathEqual(prop.path, props.location.pathname)) {
         name = prop.name;
       }
       return null;
     });
-    if(name){
+    if (name) {
       return name;
     } else {
       return "Default Brand Name";
     }
   }
-  const { classes, color, rtlActive } = props;
+  const { classes, color } = props;
   const appBarClasses = cx({
     [" " + classes[color]]: color
   });
-  const sidebarMinimize =
-    classes.sidebarMinimize +
-    " " +
-    cx({
-      [classes.sidebarMinimizeRTL]: rtlActive
-    });
+  const sidebarMinimize = classes.sidebarMinimize;
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -102,7 +111,11 @@ function Header({ ...props }) {
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  rtlActive: PropTypes.bool
+  miniActive: PropTypes.bool,
+  location: PropTypes.object,
+  handleDrawerToggle: PropTypes.func,
+  sidebarMinimize: PropTypes.func,
+  routes: PropTypes.array.isRequired
 };
 
 export default withStyles(headerStyle)(Header);

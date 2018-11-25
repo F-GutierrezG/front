@@ -2,6 +2,7 @@ import Dashboard from "views/Dashboard/Dashboard.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
 import Users from "views/Management/Users";
 import Companies from "views/Management/Companies";
+import Company from "views/Company";
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -20,6 +21,12 @@ var dashRoutes = [
     name: "Publicaciones",
     icon: DateRange,
     component: Calendar
+  },
+  {
+    path: "/companies/:company_id",
+    name: "Companía",
+    invisible: true,
+    component: Company
   },
   {
     collapse: true,
