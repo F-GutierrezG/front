@@ -58,6 +58,116 @@ class Company extends Component {
     };
   }
 
+  mapUser = user => {
+    return {
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      actions: (
+        <div className="actions-right">
+          <ActionButton
+            onClick={() => alert("VER")}
+            color="info"
+            name="view"
+            icon={<Visibility />}
+          />
+          <ActionButton
+            onClick={() => this.handleOnEditUserClick(user.id)}
+            color="primary"
+            name="edit"
+            icon={<Create />}
+          />
+
+          <ActionButton
+            onClick={() => this.handleOnDeleteUserClick(user.id)}
+            color="danger"
+            name="delete"
+            icon={<Delete />}
+          />
+        </div>
+      )
+    };
+  };
+
+  loadUsers = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({
+          users: response.data.map(user => {
+            return this.mapUser(user);
+          })
+        });
+      })
+      .catch(error => {
+        console.log("ERROR", error)
+      });
+  };
+
+  componentDidMount() {
+    this.loadUsers();
+  }
+
+  handleCreateUserButton = () => {
+    this.setState({
+      createUserDialogOpen: true
+    });
+  };
+
+  handleOnCancelCreateUserDialog = () => {
+    this.setState({
+      createUserDialogOpen: false,
+      createUserErrors: {
+        firstName: false,
+        lastName: false,
+        email: false,
+        password: false
+      },
+      newUser: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: ""
+      }
+    });
+  };
+
+  handleOnChangeCreateUserDialog = (field, evt) => {
+    const newUser = { ...this.state.newUser };
+    newUser[field] = evt.target.value;
+    this.setState({ newUser });
+  };
+
+  handleOnChangeEditUserDialog = (field, evt) => {
+    const newUser = {};
+    newUser[field] = evt.target.value;
+    this.setState({ newUser });
+  };
+
+  handleOnDeleteUserClick = id => {
+    const user = this.state.users.find(user => user.id === id);
+    this.setState({
+      selectedUser: user,
+      deleteUserDialogOpen: true
+    });
+  };
+
+  handleOnCancelDeleteUserDialog = () => {
+    this.setState({
+      selectedUser: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: ""
+      },
+      deleteUserDialogOpen: false
+    });
+  };
+
   setupFacebook = () => {
     const { company_id } = this.props.match.params;
     const token = localStorage.getItem("token");

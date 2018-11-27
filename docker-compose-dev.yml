@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   front:
-    container_name: client-front
+    container_name: front
     build:
       context: .
       dockerfile: Dockerfile-dev
@@ -29,7 +29,7 @@ services:
   users-service-swagger:
     container_name: users-service-swagger
     build:
-      context: "https://gitlab+deploy-token-25488:zkcGJFdvCN6KCfmWtnAU@gitlab.com/gusisoft/OneLike/client/users-service.git#devel:swagger"
+      context: "https://gitlab+deploy-token-25488:zkcGJFdvCN6KCfmWtnAU@gitlab.com/gusisoft/OneLike/users-service.git#devel:swagger"
       dockerfile: Dockerfile
     ports:
       - 8081:8080
