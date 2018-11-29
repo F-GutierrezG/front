@@ -3,6 +3,7 @@
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com"
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker network create --subnet=172.19.0.0/16 front-network'
+ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker network create --subnet=172.18.0.0/16 onelike-network'
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker container stop $FRONT"
 

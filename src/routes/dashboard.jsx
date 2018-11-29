@@ -43,7 +43,7 @@ var dashRoutes = [
       },
       {
         path: "/management/companies",
-        name: "Compañias",
+        name: "Compañías",
         mini: "CO",
         component: Companies
       }
