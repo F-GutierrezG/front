@@ -11,6 +11,6 @@ ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker container rm $FRO
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker image rm $(docker images registry.gitlab.com/gusisoft/onelike/front/front -q)'
 
-ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker run -d -p 3000:3000 --name front --network front-network --ip 172.19.0.2 $REGISTRY_REPO/$FRONT:$TAG"
+ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker run -d --name front --network front-network --ip 172.19.0.2 $REGISTRY_REPO/$FRONT:$TAG"
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker network connect onelike-network --ip 172.18.0.5 front'
