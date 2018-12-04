@@ -38,32 +38,39 @@ class Notifications extends Component {
   };
 
   componentDidMount() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const socket = io(`${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}`, {
-      query: {
-        hash: user.hash
+    const timer = setInterval(() => {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user) return;
+
+      clearInterval(timer);
+
+      const socket = io(`${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}`, {
+        query: {
+          hash: user.hash
+        }
+      });
+
+      function subscribeToTimer(cb) {
+        socket.on("notification", notification => cb(null, notification));
       }
-    });
 
-    function subscribeToTimer(cb) {
-      socket.on("notification", notification => cb(null, notification));
-    }
-
-    subscribeToTimer((err, notification) => {
-      this.setState({
-        notifications: [...this.state.notifications, notification]
+      subscribeToTimer((err, notification) => {
+        this.setState({
+          notifications: [...this.state.notifications, notification]
+        });
       });
-    });
 
-    axios
-      .get(
-        `${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/notifications/${
-          user.hash
-        }`
-      )
-      .then(response => {
-        this.setState({ notifications: response.data });
-      });
+      axios
+        .get(
+          `${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/notifications/${
+            user.hash
+          }`
+        )
+        .then(response => {
+          this.setState({ notifications: response.data });
+        });
+    }, 500);
   }
 
   handleClick = () => {
