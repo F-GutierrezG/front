@@ -28,13 +28,7 @@ import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components
 class Notifications extends Component {
   state = {
     open: false,
-    notifications: [
-      { id: 1, message: "Mike John responded to your email" },
-      { id: 2, message: "You have 5 new tasks" },
-      { id: 3, message: "You're now friend with Andrew" },
-      { id: 4, message: "Another Notification" },
-      { id: 5, message: "Another One" }
-    ]
+    notifications: []
   };
 
   componentDidMount() {
