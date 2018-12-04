@@ -107,7 +107,7 @@ class Sidebar extends React.Component {
 
   closeSession = () => {
     const { history } = this.props;
-    localStorage.removeItem("token");
+    localStorage.clear();
     history.push("/pages/login-page");
   };
 
