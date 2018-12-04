@@ -134,13 +134,13 @@ class Notifications extends Component {
                 <Paper className={classes.dropdown}>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList role="menu">
-                      {this.state.notifications.map((notification, key) => (
+                      {this.state.notifications.map(notification => (
                         <MenuItem
-                          key={key}
+                          key={notification.id}
                           onClick={this.handleClose}
                           className={dropdownItem}
                         >
-                          {notification.message}
+                          {notification.message.title}
                         </MenuItem>
                       ))}
                     </MenuList>
