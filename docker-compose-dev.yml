@@ -17,6 +17,7 @@ services:
       - REACT_APP_COMPANIES_SERVICE_URL=http://localhost
       - REACT_APP_SOCIAL_SERVICE_URL=http://localhost
       - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost
+    restart: always
     depends_on:
       - users-service
 
@@ -27,6 +28,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5001:80
+    restart: always
 
   users-service-swagger:
     container_name: users-service-swagger
@@ -37,5 +39,6 @@ services:
       - 8081:8080
     environment:
       - API_URL=definitions/swagger.yml
+    restart: always
     depends_on:
       - users-service
