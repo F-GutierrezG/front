@@ -18,6 +18,8 @@ import Hidden from "@material-ui/core/Hidden";
 import Collapse from "@material-ui/core/Collapse";
 import Icon from "@material-ui/core/Icon";
 
+import HeaderLinks from "components/Header/HeaderLinks.jsx";
+
 // core components
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
@@ -77,12 +79,14 @@ class Sidebar extends React.Component {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
+        localStorage.setItem("user", JSON.stringify(response.data));
         this.setState({
           user: {
             id: response.data.id,
             firstName: response.data.first_name,
             lastName: response.data.last_name,
-            email: response.data.email
+            email: response.data.email,
+            hash: response.data.hash
           }
         });
       })
@@ -115,8 +119,7 @@ class Sidebar extends React.Component {
       image,
       logoText,
       routes,
-      bgColor,
-      rtlActive
+      bgColor
     } = this.props;
     const itemText =
       classes.itemText +
@@ -367,7 +370,7 @@ class Sidebar extends React.Component {
         <Hidden mdUp implementation="css">
           <Drawer
             variant="temporary"
-            anchor={rtlActive ? "left" : "right"}
+            anchor={"right"}
             open={this.props.open}
             classes={{
               paper: drawerPaper + " " + classes[bgColor + "Background"]
@@ -381,6 +384,7 @@ class Sidebar extends React.Component {
             <SidebarWrapper
               className={sidebarWrapper}
               user={user}
+              headerLinks={<HeaderLinks />}
               links={links}
             />
             {image !== undefined ? (
