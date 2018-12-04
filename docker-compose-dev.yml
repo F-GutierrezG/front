@@ -14,6 +14,7 @@ services:
     environment:
       - NODE_ENV=development
       - REACT_APP_USERS_SERVICE_URL=http://localhost
+      - REACT_APP_COMPANIES_SERVICE_URL=http://localhost
       - REACT_APP_SOCIAL_SERVICE_URL=http://localhost
       - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost
     depends_on:
