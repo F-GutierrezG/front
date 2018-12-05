@@ -75,7 +75,7 @@ class Sidebar extends React.Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     axios
-      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/auth/status`, {
+      .get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/status`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {

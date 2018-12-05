@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
 
   doLogin(email, password) {
     axios
-      .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/auth/login`, {
+      .post(`${process.env.REACT_APP_AUTH_SERVICE_URL}/login`, {
         email,
         password
       })

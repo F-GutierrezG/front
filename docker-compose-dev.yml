@@ -13,10 +13,11 @@ services:
       - 3001:3000
     environment:
       - NODE_ENV=development
-      - REACT_APP_USERS_SERVICE_URL=http://localhost
-      - REACT_APP_COMPANIES_SERVICE_URL=http://localhost
-      - REACT_APP_SOCIAL_SERVICE_URL=http://localhost
-      - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost
+      - REACT_APP_AUTH_SERVICE_URL=http://localhost/auth
+      - REACT_APP_USERS_SERVICE_URL=http://localhost/users
+      - REACT_APP_COMPANIES_SERVICE_URL=http://localhost/companies
+      - REACT_APP_SOCIAL_SERVICE_URL=http://localhost/social
+      - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost/notifications
     restart: always
     depends_on:
       - users-service

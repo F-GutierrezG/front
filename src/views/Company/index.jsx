@@ -93,7 +93,7 @@ class Company extends Component {
   loadUsers = () => {
     const token = localStorage.getItem("token");
     axios
-      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, {
+      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {

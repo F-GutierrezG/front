@@ -84,7 +84,7 @@ class Users extends Component {
   componentDidMount() {
     const token = localStorage.getItem("token");
     axios
-      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, {
+      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -130,7 +130,7 @@ class Users extends Component {
       const token = localStorage.getItem("token");
       axios
         .post(
-          `${process.env.REACT_APP_USERS_SERVICE_URL}/users`,
+          `${process.env.REACT_APP_USERS_SERVICE_URL}`,
           {
             first_name: user.firstName,
             last_name: user.lastName,
@@ -223,7 +223,7 @@ class Users extends Component {
     const token = localStorage.getItem("token");
 
     axios
-      .delete(`${process.env.REACT_APP_USERS_SERVICE_URL}/users/${id}`, {
+      .delete(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(() => {
