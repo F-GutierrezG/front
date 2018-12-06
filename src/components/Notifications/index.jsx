@@ -57,7 +57,7 @@ class Notifications extends Component {
 
       axios
         .get(
-          `${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/notifications/${
+          `${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/${
             user.hash
           }`
         )
