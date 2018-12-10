@@ -42,10 +42,19 @@ class Calendar extends React.Component {
         date: "",
         time: "",
         socialNetworks: [],
-        message: ""
+        message: "",
+        image: []
+      },
+      publicationErrors: {
+        date: false,
+        time: false,
+        socialNetworks: false,
+        message: false,
+        image: false
       },
       socialNetworks: [],
-      events: []
+      events: [],
+      publicationButtonsDisabled: false
     };
   }
   selectedEvent(event) {
@@ -81,23 +90,84 @@ class Calendar extends React.Component {
   };
 
   handleOnCancel = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+      publication: {
+        date: "",
+        time: "",
+        socialNetworks: [],
+        message: "",
+        image: []
+      },
+      publicationErrors: {
+        date: false,
+        time: false,
+        socialNetworks: false,
+        message: false,
+        image: false
+      }
+    });
   };
 
-  handleOnAccept = () => {
-    const [year, month, day] = this.state.publication.date.split("-");
-    const [hour, minute] = this.state.publication.time.split(":");
+  validatePublication = publication => {
+    const errors = { ...this.state.publicationErrors };
+    errors.date = publication.date.trim() === "";
+    errors.time = publication.time.trim() === "";
+    errors.socialNetworks = publication.socialNetworks.length === 0;
+    errors.message = publication.message.trim() === "";
+    errors.image = publication.image.length !== 1;
+
+    this.setState({ publicationErrors: errors });
+
+    return !(
+      errors.date ||
+      errors.time ||
+      errors.socialNetworks ||
+      errors.message ||
+      errors.image
+    );
+  };
+
+  createPublication = publication => {
+    const [year, month, day] = publication.date.split("-");
+    const [hour, minute] = publication.time.split(":");
     const date = new Date(year, month - 1, day, hour, minute);
     const event = {
-      title: this.state.publication.message,
+      title: publication.message,
       start: date,
       end: date,
       color: "azure"
     };
     this.setState({
       events: [...this.state.events, event],
-      open: false
+      open: false,
+      publication: {
+        date: "",
+        time: "",
+        socialNetworks: [],
+        message: "",
+        image: []
+      },
+      publicationButtonsDisabled: false
     });
+  };
+
+  handleOnAccept = () => {
+    const publication = this.state.publication;
+    if (this.validatePublication(publication)) {
+      this.setState({
+        publicationButtonsDisabled: true
+      });
+      this.createPublication(publication);
+    }
+  };
+
+  handleOnDropImage = image => {
+    const publication = { ...this.state.publication };
+    const publicationErrors = { ...this.state.publicationErrors };
+    publication.image = image;
+    publicationErrors.image = false;
+    this.setState({ publication, publicationErrors });
   };
 
   render() {
@@ -106,10 +176,13 @@ class Calendar extends React.Component {
         <AddEventDialog
           open={this.state.open}
           publication={this.state.publication}
+          errors={this.state.publicationErrors}
           socialNetworks={this.state.socialNetworks}
           onChange={this.handleChangeValue}
           onCancel={this.handleOnCancel}
           onAccept={this.handleOnAccept}
+          onDropImage={this.handleOnDropImage}
+          buttonsDisabled={this.state.publicationButtonsDisabled}
         />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={10}>

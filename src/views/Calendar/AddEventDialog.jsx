@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import ImageUploader from "react-images-upload";
+
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import Dialog from "@material-ui/core/Dialog";
@@ -25,17 +27,14 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 const AddEventDialog = props => {
   const { classes } = props;
   return (
-    <Dialog
-      open={props.open}
-      onClose={props.onClose}
-      styles={{ overflow: "visible" }}
-    >
+    <Dialog open={props.open} styles={{ overflow: "visible" }}>
       <DialogTitle>Crear Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
           <GridItem xs={6}>
             <CustomInput
               labelText="Fecha"
+              error={props.errors.date}
               formControlProps={{
                 fullWidth: true,
                 margin: "dense"
@@ -53,6 +52,7 @@ const AddEventDialog = props => {
           <GridItem xs={6}>
             <CustomInput
               labelText="Hora"
+              error={props.errors.time}
               formControlProps={{
                 fullWidth: true,
                 margin: "dense"
@@ -68,7 +68,7 @@ const AddEventDialog = props => {
             />
           </GridItem>
           <GridItem xs={12}>
-            <FormControl fullWidth className={classes.selectFormControl}>
+            <FormControl fullWidth error={props.errors.socialNetworks}>
               <InputLabel
                 htmlFor="multiple-select"
                 className={classes.selectLabel}
@@ -83,7 +83,7 @@ const AddEventDialog = props => {
                 classes={{ select: classes.select }}
                 inputProps={{
                   name: "multipleSelect",
-                  id: "multiple-select"
+                  id: "multiple-select",
                 }}
               >
                 <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
@@ -101,6 +101,7 @@ const AddEventDialog = props => {
           <GridItem xs={12}>
             <CustomInput
               labelText="Mensaje"
+              error={props.errors.message}
               formControlProps={{
                 fullWidth: true,
                 margin: "dense"
@@ -112,11 +113,30 @@ const AddEventDialog = props => {
               }}
             />
           </GridItem>
+          <GridItem xs={12}>
+            <ImageUploader
+              buttonStyles={
+                props.errors.image ? { backgroundColor: "#f44336" } : {}
+              }
+              withIcon={false}
+              singleImage={true}
+              withPreview={true}
+              withLabel={false}
+              buttonText="Elegir Imagen"
+              onChange={props.onDropImage}
+              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+              maxFileSize={5242880}
+            />
+          </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel}>Cancelar</Button>
-        <Button onClick={props.onAccept} color="success">
+        <Button onClick={props.onCancel} disabled={props.buttonsDisabled}>Cancelar</Button>
+        <Button
+          onClick={props.onAccept}
+          disabled={props.buttonsDisabled}
+          color="success"
+        >
           Crear
         </Button>
       </DialogActions>
@@ -127,16 +147,25 @@ const AddEventDialog = props => {
 AddEventDialog.propTypes = {
   classes: PropTypes.object,
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onDropImage: PropTypes.func.isRequired,
   publication: PropTypes.shape({
     date: PropTypes.string,
     time: PropTypes.string,
     socialNetworks: PropTypes.array,
-    message: PropTypes.string
+    message: PropTypes.string,
+    image: PropTypes.array
+  }).isRequired,
+  errors: PropTypes.shape({
+    date: PropTypes.bool.isRequired,
+    time: PropTypes.bool.isRequired,
+    socialNetworks: PropTypes.bool.isRequired,
+    message: PropTypes.bool.isRequired,
+    image: PropTypes.bool.isRequired
   }).isRequired,
   onChange: PropTypes.func,
   onCancel: PropTypes.func,
-  onAccept: PropTypes.func
+  onAccept: PropTypes.func,
+  buttonsDisabled: PropTypes.bool.isRequired
 };
 
 export default withStyles(extendedFormsStyle)(AddEventDialog);
