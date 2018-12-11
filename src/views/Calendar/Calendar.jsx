@@ -2,6 +2,7 @@ import React from "react";
 // react component used to create a calendar with events on it
 import BigCalendar from "react-big-calendar";
 // dependency plugin for react-big-calendar
+import axios from "axios";
 import moment from "moment";
 import "moment/locale/es";
 
@@ -52,7 +53,16 @@ class Calendar extends React.Component {
         message: false,
         image: false
       },
-      socialNetworks: [],
+      socialNetworks: [
+        {
+          id: "FACEBOOK",
+          name: "Facebook"
+        },
+        {
+          id: "INSTAGRAM",
+          name: "Instagram"
+        }
+      ],
       events: [],
       publicationButtonsDisabled: false
     };
@@ -132,24 +142,51 @@ class Calendar extends React.Component {
     const [year, month, day] = publication.date.split("-");
     const [hour, minute] = publication.time.split(":");
     const date = new Date(year, month - 1, day, hour, minute);
-    const event = {
-      title: publication.message,
-      start: date,
-      end: date,
-      color: "azure"
-    };
-    this.setState({
-      events: [...this.state.events, event],
-      open: false,
-      publication: {
-        date: "",
-        time: "",
-        socialNetworks: [],
-        message: "",
-        image: []
-      },
-      publicationButtonsDisabled: false
-    });
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("date", publication.date);
+    formData.append("time", publication.time);
+    formData.append("social_networks", publication.socialNetworks);
+    formData.append("message", publication.message);
+    formData.append("image", publication.image[0]);
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications`,
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      )
+      .then(() => {
+        const event = {
+          title: publication.message,
+          start: date,
+          end: date,
+          color: "azure"
+        };
+        this.setState({
+          events: [...this.state.events, event],
+          open: false,
+          publication: {
+            date: "",
+            time: "",
+            socialNetworks: [],
+            message: "",
+            image: []
+          },
+          publicationButtonsDisabled: false
+        });
+      })
+      .catch(() => {
+        this.setState({
+          publicationButtonsDisabled: false
+        });
+      });
   };
 
   handleOnAccept = () => {

@@ -83,18 +83,23 @@ const AddEventDialog = props => {
                 classes={{ select: classes.select }}
                 inputProps={{
                   name: "multipleSelect",
-                  id: "multiple-select",
+                  id: "multiple-select"
                 }}
               >
                 <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
                   Redes Sociales
                 </MenuItem>
-                <MenuItem classes={{ root: classes.selectMenuItem }} value="2">
-                  Facebook
-                </MenuItem>
-                <MenuItem classes={{ root: classes.selectMenuItem }} value="3">
-                  Instagram
-                </MenuItem>
+                {props.socialNetworks.map(socialNetwork => {
+                  return (
+                    <MenuItem
+                      key={socialNetwork.id}
+                      classes={{ root: classes.selectMenuItem }}
+                      value={socialNetwork.id}
+                    >
+                      {socialNetwork.name}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </GridItem>
@@ -165,7 +170,8 @@ AddEventDialog.propTypes = {
   onChange: PropTypes.func,
   onCancel: PropTypes.func,
   onAccept: PropTypes.func,
-  buttonsDisabled: PropTypes.bool.isRequired
+  buttonsDisabled: PropTypes.bool.isRequired,
+  socialNetworks: PropTypes.array.isRequired
 };
 
 export default withStyles(extendedFormsStyle)(AddEventDialog);
