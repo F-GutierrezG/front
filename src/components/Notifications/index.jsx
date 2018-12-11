@@ -39,28 +39,20 @@ class Notifications extends Component {
 
       clearInterval(timer);
 
-      const socket = io(`${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}`, {
+      const socket = io(`${process.env.REACT_APP_SOCKETS_SERVICE_URL}`, {
         query: {
           hash: user.hash
         }
       });
 
-      function subscribeToTimer(cb) {
-        socket.on("notification", notification => cb(null, notification));
-      }
-
-      subscribeToTimer((err, notification) => {
+      socket.on("notification", notification => {
         this.setState({
           notifications: [...this.state.notifications, notification]
         });
       });
 
       axios
-        .get(
-          `${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/${
-            user.hash
-          }`
-        )
+        .get(`${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/${user.hash}`)
         .then(response => {
           this.setState({ notifications: response.data });
         });
@@ -102,11 +94,13 @@ class Notifications extends Component {
             <NotificationsIcon
               className={classes.headerLinksSvg + " " + classes.links}
             />
-            <span className={classes.notifications}>
-              {this.state.notifications.length > 9
-                ? "9+"
-                : this.state.notifications.length}
-            </span>
+          {this.state.notifications.length > 0 && (
+              <span className={classes.notifications}>
+                {this.state.notifications.length > 9
+                  ? "9+"
+                  : this.state.notifications.length}
+              </span>
+            )}
             <Hidden mdUp implementation="css">
               <span onClick={this.handleClick} className={classes.linkText}>
                 {"Notification"}
