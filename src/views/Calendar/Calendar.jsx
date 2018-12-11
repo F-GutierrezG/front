@@ -67,7 +67,24 @@ class Calendar extends React.Component {
       publicationButtonsDisabled: false
     };
   }
+
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(publications => {
+        this.setState({
+          events: publications.data.map(publication =>
+            this.mapToEvent(publication)
+          )
+        });
+      });
+  }
+
   selectedEvent(event) {
+    console.log(event);
     alert(event.title);
   }
   addNewPublication = event => {
@@ -138,10 +155,26 @@ class Calendar extends React.Component {
     );
   };
 
-  createPublication = publication => {
+  mapToEvent = publication => {
     const [year, month, day] = publication.date.split("-");
     const [hour, minute] = publication.time.split(":");
     const date = new Date(year, month - 1, day, hour, minute);
+
+    return {
+      id: publication.id,
+      title: publication.message,
+      date: publication.date,
+      time: publication.time,
+      message: publication.message,
+      image: publication.image_url,
+      social_networks: publication.social_networks,
+      start: date,
+      end: date,
+      color: "azure"
+    };
+  };
+
+  createPublication = publication => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
@@ -162,13 +195,8 @@ class Calendar extends React.Component {
           }
         }
       )
-      .then(() => {
-        const event = {
-          title: publication.message,
-          start: date,
-          end: date,
-          color: "azure"
-        };
+      .then(response => {
+        const event = this.mapToEvent(response.data);
         this.setState({
           events: [...this.state.events, event],
           open: false,
