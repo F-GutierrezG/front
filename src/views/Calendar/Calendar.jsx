@@ -17,7 +17,8 @@ import CardBody from "components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
-import AddEventDialog from "./AddEventDialog";
+import CreatePublicationDialog from "./CreatePublicationDialog";
+import ViewPublicationDialog from "./ViewPublicationDialog";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -38,13 +39,22 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      openCreatePublication: false,
+      openViewPublication: false,
       publication: {
         date: "",
         time: "",
         socialNetworks: [],
         message: "",
         image: []
+      },
+      selectedPublication: {
+        id: 0,
+        date: "",
+        time: "",
+        socialNetworks: [],
+        message: "",
+        image: ""
       },
       publicationErrors: {
         date: false,
@@ -83,10 +93,19 @@ class Calendar extends React.Component {
       });
   }
 
-  selectedEvent(event) {
-    console.log(event);
-    alert(event.title);
-  }
+  mapToPublication = event => {
+    const publication = { ...event };
+    publication.socialNetworks = event.social_networks;
+    return publication;
+  };
+
+  selectedEvent = event => {
+    this.setState({
+      openViewPublication: true,
+      selectedPublication: this.mapToPublication(event)
+    });
+  };
+
   addNewPublication = event => {
     const publication = { ...this.state.publication };
     const date = event.slots[0];
@@ -95,7 +114,7 @@ class Calendar extends React.Component {
     const day = ("0" + date.getDate()).slice(-2);
     publication.date = `${year}-${month}-${day}`;
     this.setState({
-      open: true,
+      openCreatePublication: true,
       publication
     });
   };
@@ -118,7 +137,7 @@ class Calendar extends React.Component {
 
   handleOnCancel = () => {
     this.setState({
-      open: false,
+      openCreatePublication: false,
       publication: {
         date: "",
         time: "",
@@ -199,7 +218,7 @@ class Calendar extends React.Component {
         const event = this.mapToEvent(response.data);
         this.setState({
           events: [...this.state.events, event],
-          open: false,
+          openCreatePublication: false,
           publication: {
             date: "",
             time: "",
@@ -235,11 +254,17 @@ class Calendar extends React.Component {
     this.setState({ publication, publicationErrors });
   };
 
+  handleOnClose = () => {
+    this.setState({
+      openViewPublication: false
+    });
+  };
+
   render() {
     return (
       <div>
-        <AddEventDialog
-          open={this.state.open}
+        <CreatePublicationDialog
+          open={this.state.openCreatePublication}
           publication={this.state.publication}
           errors={this.state.publicationErrors}
           socialNetworks={this.state.socialNetworks}
@@ -248,6 +273,12 @@ class Calendar extends React.Component {
           onAccept={this.handleOnAccept}
           onDropImage={this.handleOnDropImage}
           buttonsDisabled={this.state.publicationButtonsDisabled}
+        />
+        <ViewPublicationDialog
+          open={this.state.openViewPublication}
+          publication={this.state.selectedPublication}
+          socialNetworks={this.state.socialNetworks}
+          onClose={this.handleOnClose}
         />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={10}>
