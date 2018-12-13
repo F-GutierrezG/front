@@ -15,9 +15,10 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 
 import Button from "components/CustomButtons/Button.jsx";
 
-import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
+import viewPublicationDialogStyle from "./jss/viewPublicationDialogStyle.jsx";
 
 const ViewPublicationDialog = props => {
+  const { classes } = props;
   return (
     <Dialog open={props.open} styles={{ overflow: "visible" }}>
       <DialogTitle>Publicación</DialogTitle>
@@ -94,8 +95,11 @@ const ViewPublicationDialog = props => {
               }}
             />
           </GridItem>
-          <GridItem xs={12}>
-            <img src="{props.publication.image}" />
+          <GridItem xs={12} className={classes.publicationImageContainer}>
+            <img
+              src={props.publication.image}
+              className={classes.publicationImage}
+            />
           </GridItem>
         </GridContainer>
       </DialogContent>
@@ -107,6 +111,7 @@ const ViewPublicationDialog = props => {
 };
 
 ViewPublicationDialog.propTypes = {
+  classes: PropTypes.object,
   open: PropTypes.bool.isRequired,
   publication: PropTypes.shape({
     date: PropTypes.string,
@@ -119,4 +124,4 @@ ViewPublicationDialog.propTypes = {
   socialNetworks: PropTypes.array.isRequired
 };
 
-export default withStyles(extendedFormsStyle)(ViewPublicationDialog);
+export default withStyles(viewPublicationDialogStyle)(ViewPublicationDialog);
