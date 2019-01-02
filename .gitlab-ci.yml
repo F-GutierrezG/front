@@ -95,3 +95,21 @@ Front Production:
     - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL} -f Dockerfile
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
+
+Deploy Production:
+  stage: deploy
+  environment:
+    name: production
+    url: http://onelike.gusisoft.cl
+  only:
+    - master
+  before_script:
+    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
+    - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
+    - rm -rf ~/.ssh
+    - mkdir -p ~/.ssh
+    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - bash ./production-deploy.sh
