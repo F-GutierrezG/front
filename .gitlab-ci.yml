@@ -27,8 +27,8 @@ Build Stage:
   only:
     - stage
   script:
-    - docker-compose -f docker-compose-prod.yml build --no-cache
-    - docker-compose -f docker-compose-prod.yml down
+    - docker-compose -f docker-compose-stage.yml build --no-cache
+    - docker-compose -f docker-compose-stage.yml down
 
 Front Stage:
   stage: registry
