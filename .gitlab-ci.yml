@@ -78,8 +78,8 @@ Build Production:
   only:
     - master
   script:
-    - docker-compose -f docker-compose-prod.yml build --no-cache
-    - docker-compose -f docker-compose-prod.yml down
+    - docker-compose -f docker-compose.yml build --no-cache
+    - docker-compose -f docker-compose.yml down
 
 Front Production:
   stage: registry
