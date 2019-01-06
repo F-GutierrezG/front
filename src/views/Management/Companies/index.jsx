@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import Add from "@material-ui/icons/Add";
+import Create from "@material-ui/icons/Create";
 import Business from "@material-ui/icons/Business";
 import People from "@material-ui/icons/People";
 import Block from "@material-ui/icons/Block";
@@ -12,37 +13,24 @@ import DoneAll from "@material-ui/icons/DoneAll";
 
 import Management, { ActionButton } from "views/Components/Management";
 
+import CreateCompanyDialog from "./CreateCompanyDialog";
+
 class Companies extends Component {
   constructor(props) {
     super(props);
     this.state = {
       companies: [],
-      createUserDialogOpen: false,
-      deleteUserDialogOpen: false,
-      editUserDialogOpen: false,
-      createUserErrors: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        password: null
+      classifications: [],
+      createCompanyDialogOpen: false,
+      createCompanyErrors: {
+        identifier: null,
+        name: null,
+        classification: null
       },
-      editUserErrors: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        password: null
-      },
-      newUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
+      newCompany: {
+        identifier: '',
+        name: '',
+        classification: '',
       }
     };
   }
@@ -53,6 +41,7 @@ class Companies extends Component {
       identifier: company.identifier,
       name: company.name,
       active: company.active,
+      status: company.active ? "Activo": "Desactivo",
       actions: (
         <div className="actions-right">
           <Link
@@ -63,6 +52,11 @@ class Companies extends Component {
           >
             <ActionButton color="info" name="view" icon={<People />} />
           </Link>
+          <ActionButton
+            color="primary"
+            name="edit"
+            icon={<Create />}
+          />
           {
             company.active
             ? <ActionButton color="danger" icon={<Block />} onClick={ event => this.deactivate(company.id) } />
@@ -128,93 +122,106 @@ class Companies extends Component {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
-        console.log(response.data);
         this.setState({
           companies: response.data.map(company => this.mapCompany(company))
         })
       });
+
+    axios
+      .get(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}/classifications`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({
+          classifications: response.data.map(classification => (
+            {
+              id: classification.id,
+              name: classification.name
+            }
+          ))
+        })
+      });
   }
 
-  handleCreateUserButton = () => {
+  handleCreateCompanyButton = () => {
     this.setState({
-      createUserDialogOpen: true
+      createCompanyDialogOpen: true
     });
   };
 
-  handleOnCancelCreateUserDialog = () => {
+  handleOnChangeCreateCompanyDialog = (field, evt) => {
+    const newCompany = {...this.state.newCompany}
+    newCompany[field] = evt.target.value;
+    this.setState({ newCompany });
+  };
+  handleOnCancelCreateCompanyDialog = () => {
     this.setState({
-      createUserDialogOpen: false
-    });
-  };
-
-  handleOnAcceptCreateUserDialog = () => {
-    this.setState({
-      createUserDialogOpen: false
-    });
-  };
-
-  handleOnChangeCreateUserDialog = (field, evt) => {
-    const newUser = {};
-    newUser[field] = evt.target.value;
-    this.setState({ newUser });
-  };
-
-  handleOnChangeEditUserDialog = (field, evt) => {
-    const newUser = {};
-    newUser[field] = evt.target.value;
-    this.setState({ newUser });
-  };
-
-  handleOnDeleteUserClick = id => {
-    const user = this.state.users.find(user => user.id === id);
-    this.setState({
-      selectedUser: user,
-      deleteUserDialogOpen: true
-    });
-  };
-
-  handleOnCancelDeleteUserDialog = () => {
-    this.setState({
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
+      createCompanyDialogOpen: false,
+      createCompanyErrors: {
+        identifier: null,
+        name: null,
+        classification: null
       },
-      deleteUserDialogOpen: false
+      newCompany: {
+        identifier: '',
+        name: '',
+        classification: '',
+      }
     });
   };
 
-  handleOnAcceptDeleteUserDialog = () => {
-    this.setState({
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      deleteUserDialogOpen: false
-    });
+  handleOnAcceptCreateCompanyDialog = () => {
+    const company = this.state.newCompany;
+
+    if (this.validateCreateCompany(company)) {
+      const token = localStorage.getItem("token");
+      axios
+        .post(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}`, {
+          identifier: company.identifier,
+          name: company.name,
+          classification_id: company.classification
+        }, {
+          headers: { Authorization: "Bearer " + token }
+        })
+        .then(response => {
+          const companies = [...this.state.companies];
+          companies.push(this.mapCompany(response.data));
+          this.setState({
+            companies,
+            createCompanyErrors: {
+              identifier: null,
+              name: null,
+              classification: null
+            },
+            newCompany: {
+              identifier: '',
+              name: '',
+              classification: '',
+            },
+            createCompanyDialogOpen: false,
+          })
+        });
+    }
   };
 
-  handleOnEditUserClick = id => {
-    const user = this.state.users.find(user => user.id === id);
-    this.setState({
-      selectedUser: user,
-      editUserDialogOpen: true
-    });
-  };
+  validateCreateCompany = company => {
+    let identifierError = false;
+    let nameError = false;
+    let classificationError = false;
 
-  handleOnCancelEditUserDialog = () => {
-    this.setState({
-      editUserDialogOpen: false
-    });
-  };
+    if (company.identifier.trim() === "") identifierError = true;
+    if (company.name.trim() === "") nameError = true;
+    if (!company.classification) classificationError = true;
 
-  handleOnAcceptEditUserDialog = () => {
     this.setState({
-      editUserDialogOpen: false
+      createCompanyErrors: {
+        identifier: identifierError,
+        name: nameError,
+        classification: classificationError,
+      }
     });
+
+    return !(identifierError || nameError || classificationError);
   };
 
   render() {
@@ -228,6 +235,10 @@ class Companies extends Component {
         accessor: "name"
       },
       {
+        Header: "Estado",
+        accessor: "status"
+      },
+      {
         Header: "Acciones",
         accessor: "actions",
         sortable: false,
@@ -237,6 +248,15 @@ class Companies extends Component {
 
     return (
       <div>
+        <CreateCompanyDialog
+          open={this.state.createCompanyDialogOpen}
+          classifications={this.state.classifications}
+          onCancel={this.handleOnCancelCreateCompanyDialog}
+          onAccept={this.handleOnAcceptCreateCompanyDialog}
+          handleOnChange={this.handleOnChangeCreateCompanyDialog}
+          company={this.state.newCompany}
+          errors={this.state.createCompanyErrors}
+        />
         <Management
           icon={<Business />}
           color="success"
@@ -246,7 +266,7 @@ class Companies extends Component {
           addButtonText="Crear Compañía"
           addButtonIcon={<Add />}
           addButtonColor="success"
-          addButtonOnClick={this.handleCreateUserButton}
+          addButtonOnClick={this.handleCreateCompanyButton}
         />
       </div>
     );

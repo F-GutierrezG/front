@@ -302,11 +302,6 @@ class Users extends Component {
           onCancel={this.handleOnCancelEditUserDialog}
           onAccept={this.handleOnAcceptEditUserDialog}
         />
-        <DeleteUserDialog
-          open={this.state.deleteUserDialogOpen}
-          onCancel={this.handleOnCancelDeleteUserDialog}
-          onAccept={this.handleOnAcceptDeleteUserDialog}
-        />
         <Management
           icon={<Person />}
           color="info"
