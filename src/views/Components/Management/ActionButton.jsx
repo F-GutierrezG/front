@@ -19,8 +19,8 @@ const ActionButton = ({ onClick, color, name, icon }) => (
 ActionButton.propTypes = {
   color: PropTypes.string.isRequired,
   icon: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  name: PropTypes.string,
+  onClick: PropTypes.func
 };
 
 export default ActionButton;
