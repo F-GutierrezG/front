@@ -40,6 +40,7 @@ Build:
   after_script:
     - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml down
     - docker image rm -f front_front
+    - docker image rm -f $(docker images front -q)
     - sudo git clean -ffdx
 
 Front:
