@@ -59,12 +59,6 @@ class Users extends Component {
       actions: (
         <div className="actions-right">
           <ActionButton
-            onClick={() => alert("VER")}
-            color="info"
-            name="view"
-            icon={<Visibility />}
-          />
-          <ActionButton
             onClick={() => this.handleOnEditUserClick(user.id)}
             color="primary"
             name="edit"
