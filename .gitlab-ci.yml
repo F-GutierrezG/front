@@ -10,34 +10,42 @@ stages:
   - test
   - build
   - registry
-  - cleanup
   - deploy
 
 Tests:
   stage: test
   only:
     - devel
+  before_script:
+    - sudo git clean -ffdx
   script:
     - docker-compose -f docker-compose-dev.yml build --no-cache
     - docker-compose -f docker-compose-dev.yml up -d
-    - docker-compose -f docker-compose-dev.yml down
   after_script:
-    - docker image rm -f $(docker image ls -q)
-    - docker volume rm -f $(docker volume ls -q)
+    - docker-compose -f docker-compose-dev.yml down
+    - docker image rm -f front_front
+    - sudo git clean -ffdx
 
-Build Stage:
+Build:
   stage: build
   only:
     - stage
+    - master
+  before_script:
+    - sudo git clean -ffdx
   script:
-    - docker-compose -f docker-compose-stage.yml build --no-cache
-    - docker-compose -f docker-compose-stage.yml down
+    - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml build --no-cache
+  after_script:
+    - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml down
+    - sudo git clean -ffdx
 
 Front Stage:
   stage: registry
   only:
     - stage
+    - master
   before_script:
+    - sudo git clean -ffdx
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
     - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
@@ -47,14 +55,9 @@ Front Stage:
     - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} -f Dockerfile-stage
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
-
-Cleaning:
-  stage: cleanup
-  only:
-    - stage
-    - master
-  script:
-    - docker image rm -f $(docker image ls -q)
+  after_script:
+    - docker image rm -f $(docker images registry.gitlab.com/gusisoft/onelike/front -q)
+    - sudo git clean -ffdx
 
 Deploy Stage:
   stage: deploy
@@ -72,31 +75,7 @@ Deploy Stage:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - bash ./stage-deploy.sh
-
-
-Build Production:
-  stage: build
-  only:
-    - master
-  script:
-    - docker-compose -f docker-compose.yml build --no-cache
-    - docker-compose -f docker-compose.yml down
-
-Front Production:
-  stage: registry
-  only:
-    - master
-  before_script:
-    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
-    - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
-    - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
-    - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
-    - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
-  script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL} -f Dockerfile
-    - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
-    - docker push $REGISTRY_REPO/$FRONT:$TAG
+    - bash ./${CI_COMMIT_REF_NAME}-deploy.sh
 
 Deploy Production:
   stage: deploy
@@ -114,4 +93,4 @@ Deploy Production:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - bash ./production-deploy.sh
+    - bash ./${CI_COMMIT_REF_NAME}-deploy.sh
