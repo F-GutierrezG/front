@@ -17,6 +17,8 @@ import CardBody from "components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
+import RequireAuth from "components/RequireAuth";
+
 import CreatePublicationDialog from "./CreatePublicationDialog";
 import ViewPublicationDialog from "./ViewPublicationDialog";
 
@@ -305,4 +307,4 @@ class Calendar extends React.Component {
   }
 }
 
-export default withStyles(buttonStyle)(Calendar);
+export default RequireAuth(withStyles(buttonStyle)(Calendar));

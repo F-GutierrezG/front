@@ -1,4 +1,7 @@
 import React from "react";
+
+import axios from "axios";
+
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -44,7 +47,8 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       mobileOpen: false,
-      miniActive: false
+      miniActive: false,
+      loginValid: true
     };
     this.resizeFunction = this.resizeFunction.bind(this);
   }
@@ -87,11 +91,6 @@ class Dashboard extends React.Component {
     }
   }
   render() {
-    if (!localStorage.getItem("token")) {
-      // TODO: Validar la autenticidad del token contra el server
-      return <Redirect to="/pages/login-page" />
-    }
-
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +

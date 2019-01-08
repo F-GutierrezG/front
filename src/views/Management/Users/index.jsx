@@ -8,11 +8,12 @@ import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
 import Visibility from "@material-ui/icons/Visibility";
 
+import RequireAuth from "components/RequireAuth";
+
 import Management, { ActionButton } from "views/Components/Management";
 
 import CreateUserDialog from "./CreateUserDialog";
 import EditUserDialog from "./EditUserDialog";
-import DeleteUserDialog from "./DeleteUserDialog";
 
 class Users extends Component {
   constructor(props) {
@@ -318,4 +319,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default RequireAuth(Users);

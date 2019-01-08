@@ -11,6 +11,8 @@ import People from "@material-ui/icons/People";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
 
+import RequireAuth from "components/RequireAuth";
+
 import Management, { ActionButton } from "views/Components/Management";
 
 import CreateCompanyDialog from "./CreateCompanyDialog";
@@ -28,9 +30,9 @@ class Companies extends Component {
         classification: null
       },
       newCompany: {
-        identifier: '',
-        name: '',
-        classification: '',
+        identifier: "",
+        name: "",
+        classification: ""
       }
     };
   }
@@ -52,13 +54,8 @@ class Companies extends Component {
           >
             <ActionButton color="info" name="view" icon={<People />} />
           </Link>
-          <ActionButton
-            color="primary"
-            name="edit"
-            icon={<Create />}
-          />
-          {
-            company.active
+          <ActionButton color="primary" name="edit" icon={<Create />} />
+          {company.active
             ? <ActionButton color="danger" icon={<Block />} onClick={ event => this.deactivate(company.id) } />
             : <ActionButton color="success" icon={<DoneAll />} onClick={ event => this.activate(company.id) } />
           }
@@ -273,4 +270,4 @@ class Companies extends Component {
   }
 }
 
-export default Companies;
+export default RequireAuth(Companies);
