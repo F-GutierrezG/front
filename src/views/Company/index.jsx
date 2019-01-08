@@ -3,13 +3,10 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 
-import GridContainer from "components/Grid/GridContainer.jsx";
-
 import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
-import Visibility from "@material-ui/icons/Visibility";
 
 import Management, { ActionButton } from "views/Components/Management";
 
@@ -20,8 +17,6 @@ import DeleteUserDialog from "views/Management/Users/DeleteUserDialog";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import companyStyle from "./jss/companyStyle";
-
-import SocialNetwork from "./SocialNetwork";
 
 class Company extends Component {
   constructor(props) {
@@ -66,12 +61,6 @@ class Company extends Component {
       email: user.email,
       actions: (
         <div className="actions-right">
-          <ActionButton
-            onClick={() => alert("VER")}
-            color="info"
-            name="view"
-            icon={<Visibility />}
-          />
           <ActionButton
             onClick={() => this.handleOnEditUserClick(user.id)}
             color="primary"
@@ -168,39 +157,6 @@ class Company extends Component {
     });
   };
 
-  setupFacebook = () => {
-    const { company_id } = this.props.match.params;
-    const token = localStorage.getItem("token");
-    axios
-      .get(
-        `${
-          process.env.REACT_APP_SOCIAL_SERVICE_URL
-        }/social/facebook/oauth/${company_id}`,
-        {
-          headers: { Authorization: "Bearer " + token }
-        }
-      )
-      .then(response => {
-        const url = response.data.data;
-        window.location = url;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  deleteFacebook = () => {
-    alert("DELETE FACEBOOK");
-  };
-
-  setupInstagram = () => {
-    alert("SETUP INSTAGRAM");
-  };
-
-  deleteInstagram = () => {
-    alert("DELETE INSTAGRAM");
-  };
-
   render() {
     const columns = [
       {
@@ -225,23 +181,6 @@ class Company extends Component {
 
     return (
       <div>
-        <GridContainer>
-          <SocialNetwork
-            classes={this.props.classes}
-            color="primary"
-            icon="fa-facebook"
-            onSetup={this.setupFacebook}
-            onDelete={this.deleteFacebook}
-          />
-          <SocialNetwork
-            classes={this.props.classes}
-            color="warning"
-            icon="fa-instagram"
-            onSetup={this.setupInstagram}
-            onDelete={this.deleteInstagram}
-          />
-        </GridContainer>
-
         <CreateUserDialog
           open={this.state.createUserDialogOpen}
           errors={this.state.createUserErrors}

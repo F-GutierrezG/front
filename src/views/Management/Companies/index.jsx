@@ -48,7 +48,7 @@ class Companies extends Component {
         <div className="actions-right">
           <Link
             to={{
-              pathname: `/companies/${company.id}`,
+              pathname: `/company/${company.id}`,
               state: { title: company.name }
             }}
           >
