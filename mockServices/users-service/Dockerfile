@@ -1,4 +1,4 @@
-FROM node:11.1.0
+FROM node:11.3.0
 
 RUN mkdir -p /app/db
 RUN mkdir -p /app/routes
