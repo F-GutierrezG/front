@@ -194,9 +194,9 @@ class Users extends Component {
   };
 
   handleOnChangeEditUserDialog = (field, evt) => {
-    const newUser = {};
-    newUser[field] = evt.target.value;
-    this.setState({ newUser });
+    const selectedUser = { ...this.state.selectedUser };
+    selectedUser[field] = evt.target.value;
+    this.setState({ selectedUser });
   };
 
   handleOnDeleteUserClick = id => {
