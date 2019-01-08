@@ -41,7 +41,7 @@ Build:
     - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml down
     - sudo git clean -ffdx
 
-Front Stage:
+Front:
   stage: registry
   only:
     - stage
@@ -54,7 +54,7 @@ Front Stage:
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
     - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} -f Dockerfile-stage
+    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} -f Dockerfile-${CI_COMMIT_REF_NAME}
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
   after_script:
