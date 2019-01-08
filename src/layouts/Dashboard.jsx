@@ -1,7 +1,5 @@
 import React from "react";
 
-import axios from "axios";
-
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import axios from "axios";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
@@ -73,26 +72,18 @@ class Sidebar extends React.Component {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem("token");
-    axios
-      .get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/status`, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        this.setState({
-          user: {
-            id: response.data.id,
-            firstName: response.data.first_name,
-            lastName: response.data.last_name,
-            email: response.data.email,
-            hash: response.data.hash
-          }
-        });
-      })
-      .catch(error => {
-        console.log("ERROR", error);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      this.setState({
+        user: {
+          id: userData.id,
+          firstName: userData.first_name,
+          lastName: userData.last_name,
+          email: userData.email,
+          hash: userData.hash
+        }
       });
+    }
   }
 
   // verifies if routeName is the one active (in browser input)
@@ -112,6 +103,7 @@ class Sidebar extends React.Component {
   };
 
   render() {
+    const userData = JSON.parse(localStorage.getItem("user"));
     const {
       classes,
       color,
@@ -200,6 +192,8 @@ class Sidebar extends React.Component {
     var links = (
       <List className={classes.list}>
         {routes.map((prop, key) => {
+          if (!userData || (prop.onlyUser && userData.admin)) return null;
+          if (prop.onlyAdmin && !userData.admin) return null;
           if (prop.invisible) return null;
           if (prop.redirect) {
             return null;

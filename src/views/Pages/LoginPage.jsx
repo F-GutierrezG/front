@@ -74,8 +74,14 @@ class LoginPage extends React.Component {
         password
       })
       .then(response => {
-        const { history } = this.props;
         localStorage.setItem("token", response.data);
+        return axios.get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/status`, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+        });
+      })
+      .then(response => {
+        const { history } = this.props;
+        localStorage.setItem("user", JSON.stringify(response.data));
         history.push("/dashboard");
       })
       .catch(() => {
