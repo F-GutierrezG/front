@@ -24,6 +24,8 @@ Tests:
   after_script:
     - docker-compose -f docker-compose-dev.yml down
     - docker image rm -f front_front
+    - docker image rm -f front_users-service
+    - docker image rm -f front_users-service-swagger
     - sudo git clean -ffdx
 
 Build:
