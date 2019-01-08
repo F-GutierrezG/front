@@ -15,6 +15,12 @@ var dashRoutes = [
     component: Calendar
   },
   {
+    path: "/companies/:company_id",
+    name: "Companía",
+    invisible: true,
+    component: Company
+  },
+  {
     path: "/management/users",
     name: "Usuarios",
     icon: "people",
