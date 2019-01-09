@@ -46,8 +46,10 @@ class Calendar extends React.Component {
       publication: {
         date: "",
         time: "",
+        title: "",
         socialNetworks: [],
         message: "",
+        additional: "",
         image: "",
         file: ""
       },
@@ -55,15 +57,19 @@ class Calendar extends React.Component {
         id: 0,
         date: "",
         time: "",
+        title: "",
         socialNetworks: [],
         message: "",
+        additional: "",
         image: ""
       },
       publicationErrors: {
         date: false,
         time: false,
+        title: false,
         socialNetworks: false,
         message: false,
+        additional: false,
         image: false
       },
       socialNetworks: [
@@ -168,15 +174,19 @@ class Calendar extends React.Component {
       publication: {
         date: "",
         time: "",
+        title: "",
         socialNetworks: [],
         message: "",
+        additional: "",
         image: []
       },
       publicationErrors: {
         date: false,
         time: false,
+        title: false,
         socialNetworks: false,
         message: false,
+        additional: false,
         image: false
       }
     });
@@ -186,6 +196,7 @@ class Calendar extends React.Component {
     const errors = { ...this.state.publicationErrors };
     errors.date = publication.date.trim() === "";
     errors.time = publication.time.trim() === "";
+    errors.title = publication.title.trim() === "";
     errors.socialNetworks = publication.socialNetworks.length === 0;
     errors.message = publication.message.trim() === "";
     errors.image = publication.image === "";
@@ -195,10 +206,22 @@ class Calendar extends React.Component {
     return !(
       errors.date ||
       errors.time ||
+      errors.title ||
       errors.socialNetworks ||
       errors.message ||
       errors.image
     );
+  };
+
+  getEventColor = status => {
+    switch (status) {
+      case "REJECTED":
+        return "red";
+      case "ACCEPTED":
+        return "green";
+      default:
+        return "azure";
+    }
   };
 
   mapToEvent = publication => {
@@ -206,9 +229,11 @@ class Calendar extends React.Component {
     const [hour, minute] = publication.time.split(":");
     const date = new Date(year, month - 1, day, hour, minute);
 
+    const color = this.getEventColor(publication.status);
+
     return {
       id: publication.id,
-      title: publication.message,
+      title: publication.title,
       date: publication.date,
       time: publication.time,
       message: publication.message,
@@ -216,7 +241,7 @@ class Calendar extends React.Component {
       social_networks: publication.social_networks,
       start: date,
       end: date,
-      color: "azure"
+      color: color
     };
   };
 
@@ -226,8 +251,10 @@ class Calendar extends React.Component {
     const formData = new FormData();
     formData.append("date", publication.date);
     formData.append("time", publication.time);
+    formData.append("title", publication.title);
     formData.append("social_networks", publication.socialNetworks);
     formData.append("message", publication.message);
+    formData.append("additional", publication.additional);
     formData.append("image", publication.file);
 
     axios
@@ -249,8 +276,10 @@ class Calendar extends React.Component {
           publication: {
             date: "",
             time: "",
+            title: "",
             socialNetworks: [],
             message: "",
+            additional: "",
             image: []
           },
           publicationButtonsDisabled: false
@@ -287,6 +316,98 @@ class Calendar extends React.Component {
     });
   };
 
+  updateEvents = status => {
+    const updatedEvent = {
+      ...this.state.events.find(event => {
+        return event.id === this.state.selectedPublication.id;
+      })
+    };
+
+    updatedEvent.color = this.getEventColor(status);
+
+    return this.state.events.map(event => {
+      if (event.id === this.state.selectedPublication.id) {
+        return updatedEvent;
+      } else {
+        return event;
+      }
+    });
+  };
+
+  handleOnReject = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .put(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }/reject`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      )
+      .then(() => {
+        this.setState({
+          events: this.updateEvents("REJECTED"),
+          openViewPublication: false,
+          selectedPublication: {
+            id: 0,
+            date: "",
+            time: "",
+            title: "",
+            socialNetworks: [],
+            message: "",
+            additional: "",
+            image: ""
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handleOnAccept = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .put(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }/accept`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      )
+      .then(() => {
+        this.setState({
+          events: this.updateEvents("ACCEPTED"),
+          openViewPublication: false,
+          selectedPublication: {
+            id: 0,
+            date: "",
+            time: "",
+            title: "",
+            socialNetworks: [],
+            message: "",
+            additional: "",
+            image: ""
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     return (
       <div>
@@ -305,6 +426,8 @@ class Calendar extends React.Component {
           publication={this.state.selectedPublication}
           socialNetworks={this.state.socialNetworks}
           onClose={this.handleOnClose}
+          onReject={this.handleOnReject}
+          onAccept={this.handleOnAccept}
         />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={10}>

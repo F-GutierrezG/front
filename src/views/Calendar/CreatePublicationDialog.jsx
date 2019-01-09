@@ -66,6 +66,21 @@ const AddEventDialog = props => {
             />
           </GridItem>
           <GridItem xs={12}>
+            <CustomInput
+              labelText="Título"
+              error={props.errors.title}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                type: "title",
+                value: props.publication.title,
+                onChange: event => props.onChange("title", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
             <FormControl fullWidth error={props.errors.socialNetworks}>
               <InputLabel
                 htmlFor="multiple-select"
@@ -114,6 +129,21 @@ const AddEventDialog = props => {
           </GridItem>
           <GridItem xs={12}>
             <CustomInput
+              labelText="Información Adicional"
+              error={props.errors.additional}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                multiline: true,
+                value: props.publication.additional,
+                onChange: event => props.onChange("additional", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
               labelText="Archivo"
               error={props.errors.image}
               formControlProps={{
@@ -152,15 +182,19 @@ AddEventDialog.propTypes = {
   publication: PropTypes.shape({
     date: PropTypes.string,
     time: PropTypes.string,
+    title: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
+    additional: PropTypes.string,
     image: PropTypes.string
   }).isRequired,
   errors: PropTypes.shape({
     date: PropTypes.bool.isRequired,
     time: PropTypes.bool.isRequired,
+    title: PropTypes.bool.isRequired,
     socialNetworks: PropTypes.bool.isRequired,
     message: PropTypes.bool.isRequired,
+    additional: PropTypes.bool.isRequired,
     image: PropTypes.bool.isRequired
   }).isRequired,
   onChange: PropTypes.func,
