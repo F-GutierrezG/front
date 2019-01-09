@@ -128,7 +128,8 @@ class Users extends Component {
             first_name: user.firstName,
             last_name: user.lastName,
             email: user.email,
-            password: user.password
+            password: user.password,
+            admin: true
           },
           {
             headers: { Authorization: "Bearer " + token }

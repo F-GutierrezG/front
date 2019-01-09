@@ -143,14 +143,16 @@ class Company extends Component {
       .catch(err => console.log(err));
   };
 
-  loadUsers = () => {
+  loadUsers = companyId => {
     const token = localStorage.getItem("token");
     axios
-      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}`, {
-        headers: { Authorization: "Bearer " + token }
-      })
+      .get(
+        `${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${companyId}/users`,
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
       .then(response => {
-        console.log(response.data);
         this.setState({
           users: response.data.map(user => {
             return this.mapUser(user);
@@ -163,7 +165,8 @@ class Company extends Component {
   };
 
   componentDidMount() {
-    this.loadUsers();
+    const companyId = this.props.location.pathname.split("/").pop();
+    this.loadUsers(companyId);
   }
 
   handleCreateUserButton = () => {
@@ -202,44 +205,12 @@ class Company extends Component {
     this.setState({ newUser });
   };
 
-  handleOnDeleteUserClick = id => {
-    const user = this.state.users.find(user => user.id === id);
-    this.setState({
-      selectedUser: user,
-      deleteUserDialogOpen: true
-    });
-  };
-
-  handleOnCancelDeleteUserDialog = () => {
-    this.setState({
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      deleteUserDialogOpen: false
-    });
-  };
-
   render() {
     const columns = [
-      {
-        Header: "Nombre",
-        accessor: "firstName"
-      },
-      {
-        Header: "Apellido",
-        accessor: "lastName"
-      },
-      {
-        Header: "E-Mail",
-        accessor: "email"
-      },
-      {
-        Header: "Estado",
-        accessor: "status"
-      },
+      { Header: "Nombre", accessor: "firstName" },
+      { Header: "Apellido", accessor: "lastName" },
+      { Header: "E-Mail", accessor: "email" },
+      { Header: "Estado", accessor: "status" },
       {
         Header: "Acciones",
         accessor: "actions",
