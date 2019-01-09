@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import Create from "@material-ui/icons/Create";
-import Delete from "@material-ui/icons/Delete";
 
 import { ActionButton } from "views/Components/Management";
 
@@ -58,13 +57,6 @@ class Users extends Component {
             color="primary"
             name="edit"
             icon={<Create />}
-          />
-
-          <ActionButton
-            onClick={() => this.handleOnDeleteUserClick(user.id)}
-            color="danger"
-            name="delete"
-            icon={<Delete />}
           />
         </div>
       )
@@ -193,50 +185,6 @@ class Users extends Component {
     const selectedUser = { ...this.state.selectedUser };
     selectedUser[field] = evt.target.value;
     this.setState({ selectedUser });
-  };
-
-  handleOnDeleteUserClick = id => {
-    const user = this.state.users.find(user => user.id === id);
-    this.setState({
-      selectedUser: user,
-      deleteUserDialogOpen: true
-    });
-  };
-
-  handleOnCancelDeleteUserDialog = () => {
-    this.setState({
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      deleteUserDialogOpen: false
-    });
-  };
-
-  handleOnAcceptDeleteUserDialog = () => {
-    const id = this.state.selectedUser.id;
-    const token = localStorage.getItem("token");
-
-    axios
-      .delete(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}`, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(() => {
-        const users = this.state.users.filter(user => user.id !== id);
-
-        this.setState({
-          users: users,
-          selectedUser: {
-            email: "",
-            firstName: "",
-            lastName: "",
-            password: ""
-          },
-          deleteUserDialogOpen: false
-        });
-      });
   };
 
   handleOnEditUserClick = id => {
