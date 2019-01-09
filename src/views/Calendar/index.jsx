@@ -327,7 +327,10 @@ class Calendar extends React.Component {
   };
 
   handleOnCancelReject = () => {
-    this.setState({ rejecting: false });
+    this.setState({
+      rejecting: false,
+      rejectReason: ""
+    });
   };
 
   handleOnAcceptReject = () => {
@@ -352,6 +355,7 @@ class Calendar extends React.Component {
           events: this.updateEvents("REJECTED"),
           openViewPublication: false,
           rejecting: false,
+          rejectReason: "",
           selectedPublication: {
             id: 0,
             date: "",
