@@ -48,7 +48,8 @@ class Calendar extends React.Component {
         time: "",
         socialNetworks: [],
         message: "",
-        image: []
+        image: "",
+        file: ""
       },
       selectedPublication: {
         id: 0,
@@ -132,7 +133,11 @@ class Calendar extends React.Component {
   }
 
   handleChangeValue = (field, event) => {
+    const files = event.target.files;
     const publication = { ...this.state.publication };
+    if (files) {
+      publication["file"] = event.target.files[0];
+    }
     publication[field] = event.target.value;
     this.setState({ publication });
   };
@@ -163,7 +168,7 @@ class Calendar extends React.Component {
     errors.time = publication.time.trim() === "";
     errors.socialNetworks = publication.socialNetworks.length === 0;
     errors.message = publication.message.trim() === "";
-    errors.image = publication.image.length !== 1;
+    errors.image = publication.image === "";
 
     this.setState({ publicationErrors: errors });
 
@@ -203,7 +208,7 @@ class Calendar extends React.Component {
     formData.append("time", publication.time);
     formData.append("social_networks", publication.socialNetworks);
     formData.append("message", publication.message);
-    formData.append("image", publication.image[0]);
+    formData.append("image", publication.file);
 
     axios
       .post(
@@ -273,7 +278,6 @@ class Calendar extends React.Component {
           onChange={this.handleChangeValue}
           onCancel={this.handleOnCancel}
           onAccept={this.handleOnAccept}
-          onDropImage={this.handleOnDropImage}
           buttonsDisabled={this.state.publicationButtonsDisabled}
         />
         <ViewPublicationDialog

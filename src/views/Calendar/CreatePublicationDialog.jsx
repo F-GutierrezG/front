@@ -119,18 +119,21 @@ const AddEventDialog = props => {
             />
           </GridItem>
           <GridItem xs={12}>
-            <ImageUploader
-              buttonStyles={
-                props.errors.image ? { backgroundColor: "#f44336" } : {}
-              }
-              withIcon={false}
-              singleImage={true}
-              withPreview={true}
-              withLabel={false}
-              buttonText="Elegir Imagen"
-              onChange={props.onDropImage}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              maxFileSize={5242880}
+            <CustomInput
+              labelText="Archivo"
+              error={props.errors.image}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "file",
+                value: props.publication.image,
+                onChange: event => props.onChange("image", event)
+              }}
             />
           </GridItem>
         </GridContainer>
@@ -152,13 +155,12 @@ const AddEventDialog = props => {
 AddEventDialog.propTypes = {
   classes: PropTypes.object,
   open: PropTypes.bool.isRequired,
-  onDropImage: PropTypes.func.isRequired,
   publication: PropTypes.shape({
     date: PropTypes.string,
     time: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
-    image: PropTypes.array
+    image: PropTypes.string
   }).isRequired,
   errors: PropTypes.shape({
     date: PropTypes.bool.isRequired,
