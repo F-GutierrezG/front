@@ -99,7 +99,7 @@ class Company extends Component {
 
         const users = this.state.users.map(user => {
           if(user.id === id) {
-            return updatedUser
+          return this.mapUser(updatedUser)
           } else {
             return user
           }
@@ -136,7 +136,7 @@ class Company extends Component {
 
         const users = this.state.users.map(user => {
           if(user.id === id) {
-            return updatedUser
+                     return this.mapUser(updatedUser)
           } else {
             return user
           }
