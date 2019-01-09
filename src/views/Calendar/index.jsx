@@ -52,7 +52,9 @@ class Calendar extends React.Component {
       image: false
     },
     events: [],
-    publicationButtonsDisabled: false
+    publicationButtonsDisabled: false,
+    rejecting: false,
+    rejectReason: ""
   };
 
   closeError = () => {
@@ -281,43 +283,7 @@ class Calendar extends React.Component {
   };
 
   handleOnReject = () => {
-    const token = localStorage.getItem("token");
-
-    axios
-      .put(
-        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
-          this.state.selectedPublication.id
-        }/reject`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "multipart/form-data"
-          }
-        }
-      )
-      .then(() => {
-        this.setState({
-          events: this.updateEvents("REJECTED"),
-          openViewPublication: false,
-          selectedPublication: {
-            id: 0,
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: ""
-          }
-        });
-      })
-      .catch(err => {
-        this.setState({
-          hasError: true,
-          errorMessage: err.response.statusText
-        });
-      });
+    this.setState({ rejecting: true });
   };
 
   handleOnAccept = () => {
@@ -360,6 +326,56 @@ class Calendar extends React.Component {
       });
   };
 
+  handleOnCancelReject = () => {
+    this.setState({ rejecting: false });
+  };
+
+  handleOnAcceptReject = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .put(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }/reject`,
+        {
+          message: this.state.rejectReason
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      )
+      .then(() => {
+        this.setState({
+          events: this.updateEvents("REJECTED"),
+          openViewPublication: false,
+          rejecting: false,
+          selectedPublication: {
+            id: 0,
+            date: "",
+            time: "",
+            title: "",
+            socialNetworks: [],
+            message: "",
+            additional: "",
+            image: ""
+          }
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
+      });
+  };
+
+  handleChangeRejectReason = event => {
+    this.setState({ rejectReason: event.target.value });
+  };
+
   render() {
     return (
       <CalendarWithErrors
@@ -379,10 +395,15 @@ class Calendar extends React.Component {
         onCloseViewPublication={this.handleOnClose}
         onRejectViewPublication={this.handleOnReject}
         onAcceptViewPublication={this.handleOnAccept}
+        onCancelRejectViewPublication={this.handleOnCancelReject}
+        onAcceptRejectViewPublication={this.handleOnAcceptReject}
         onSelectEvent={this.selectedEvent}
         onSelectSlot={this.addNewPublication}
         events={this.state.events}
         eventColors={this.eventColors}
+        rejecting={this.state.rejecting}
+        onChangeReject={this.handleChangeRejectReason}
+        rejectReason={this.state.rejectReason}
       />
     );
   }

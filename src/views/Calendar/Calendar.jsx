@@ -57,6 +57,11 @@ const Calendar = props => {
         onClose={props.onCloseViewPublication}
         onReject={props.onRejectViewPublication}
         onAccept={props.onAcceptViewPublication}
+        onCancelReject={props.onCancelRejectViewPublication}
+        onAcceptReject={props.onAcceptRejectViewPublication}
+        rejecting={props.rejecting}
+        onChangeReject={props.onChangeReject}
+        rejectReason={props.rejectReason}
       />
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={10}>
@@ -96,10 +101,15 @@ Calendar.propTypes = {
   onCloseViewPublication: PropTypes.func.isRequired,
   onRejectViewPublication: PropTypes.func.isRequired,
   onAcceptViewPublication: PropTypes.func.isRequired,
+  onCancelRejectViewPublication: PropTypes.func.isRequired,
+  onAcceptRejectViewPublication: PropTypes.func.isRequired,
   events: PropTypes.array.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onSelectSlot: PropTypes.func.isRequired,
-  eventColors: PropTypes.func.isRequired
+  eventColors: PropTypes.func.isRequired,
+  rejecting: PropTypes.bool.isRequired,
+  onChangeReject: PropTypes.func.isRequired,
+  rejectReason: PropTypes.string.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));
