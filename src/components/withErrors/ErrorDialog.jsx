@@ -17,8 +17,9 @@ const ErrorDialog = props => {
     <Dialog open={true} styles={{ overflow: "visible" }}>
       <DialogTitle>Error</DialogTitle>
       <DialogContent>
-        Ha ocurrido un error, por favor reintente, en caso de persistir el
-        problema notifíquenos indicando el siguiente mensaje de error:
+        Ha ocurrido un error, por favor reintente. En caso de persistir el
+        problema notifíquenos indicando la acción que estaba realizando y el
+        siguiente mensaje de error:
         <br />
         <br />
         {props.errorMessage}
