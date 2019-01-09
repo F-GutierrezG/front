@@ -61,6 +61,7 @@ class Company extends Component {
       email: user.email,
       active: user.active,
       updated: user.updated,
+      status: user.active ? "Activo": "Desactivo",
       actions: (
         <div className="actions-right">
           <ActionButton
@@ -234,6 +235,10 @@ class Company extends Component {
       {
         Header: "E-Mail",
         accessor: "email"
+      },
+      {
+        Header: "Estado",
+        accessor: "status"
       },
       {
         Header: "Acciones",
