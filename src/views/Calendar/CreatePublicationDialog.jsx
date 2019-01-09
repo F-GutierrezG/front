@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ImageUploader from "react-images-upload";
-
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import Dialog from "@material-ui/core/Dialog";
@@ -81,10 +79,6 @@ const AddEventDialog = props => {
                 onChange={event => props.onChange("socialNetworks", event)}
                 MenuProps={{ className: classes.selectMenu }}
                 classes={{ select: classes.select }}
-                inputProps={{
-                  name: "multipleSelect",
-                  id: "multiple-select"
-                }}
               >
                 <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
                   Redes Sociales

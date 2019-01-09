@@ -74,6 +74,26 @@ class Calendar extends React.Component {
         {
           id: "INSTAGRAM",
           name: "Instagram"
+        },
+        {
+          id: "LINKEDIN",
+          name: "LinkedIn"
+        },
+        {
+          id: "TWITTER",
+          name: "Twitter"
+        },
+        {
+          id: "YOUTUBE",
+          name: "YouTube"
+        },
+        {
+          id: "PINTEREST",
+          name: "Pinterest"
+        },
+        {
+          id: "GOOGLEPLUS",
+          name: "Google+"
         }
       ],
       events: [],
