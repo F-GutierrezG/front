@@ -99,20 +99,6 @@ class Company extends Component {
         }
       )
       .then(response => {
-<<<<<<< HEAD
-
-
-        const updatedUser = { ...this.state.users.find(user => user.id === id)};
-        updatedUser.active = false;
-
-        const users = this.state.users.map(user => {
-          if(user.id === id) {
-          return this.mapUser(updatedUser)
-          } else {
-            return user
-          }
-        });
-=======
         const users = [
           ...this.state.users.map(user => {
             if (user.id === id) {
@@ -122,7 +108,6 @@ class Company extends Component {
             }
           })
         ];
->>>>>>> 7ca05558e51d7ef2935850912fcdf90aea285b5b
 
         this.setState({
           users: users
@@ -143,13 +128,8 @@ class Company extends Component {
       )
       .then(response => {
         const users = this.state.users.map(user => {
-<<<<<<< HEAD
-          if(user.id === id) {
-                     return this.mapUser(updatedUser)
-=======
           if (user.id === id) {
             return this.mapUser(response.data);
->>>>>>> 7ca05558e51d7ef2935850912fcdf90aea285b5b
           } else {
             return user;
           }
