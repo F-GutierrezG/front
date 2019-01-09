@@ -2,53 +2,48 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-import Add from "@material-ui/icons/Add";
-import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
-import Visibility from "@material-ui/icons/Visibility";
+
+import { ActionButton } from "views/Components/Management";
 
 import RequireAuth from "components/RequireAuth";
 
-import Management, { ActionButton } from "views/Components/Management";
-
-import CreateUserDialog from "./CreateUserDialog";
-import EditUserDialog from "./EditUserDialog";
+import UsersWithError from "./Users";
 
 class Users extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: [],
-      createUserDialogOpen: false,
-      deleteUserDialogOpen: false,
-      editUserDialogOpen: false,
-      createUserErrors: {
-        email: false,
-        firstName: false,
-        lastName: false,
-        password: false
-      },
-      editUserErrors: {
-        email: null,
-        firstName: null,
-        lastName: null,
-        password: null
-      },
-      newUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      },
-      selectedUser: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        password: ""
-      }
-    };
-  }
+  state = {
+    hasError: false,
+    errorMessage: "",
+    users: [],
+    createUserDialogOpen: false,
+    deleteUserDialogOpen: false,
+    editUserDialogOpen: false,
+    createUserErrors: {
+      email: false,
+      firstName: false,
+      lastName: false,
+      password: false
+    },
+    editUserErrors: {
+      email: null,
+      firstName: null,
+      lastName: null,
+      password: null
+    },
+    newUser: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: ""
+    },
+    selectedUser: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: ""
+    }
+  };
 
   mapUser = user => {
     return {
@@ -89,8 +84,11 @@ class Users extends Component {
           })
         });
       })
-      .catch(error => {
-        console.log("ERROR", error)
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
       });
   }
 
@@ -149,8 +147,11 @@ class Users extends Component {
             }
           });
         })
-        .catch(error => {
-          console.log("ERROR", error);
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            errorMessage: err.response.statusText
+          });
         });
       this.setState({
         createUserDialogOpen: false
@@ -258,57 +259,23 @@ class Users extends Component {
   };
 
   render() {
-    const columns = [
-      {
-        Header: "Nombre",
-        accessor: "firstName"
-      },
-      {
-        Header: "Apellido",
-        accessor: "lastName"
-      },
-      {
-        Header: "E-Mail",
-        accessor: "email"
-      },
-      {
-        Header: "Acciones",
-        accessor: "actions",
-        sortable: false,
-        filterable: false
-      }
-    ];
-
     return (
-      <div>
-        <CreateUserDialog
-          open={this.state.createUserDialogOpen}
-          errors={this.state.createUserErrors}
-          user={this.state.newUser}
-          handleOnChange={this.handleOnChangeCreateUserDialog}
-          onCancel={this.handleOnCancelCreateUserDialog}
-          onAccept={this.handleOnAcceptCreateUserDialog}
-        />
-        <EditUserDialog
-          open={this.state.editUserDialogOpen}
-          errors={this.state.editUserErrors}
-          user={this.state.selectedUser}
-          handleOnChange={this.handleOnChangeEditUserDialog}
-          onCancel={this.handleOnCancelEditUserDialog}
-          onAccept={this.handleOnAcceptEditUserDialog}
-        />
-        <Management
-          icon={<Person />}
-          color="info"
-          elements={this.state.users}
-          noDataText="No existen Usuarios"
-          columns={columns}
-          addButtonText="Crear Usuario"
-          addButtonIcon={<Add />}
-          addButtonColor="success"
-          addButtonOnClick={this.handleCreateUserButton}
-        />
-      </div>
+      <UsersWithError
+        openCreateUser={this.state.createUserDialogOpen}
+        createUserErrors={this.state.createUserErrors}
+        userCreated={this.state.newUser}
+        onCreateUserChange={this.handleOnChangeCreateUserDialog}
+        onCancelCreateUser={this.handleOnCancelCreateUserDialog}
+        onAcceptCreateUser={this.handleOnAcceptCreateUserDialog}
+        openEditUser={this.state.editUserDialogOpen}
+        editUserErrors={this.state.editUserErrors}
+        userEdited={this.state.selectedUser}
+        onEditUserChange={this.handleOnChangeEditUserDialog}
+        onCancelEditUser={this.handleOnCancelEditUserDialog}
+        onAcceptEditUser={this.handleOnAcceptEditUserDialog}
+        users={this.state.users}
+        onAddUserClick={this.handleCreateUserButton}
+      />
     );
   }
 }

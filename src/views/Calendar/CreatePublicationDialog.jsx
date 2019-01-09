@@ -163,7 +163,9 @@ const AddEventDialog = props => {
         </GridContainer>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel} disabled={props.buttonsDisabled}>Cancelar</Button>
+        <Button onClick={props.onCancel} disabled={props.buttonsDisabled}>
+          Cancelar
+        </Button>
         <Button
           onClick={props.onAccept}
           disabled={props.buttonsDisabled}

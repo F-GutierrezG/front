@@ -1,4 +1,4 @@
-import Calendar from "views/Calendar/Calendar.jsx";
+import Calendar from "views/Calendar";
 import Users from "views/Management/Users";
 import Companies from "views/Management/Companies";
 import Company from "views/Company";
