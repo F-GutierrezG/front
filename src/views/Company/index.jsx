@@ -6,7 +6,6 @@ import axios from "axios";
 import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
-import Delete from "@material-ui/icons/Delete";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
 
@@ -14,7 +13,6 @@ import Management, { ActionButton } from "views/Components/Management";
 
 import CreateUserDialog from "views/Management/Users/CreateUserDialog";
 import EditUserDialog from "views/Management/Users/EditUserDialog";
-import DeleteUserDialog from "views/Management/Users/DeleteUserDialog";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -62,7 +60,7 @@ class Company extends Component {
       lastName: user.last_name,
       email: user.email,
       active: user.active,
-      updated:user.updated,
+      updated: user.updated,
       actions: (
         <div className="actions-right">
           <ActionButton
@@ -72,88 +70,77 @@ class Company extends Component {
             icon={<Create />}
           />
 
-          {user.active
-            ?<ActionButton color="danger" icon={<Block />}  onClick={ event => this.deactivate(user.id) }/>
-            :<ActionButton color="success" icon={<DoneAll />} onClick={ event => this.activate(user.id) }  />
-
-          }
-
+          {user.active ? (
+            <ActionButton
+              color="danger"
+              icon={<Block />}
+              onClick={() => this.deactivate(user.id)}
+            />
+          ) : (
+            <ActionButton
+              color="success"
+              icon={<DoneAll />}
+              onClick={() => this.activate(user.id)}
+            />
+          )}
         </div>
       )
     };
   };
 
-
-  deactivate = id =>{
-
+  deactivate = id => {
     const token = localStorage.getItem("token");
     axios
-      .put(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/deactivate`, {}, {
-        headers: { Authorization: "Bearer " + token }
-      })
+      .put(
+        `${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/deactivate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
       .then(response => {
+        const users = [
+          ...this.state.users.map(user => {
+            if (user.id === id) {
+              return this.mapUser(response.data);
+            } else {
+              return user;
+            }
+          })
+        ];
 
+        this.setState({
+          users: users
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
-        const updatedUser = { ...this.state.users.find(user => user.id === id)};
-        updatedUser.active = false;
-
+  activate = id => {
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/activate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
         const users = this.state.users.map(user => {
-          if(user.id === id) {
-            return updatedUser
+          if (user.id === id) {
+            return this.mapUser(response.data);
           } else {
-            return user
+            return user;
           }
         });
 
         this.setState({
-          users: users.map(user => this.mapUser(user))
+          users: users
         });
-
-
-
-
-      });
-
-
-
-
-
-  };
-
-
-  activate = id =>{
-
-    const token = localStorage.getItem("token");
-    axios
-      .put(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/activate`, {}, {
-        headers: { Authorization: "Bearer " + token }
       })
-      .then(response => {
-
-
-        const updatedUser = { ...this.state.users.find(user => user.id === id)};
-        updatedUser.active = true;
-
-        const users = this.state.users.map(user => {
-          if(user.id === id) {
-            return updatedUser
-          } else {
-            return user
-          }
-        });
-
-        this.setState({
-          users: users.map(user => this.mapUser(user))
-        });
-
-
-
-
-      });
-
+      .catch(err => console.log(err));
   };
-
-
 
   loadUsers = () => {
     const token = localStorage.getItem("token");
@@ -273,11 +260,6 @@ class Company extends Component {
           handleOnChange={this.handleOnChangeEditUserDialog}
           onCancel={this.handleOnCancelEditUserDialog}
           onAccept={this.handleOnAcceptEditUserDialog}
-        />
-        <DeleteUserDialog
-          open={this.state.deleteUserDialogOpen}
-          onCancel={this.handleOnCancelDeleteUserDialog}
-          onAccept={this.handleOnAcceptDeleteUserDialog}
         />
         <Management
           icon={<Person />}
