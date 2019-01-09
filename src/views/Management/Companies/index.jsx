@@ -17,6 +17,8 @@ import CompaniesWithError from "./Companies";
 
 class Companies extends Component {
   state = {
+    hasError: false,
+    errorMessage: "",
     companies: [],
     classifications: [],
     createCompanyDialogOpen: false,
@@ -95,6 +97,12 @@ class Companies extends Component {
         this.setState({
           companies: companies.map(company => this.mapCompany(company))
         });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
       });
   };
 
@@ -125,6 +133,12 @@ class Companies extends Component {
         this.setState({
           companies: companies.map(company => this.mapCompany(company))
         });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
       });
   };
 
@@ -138,6 +152,12 @@ class Companies extends Component {
         this.setState({
           companies: response.data.map(company => this.mapCompany(company))
         });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
       });
 
     axios
@@ -150,6 +170,12 @@ class Companies extends Component {
             id: classification.id,
             name: classification.name
           }))
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
         });
       });
   }
@@ -214,6 +240,12 @@ class Companies extends Component {
               classification: ""
             },
             createCompanyDialogOpen: false
+          });
+        })
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            errorMessage: err.response.statusText
           });
         });
     }
