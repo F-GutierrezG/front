@@ -4,38 +4,33 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 
-import Add from "@material-ui/icons/Add";
 import Create from "@material-ui/icons/Create";
-import Business from "@material-ui/icons/Business";
 import People from "@material-ui/icons/People";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
 
 import RequireAuth from "components/RequireAuth";
 
-import Management, { ActionButton } from "views/Components/Management";
+import { ActionButton } from "views/Components/Management";
 
-import CreateCompanyDialog from "./CreateCompanyDialog";
+import CompaniesWithError from "./Companies";
 
 class Companies extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      companies: [],
-      classifications: [],
-      createCompanyDialogOpen: false,
-      createCompanyErrors: {
-        identifier: null,
-        name: null,
-        classification: null
-      },
-      newCompany: {
-        identifier: "",
-        name: "",
-        classification: ""
-      }
-    };
-  }
+  state = {
+    companies: [],
+    classifications: [],
+    createCompanyDialogOpen: false,
+    createCompanyErrors: {
+      identifier: null,
+      name: null,
+      classification: null
+    },
+    newCompany: {
+      identifier: "",
+      name: "",
+      classification: ""
+    }
+  };
 
   mapCompany = company => {
     return {
@@ -43,7 +38,7 @@ class Companies extends Component {
       identifier: company.identifier,
       name: company.name,
       active: company.active,
-      status: company.active ? "Activo": "Desactivo",
+      status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
           <Link
@@ -71,23 +66,29 @@ class Companies extends Component {
         </div>
       )
     };
-  }
+  };
 
   deactivate = id => {
     const token = localStorage.getItem("token");
     axios
-      .put(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}/deactivate`, {}, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        const updatedCompany = { ...this.state.companies.find(company => company.id === id)};
+      .put(
+        `${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}/deactivate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(() => {
+        const updatedCompany = {
+          ...this.state.companies.find(company => company.id === id)
+        };
         updatedCompany.active = false;
 
         const companies = this.state.companies.map(company => {
-          if(company.id === id) {
-            return updatedCompany
+          if (company.id === id) {
+            return updatedCompany;
           } else {
-            return company
+            return company;
           }
         });
 
@@ -100,18 +101,24 @@ class Companies extends Component {
   activate = id => {
     const token = localStorage.getItem("token");
     axios
-      .put(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}/activate`, {}, {
-        headers: { Authorization: "Bearer " + token }
-      })
-      .then(response => {
-        const updatedCompany = { ...this.state.companies.find(company => company.id === id)};
+      .put(
+        `${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}/activate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(() => {
+        const updatedCompany = {
+          ...this.state.companies.find(company => company.id === id)
+        };
         updatedCompany.active = true;
 
         const companies = this.state.companies.map(company => {
-          if(company.id === id) {
-            return updatedCompany
+          if (company.id === id) {
+            return updatedCompany;
           } else {
-            return company
+            return company;
           }
         });
 
@@ -130,7 +137,7 @@ class Companies extends Component {
       .then(response => {
         this.setState({
           companies: response.data.map(company => this.mapCompany(company))
-        })
+        });
       });
 
     axios
@@ -139,13 +146,11 @@ class Companies extends Component {
       })
       .then(response => {
         this.setState({
-          classifications: response.data.map(classification => (
-            {
-              id: classification.id,
-              name: classification.name
-            }
-          ))
-        })
+          classifications: response.data.map(classification => ({
+            id: classification.id,
+            name: classification.name
+          }))
+        });
       });
   }
 
@@ -156,7 +161,7 @@ class Companies extends Component {
   };
 
   handleOnChangeCreateCompanyDialog = (field, evt) => {
-    const newCompany = {...this.state.newCompany}
+    const newCompany = { ...this.state.newCompany };
     newCompany[field] = evt.target.value;
     this.setState({ newCompany });
   };
@@ -169,9 +174,9 @@ class Companies extends Component {
         classification: null
       },
       newCompany: {
-        identifier: '',
-        name: '',
-        classification: '',
+        identifier: "",
+        name: "",
+        classification: ""
       }
     });
   };
@@ -182,13 +187,17 @@ class Companies extends Component {
     if (this.validateCreateCompany(company)) {
       const token = localStorage.getItem("token");
       axios
-        .post(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}`, {
-          identifier: company.identifier,
-          name: company.name,
-          classification_id: company.classification
-        }, {
-          headers: { Authorization: "Bearer " + token }
-        })
+        .post(
+          `${process.env.REACT_APP_COMPANIES_SERVICE_URL}`,
+          {
+            identifier: company.identifier,
+            name: company.name,
+            classification_id: company.classification
+          },
+          {
+            headers: { Authorization: "Bearer " + token }
+          }
+        )
         .then(response => {
           const companies = [...this.state.companies];
           companies.push(this.mapCompany(response.data));
@@ -200,12 +209,12 @@ class Companies extends Component {
               classification: null
             },
             newCompany: {
-              identifier: '',
-              name: '',
-              classification: '',
+              identifier: "",
+              name: "",
+              classification: ""
             },
-            createCompanyDialogOpen: false,
-          })
+            createCompanyDialogOpen: false
+          });
         });
     }
   };
@@ -223,7 +232,7 @@ class Companies extends Component {
       createCompanyErrors: {
         identifier: identifierError,
         name: nameError,
-        classification: classificationError,
+        classification: classificationError
       }
     });
 
@@ -231,50 +240,18 @@ class Companies extends Component {
   };
 
   render() {
-    const columns = [
-      {
-        Header: "Rut",
-        accessor: "identifier"
-      },
-      {
-        Header: "Razón Social",
-        accessor: "name"
-      },
-      {
-        Header: "Estado",
-        accessor: "status"
-      },
-      {
-        Header: "Acciones",
-        accessor: "actions",
-        sortable: false,
-        filterable: false
-      }
-    ];
-
     return (
-      <div>
-        <CreateCompanyDialog
-          open={this.state.createCompanyDialogOpen}
-          classifications={this.state.classifications}
-          onCancel={this.handleOnCancelCreateCompanyDialog}
-          onAccept={this.handleOnAcceptCreateCompanyDialog}
-          handleOnChange={this.handleOnChangeCreateCompanyDialog}
-          company={this.state.newCompany}
-          errors={this.state.createCompanyErrors}
-        />
-        <Management
-          icon={<Business />}
-          color="success"
-          elements={this.state.companies}
-          noDataText="No existen Compañías"
-          columns={columns}
-          addButtonText="Crear Compañía"
-          addButtonIcon={<Add />}
-          addButtonColor="success"
-          addButtonOnClick={this.handleCreateCompanyButton}
-        />
-      </div>
+      <CompaniesWithError
+        openCreateCompany={this.state.createCompanyDialogOpen}
+        classifications={this.state.classifications}
+        onCancelCreateCompany={this.handleOnCancelCreateCompanyDialog}
+        onAcceptCreateCompany={this.handleOnAcceptCreateCompanyDialog}
+        onChangeCreateCompany={this.handleOnChangeCreateCompanyDialog}
+        companyCreated={this.state.newCompany}
+        createCompanyErrors={this.state.createCompanyErrors}
+        companies={this.state.companies}
+        onCreateCompanyButton={this.handleCreateCompanyButton}
+      />
     );
   }
 }
