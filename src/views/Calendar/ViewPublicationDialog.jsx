@@ -113,17 +113,24 @@ const ViewPublicationDialog = props => {
             />
           </GridItem>
           <GridItem xs={12} className={classes.publicationImageContainer}>
-            <img
-              src={props.publication.image}
-              className={classes.publicationImage}
-            />
+            <a
+              href={props.publication.image}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.publication.image}
+            </a>
           </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cerrar</Button>
-        <Button onClick={props.onReject} color="danger">Rechazar</Button>
-        <Button onClick={props.onAccept} color="success">Aceptar</Button>
+        <Button onClick={props.onReject} color="danger">
+          Rechazar
+        </Button>
+        <Button onClick={props.onAccept} color="success">
+          Aceptar
+        </Button>
       </DialogActions>
     </Dialog>
   );

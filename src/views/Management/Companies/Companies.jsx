@@ -56,7 +56,7 @@ Companies.propTypes = {
   onAcceptCreateCompany: PropTypes.func.isRequired,
   onChangeCreateCompany: PropTypes.func.isRequired,
   companyCreated: PropTypes.object.isRequired,
-  createCompanyErrors: PropTypes.array.isRequired,
+  createCompanyErrors: PropTypes.object.isRequired,
   onCreateCompanyButton: PropTypes.func.isRequired,
   companies: PropTypes.array.isRequired
 };
