@@ -55,10 +55,19 @@ class Companies extends Component {
             <ActionButton color="info" name="view" icon={<People />} />
           </Link>
           <ActionButton color="primary" name="edit" icon={<Create />} />
-          {company.active
-            ? <ActionButton color="danger" icon={<Block />} onClick={ event => this.deactivate(company.id) } />
-            : <ActionButton color="success" icon={<DoneAll />} onClick={ event => this.activate(company.id) } />
-          }
+          {company.active ? (
+            <ActionButton
+              color="danger"
+              icon={<Block />}
+              onClick={() => this.deactivate(company.id)}
+            />
+          ) : (
+            <ActionButton
+              color="success"
+              icon={<DoneAll />}
+              onClick={() => this.activate(company.id)}
+            />
+          )}
         </div>
       )
     };
