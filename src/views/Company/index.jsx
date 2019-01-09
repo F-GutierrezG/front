@@ -7,6 +7,8 @@ import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
+import Block from "@material-ui/icons/Block";
+import DoneAll from "@material-ui/icons/DoneAll";
 
 import Management, { ActionButton } from "views/Components/Management";
 
@@ -59,6 +61,8 @@ class Company extends Component {
       firstName: user.first_name,
       lastName: user.last_name,
       email: user.email,
+      active: user.active,
+      updated:user.updated,
       actions: (
         <div className="actions-right">
           <ActionButton
@@ -68,16 +72,88 @@ class Company extends Component {
             icon={<Create />}
           />
 
-          <ActionButton
-            onClick={() => this.handleOnDeleteUserClick(user.id)}
-            color="danger"
-            name="delete"
-            icon={<Delete />}
-          />
+          {user.active
+            ?<ActionButton color="danger" icon={<Block />}  onClick={ event => this.deactivate(user.id) }/>
+            :<ActionButton color="success" icon={<DoneAll />} onClick={ event => this.activate(user.id) }  />
+
+          }
+
         </div>
       )
     };
   };
+
+
+  deactivate = id =>{
+
+    const token = localStorage.getItem("token");
+    axios
+      .put(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/deactivate`, {}, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+
+
+        const updatedUser = { ...this.state.users.find(user => user.id === id)};
+        updatedUser.active = false;
+
+        const users = this.state.users.map(user => {
+          if(user.id === id) {
+            return updatedUser
+          } else {
+            return user
+          }
+        });
+
+        this.setState({
+          users: users.map(user => this.mapUser(user))
+        });
+
+
+
+
+      });
+
+
+
+
+
+  };
+
+
+  activate = id =>{
+
+    const token = localStorage.getItem("token");
+    axios
+      .put(`${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/activate`, {}, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+
+
+        const updatedUser = { ...this.state.users.find(user => user.id === id)};
+        updatedUser.active = true;
+
+        const users = this.state.users.map(user => {
+          if(user.id === id) {
+            return updatedUser
+          } else {
+            return user
+          }
+        });
+
+        this.setState({
+          users: users.map(user => this.mapUser(user))
+        });
+
+
+
+
+      });
+
+  };
+
+
 
   loadUsers = () => {
     const token = localStorage.getItem("token");
@@ -86,6 +162,7 @@ class Company extends Component {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
+        console.log(response.data);
         this.setState({
           users: response.data.map(user => {
             return this.mapUser(user);
