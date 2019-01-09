@@ -60,6 +60,23 @@ const ViewPublicationDialog = props => {
           </GridItem>
           <GridItem xs={12}>
             <CustomInput
+              labelText="Título"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.title,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
               labelText="Redes Sociales"
               formControlProps={{
                 fullWidth: true,
@@ -105,6 +122,8 @@ const ViewPublicationDialog = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cerrar</Button>
+        <Button onClick={props.onReject} color="danger">Rechazar</Button>
+        <Button onClick={props.onAccept} color="success">Aceptar</Button>
       </DialogActions>
     </Dialog>
   );
@@ -116,11 +135,14 @@ ViewPublicationDialog.propTypes = {
   publication: PropTypes.shape({
     date: PropTypes.string,
     time: PropTypes.string,
+    title: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
     image: PropTypes.string
   }).isRequired,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
+  onReject: PropTypes.func,
+  onAccept: PropTypes.func,
   socialNetworks: PropTypes.array.isRequired
 };
 
