@@ -1,39 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import withStyles from "@material-ui/core/styles/withStyles";
-
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-
-import Button from "Components/CustomButtons/Button.jsx";
-
-import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
+import GeneralMessage from "./GeneralMessage";
+import ForbiddenMessage from "./ForbiddenMessage";
+import UnauthorizedMessage from "./UnauthorizedMessage";
 
 const ErrorDialog = props => {
-  return (
-    <Dialog open={true} styles={{ overflow: "visible" }}>
-      <DialogTitle>Error</DialogTitle>
-      <DialogContent>
-        Ha ocurrido un error, por favor reintente. En caso de persistir el
-        problema notifíquenos indicando la acción que estaba realizando y el
-        siguiente mensaje de error:
-        <br />
-        <br />
-        {props.errorMessage}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.closeError}>Aceptar</Button>
-      </DialogActions>
-    </Dialog>
-  );
+  const status = props.error.response.status;
+  if (status === 403) {
+    return <ForbiddenMessage closeError={props.closeError} />;
+  }
+  if (status === 401) {
+    return <UnauthorizedMessage closeError={props.closeError} />;
+  }
+
+  return <GeneralMessage error={props.error} closeError={props.closeError} />;
 };
 
 ErrorDialog.propTypes = {
-  errorMessage: PropTypes.string,
+  error: PropTypes.object,
   closeError: PropTypes.func.isRequired
 };
 
-export default withStyles(extendedFormsStyle)(ErrorDialog);
+export default ErrorDialog;

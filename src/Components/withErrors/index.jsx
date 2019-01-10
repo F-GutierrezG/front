@@ -7,16 +7,14 @@ function withErrors(Component) {
   function WrappedComponent({
     hasError,
     closeError,
-    errorMessage,
+    error,
     children,
     ...props
   }) {
     let errorDiv;
 
     if (hasError) {
-      errorDiv = (
-        <ErrorDialog errorMessage={errorMessage} closeError={closeError} />
-      );
+      errorDiv = <ErrorDialog error={error} closeError={closeError} />;
     }
 
     return (
@@ -33,7 +31,7 @@ function withErrors(Component) {
 withErrors.propTypes = {
   hasError: PropTypes.bool,
   closeError: PropTypes.func,
-  errorMessage: PropTypes.string
+  error: PropTypes.string
 };
 
 export default withErrors;

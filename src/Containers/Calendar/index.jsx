@@ -17,7 +17,7 @@ const socialNetworks = [
 class Calendar extends React.Component {
   state = {
     hasError: false,
-    errorMessage: "",
+    error: "",
     openCreatePublication: false,
     openViewPublication: false,
     publication: {
@@ -319,7 +319,7 @@ class Calendar extends React.Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -369,7 +369,7 @@ class Calendar extends React.Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -382,7 +382,7 @@ class Calendar extends React.Component {
     return (
       <CalendarWithErrors
         hasError={this.state.hasError}
-        errorMessage={this.state.errorMessage}
+        error={this.state.error}
         closeError={this.closeError}
         openCreatePublication={this.state.openCreatePublication}
         createPublication={this.state.publication}

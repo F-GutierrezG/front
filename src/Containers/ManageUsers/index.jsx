@@ -13,7 +13,7 @@ import UsersWithError from "Components/Users";
 class Users extends Component {
   state = {
     hasError: false,
-    errorMessage: "",
+    error: "",
     users: [],
     createUserDialogOpen: false,
     deleteUserDialogOpen: false,
@@ -114,7 +114,7 @@ class Users extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -145,7 +145,7 @@ class Users extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -166,7 +166,7 @@ class Users extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -235,7 +235,7 @@ class Users extends Component {
     return (
       <UsersWithError
         hasError={this.state.hasError}
-        errorMessage={this.state.errorMessage}
+        error={this.state.error}
         closeError={this.closeError}
         openCreateUser={this.state.createUserDialogOpen}
         createUserErrors={this.state.createUserErrors}

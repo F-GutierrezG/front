@@ -16,7 +16,7 @@ import CompaniesWithError from "Components/Companies";
 class Companies extends Component {
   state = {
     hasError: false,
-    errorMessage: "",
+    error: "",
     companies: [],
     classifications: [],
     createCompanyDialogOpen: false,
@@ -106,7 +106,7 @@ class Companies extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -142,7 +142,7 @@ class Companies extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   };
@@ -161,7 +161,7 @@ class Companies extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
 
@@ -180,7 +180,7 @@ class Companies extends Component {
       .catch(err => {
         this.setState({
           hasError: true,
-          errorMessage: err.response.statusText
+          error: err
         });
       });
   }
@@ -250,7 +250,7 @@ class Companies extends Component {
         .catch(err => {
           this.setState({
             hasError: true,
-            errorMessage: err.response.statusText
+            error: err
           });
         });
     }
@@ -280,7 +280,7 @@ class Companies extends Component {
     return (
       <CompaniesWithError
         hasError={this.state.hasError}
-        errorMessage={this.state.errorMessage}
+        error={this.state.error}
         closeError={this.closeError}
         openCreateCompany={this.state.createCompanyDialogOpen}
         classifications={this.state.classifications}
