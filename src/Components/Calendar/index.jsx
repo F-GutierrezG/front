@@ -64,7 +64,7 @@ const Calendar = props => {
         rejectReason={props.rejectReason}
       />
       <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={10}>
+        <GridItem xs={12}>
           <Card>
             <CardBody calendar>
               <BigCalendar
