@@ -1,4 +1,4 @@
-import Calendar from "views/Calendar";
+import Publications from "Pages/Publications";
 import Users from "views/Management/Users";
 import Companies from "views/Management/Companies";
 import Company from "views/Company";
@@ -12,7 +12,7 @@ var dashRoutes = [
     path: "/calendar",
     name: "Publicaciones",
     icon: DateRange,
-    component: Calendar
+    component: Publications
   },
   {
     path: "/company/:company_id",
