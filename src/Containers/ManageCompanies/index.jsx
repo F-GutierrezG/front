@@ -69,6 +69,12 @@ class Companies extends Component {
     };
   };
 
+  closeError = () => {
+    this.setState({
+      hasError: false
+    });
+  };
+
   deactivate = id => {
     const token = localStorage.getItem("token");
     axios
@@ -273,6 +279,9 @@ class Companies extends Component {
   render() {
     return (
       <CompaniesWithError
+        hasError={this.state.hasError}
+        errorMessage={this.state.errorMessage}
+        closeError={this.closeError}
         openCreateCompany={this.state.createCompanyDialogOpen}
         classifications={this.state.classifications}
         onCancelCreateCompany={this.handleOnCancelCreateCompanyDialog}

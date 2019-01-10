@@ -2,12 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import RequireAuth from "Components/RequireAuth";
-import Company from "Containers/Company";
+import Users from "Containers/ManageUsers";
 
 const CompanyInfo = props => {
   const companyId = parseInt(props.location.pathname.split("/").pop(), 10);
+  const listUsersURL = `${
+    process.env.REACT_APP_COMPANIES_SERVICE_URL
+  }/${companyId}/users`;
 
-  return <Company companyId={companyId} />;
+  return (
+    <Users
+      listUsersURL={listUsersURL}
+      createUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
+      deactivateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
+      activateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
+    />
+  );
 };
 
 CompanyInfo.propTypes = {

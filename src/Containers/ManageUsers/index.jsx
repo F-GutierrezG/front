@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import axios from "axios";
 
 import Create from "@material-ui/icons/Create";
+import Block from "@material-ui/icons/Block";
+import DoneAll from "@material-ui/icons/DoneAll";
 
 import { ActionButton } from "Components/Management";
-
 import UsersWithError from "Components/Users";
 
 class Users extends Component {
@@ -42,12 +44,21 @@ class Users extends Component {
     }
   };
 
+  closeError = () => {
+    this.setState({
+      hasError: false
+    });
+  };
+
   mapUser = user => {
     return {
       id: user.id,
       firstName: user.first_name,
       lastName: user.last_name,
       email: user.email,
+      active: user.active,
+      updated: user.updated,
+      status: user.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
           <ActionButton
@@ -56,15 +67,93 @@ class Users extends Component {
             name="edit"
             icon={<Create />}
           />
+
+          {user.active ? (
+            <ActionButton
+              color="danger"
+              icon={<Block />}
+              onClick={() => this.deactivate(user.id)}
+            />
+          ) : (
+            <ActionButton
+              color="success"
+              icon={<DoneAll />}
+              onClick={() => this.activate(user.id)}
+            />
+          )}
         </div>
       )
     };
   };
 
-  componentDidMount() {
+  deactivate = id => {
     const token = localStorage.getItem("token");
     axios
-      .get(`${process.env.REACT_APP_USERS_SERVICE_URL}`, {
+      .put(
+        `${this.props.deactivateUserURL}/${id}/deactivate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const users = [
+          ...this.state.users.map(user => {
+            if (user.id === id) {
+              return this.mapUser(response.data);
+            } else {
+              return user;
+            }
+          })
+        ];
+
+        this.setState({
+          users: users
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
+      });
+  };
+
+  activate = id => {
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `${this.props.activateUserURL}/${id}/activate`,
+        {},
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const users = this.state.users.map(user => {
+          if (user.id === id) {
+            return this.mapUser(response.data);
+          } else {
+            return user;
+          }
+        });
+
+        this.setState({
+          users: users
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          errorMessage: err.response.statusText
+        });
+      });
+  };
+
+  loadUsers = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get(this.props.listUsersURL, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -80,6 +169,10 @@ class Users extends Component {
           errorMessage: err.response.statusText
         });
       });
+  };
+
+  componentDidMount() {
+    this.loadUsers();
   }
 
   handleCreateUserButton = () => {
@@ -104,73 +197,6 @@ class Users extends Component {
         password: ""
       }
     });
-  };
-
-  handleOnAcceptCreateUserDialog = () => {
-    const user = this.state.newUser;
-
-    if (this.validateCreateUser(user)) {
-      const token = localStorage.getItem("token");
-      axios
-        .post(
-          `${process.env.REACT_APP_USERS_SERVICE_URL}`,
-          {
-            first_name: user.firstName,
-            last_name: user.lastName,
-            email: user.email,
-            password: user.password,
-            admin: true
-          },
-          {
-            headers: { Authorization: "Bearer " + token }
-          }
-        )
-        .then(response => {
-          const users = [...this.state.users];
-          users.push(this.mapUser(response.data));
-          this.setState({
-            users,
-            newUser: {
-              email: "",
-              firstName: "",
-              lastName: "",
-              password: ""
-            }
-          });
-        })
-        .catch(err => {
-          this.setState({
-            hasError: true,
-            errorMessage: err.response.statusText
-          });
-        });
-      this.setState({
-        createUserDialogOpen: false
-      });
-    }
-  };
-
-  validateCreateUser = user => {
-    let firstNameError = false;
-    let lastNameError = false;
-    let emailError = false;
-    let passwordError = false;
-
-    if (user.firstName.trim() === "") firstNameError = true;
-    if (user.lastName.trim() === "") lastNameError = true;
-    if (user.email.trim() === "") emailError = true;
-    if (user.password.trim() === "") passwordError = true;
-
-    this.setState({
-      createUserErrors: {
-        firstName: firstNameError,
-        lastName: lastNameError,
-        email: emailError,
-        password: passwordError
-      }
-    });
-
-    return !(firstNameError || lastNameError || emailError || passwordError);
   };
 
   handleOnChangeCreateUserDialog = (field, evt) => {
@@ -208,6 +234,9 @@ class Users extends Component {
   render() {
     return (
       <UsersWithError
+        hasError={this.state.hasError}
+        errorMessage={this.state.errorMessage}
+        closeError={this.closeError}
         openCreateUser={this.state.createUserDialogOpen}
         createUserErrors={this.state.createUserErrors}
         userCreated={this.state.newUser}
@@ -226,5 +255,11 @@ class Users extends Component {
     );
   }
 }
+
+Users.propTypes = {
+  listUsersURL: PropTypes.string.isRequired,
+  deactivateUserURL: PropTypes.string.isRequired,
+  activateUserURL: PropTypes.string.isRequired
+};
 
 export default Users;
