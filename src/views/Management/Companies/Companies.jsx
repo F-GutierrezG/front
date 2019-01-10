@@ -13,6 +13,7 @@ import CreateCompanyDialog from "./CreateCompanyDialog";
 const columns = [
   { Header: "Rut", accessor: "identifier" },
   { Header: "Razón Social", accessor: "name" },
+  { Header: "Giro", accessor: "classification" },
   { Header: "Estado", accessor: "status" },
   {
     Header: "Acciones",
@@ -38,9 +39,9 @@ const Companies = props => {
         icon={<Business />}
         color="success"
         elements={props.companies}
-        noDataText="No existen Compañías"
+        noDataText="No existen Empresas"
         columns={columns}
-        addButtonText="Crear Compañía"
+        addButtonText="Crear Empresas"
         addButtonIcon={<Add />}
         addButtonColor="success"
         addButtonOnClick={props.onCreateCompanyButton}

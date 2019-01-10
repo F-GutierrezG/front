@@ -40,6 +40,7 @@ class Companies extends Component {
       identifier: company.identifier,
       name: company.name,
       active: company.active,
+      classification: company.classification,
       status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
