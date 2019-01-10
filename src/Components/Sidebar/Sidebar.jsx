@@ -22,6 +22,8 @@ import HeaderLinks from "Components/Header/HeaderLinks.jsx";
 // core components
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
+import avatar from "assets/img/faces/user.png";
+
 var ps;
 
 // We've created this component so we can have a ref to the wrapper of the links that appears in our sidebar.
@@ -138,7 +140,9 @@ class Sidebar extends React.Component {
     const { firstName, lastName } = this.state.user;
     var user = (
       <div className={userWrapperClass}>
-        <div className={photo} />
+        <div className={photo}>
+          <img src={avatar} className={classes.avatarImg} alt="..." />
+        </div>
         <List className={classes.list}>
           <ListItem className={classes.item + " " + classes.userItem}>
             <NavLink
