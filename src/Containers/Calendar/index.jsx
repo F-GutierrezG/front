@@ -2,7 +2,7 @@ import React from "react";
 
 import axios from "axios";
 
-import CalendarWithErrors from "views/Calendar/Calendar";
+import CalendarWithErrors from "Components/Calendar";
 
 const socialNetworks = [
   { id: "FACEBOOK", name: "Facebook" },

@@ -6,8 +6,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
-import PagesHeader from "components/Header/PagesHeader.jsx";
-import Footer from "components/Footer/Footer.jsx";
+import PagesHeader from "Components/Header/PagesHeader.jsx";
+import Footer from "Components/Footer/Footer.jsx";
 
 import pagesRoutes from "routes/pages.jsx";
 

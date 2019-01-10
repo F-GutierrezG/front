@@ -17,7 +17,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Collapse from "@material-ui/core/Collapse";
 import Icon from "@material-ui/core/Icon";
 
-import HeaderLinks from "components/Header/HeaderLinks.jsx";
+import HeaderLinks from "Components/Header/HeaderLinks.jsx";
 
 // core components
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";

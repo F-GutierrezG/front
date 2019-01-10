@@ -6,8 +6,8 @@ import cx from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem";
+import GridContainer from "Components/Grid/GridContainer.jsx";
+import GridItem from "Components/Grid/GridItem";
 
 import instructionStyle from "assets/jss/material-dashboard-pro-react/components/instructionStyle.jsx";
 

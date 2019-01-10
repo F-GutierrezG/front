@@ -1,7 +1,7 @@
 import Publications from "Pages/Publications";
-import Users from "views/Management/Users";
-import Companies from "views/Management/Companies";
-import Company from "views/Company";
+import Users from "Pages/ManageUsers";
+import Companies from "Pages/ManageCompanies";
+import Company from "Pages/CompanyInfo";
 
 // @material-ui/icons
 // import ContentPaste from "@material-ui/icons/ContentPaste";

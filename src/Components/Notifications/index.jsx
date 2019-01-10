@@ -21,7 +21,7 @@ import Popper from "@material-ui/core/Popper";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
 // core components
-import Button from "components/CustomButtons/Button.jsx";
+import Button from "Components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 

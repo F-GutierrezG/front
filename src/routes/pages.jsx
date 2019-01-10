@@ -1,4 +1,4 @@
-import LoginPage from "views/Pages/LoginPage.jsx";
+import LoginPage from "Pages/Login.jsx";
 
 // @material-ui/icons
 import Fingerprint from "@material-ui/icons/Fingerprint";

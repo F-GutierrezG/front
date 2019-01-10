@@ -10,7 +10,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 
 // core components
-import Button from "components/CustomButtons/Button";
+import Button from "Components/CustomButtons/Button";
 
 import pagesHeaderStyle from "assets/jss/material-dashboard-pro-react/components/pagesHeaderStyle.jsx";
 

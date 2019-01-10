@@ -1,6 +1,6 @@
 import React from "react";
 
-import RequireAuth from "components/RequireAuth";
+import RequireAuth from "Components/RequireAuth";
 import Calendar from "Containers/Calendar";
 
 const Publications = () => {
