@@ -18,6 +18,9 @@ export default function(WrappedComponent) {
           .get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/status`, {
             headers: { Authorization: "Bearer " + token }
           })
+          .then(response => {
+            localStorage.setItem("user", JSON.stringify(response.data));
+          })
           .catch(() => {
             localStorage.clear();
             this.setState({ validUser: false });
