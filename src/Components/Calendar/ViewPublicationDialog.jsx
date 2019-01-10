@@ -25,41 +25,45 @@ const ViewPublicationDialog = props => {
       <DialogContent>
         <GridContainer>
           {!props.rejecting && (
+            <GridItem xs={6}>
+              <CustomInput
+                labelText="Fecha"
+                formControlProps={{
+                  fullWidth: true,
+                  margin: "dense"
+                }}
+                labelProps={{
+                  shrink: true
+                }}
+                inputProps={{
+                  type: "date",
+                  value: props.publication.date,
+                  disabled: true
+                }}
+              />
+            </GridItem>
+          )}
+          {!props.rejecting && (
+            <GridItem xs={6}>
+              <CustomInput
+                labelText="Hora"
+                formControlProps={{
+                  fullWidth: true,
+                  margin: "dense"
+                }}
+                labelProps={{
+                  shrink: true
+                }}
+                inputProps={{
+                  type: "time",
+                  value: props.publication.time,
+                  disabled: true
+                }}
+              />
+            </GridItem>
+          )}
+          {!props.rejecting && (
             <div>
-              <GridItem xs={6}>
-                <CustomInput
-                  labelText="Fecha"
-                  formControlProps={{
-                    fullWidth: true,
-                    margin: "dense"
-                  }}
-                  labelProps={{
-                    shrink: true
-                  }}
-                  inputProps={{
-                    type: "date",
-                    value: props.publication.date,
-                    disabled: true
-                  }}
-                />
-              </GridItem>
-              <GridItem xs={6}>
-                <CustomInput
-                  labelText="Hora"
-                  formControlProps={{
-                    fullWidth: true,
-                    margin: "dense"
-                  }}
-                  labelProps={{
-                    shrink: true
-                  }}
-                  inputProps={{
-                    type: "time",
-                    value: props.publication.time,
-                    disabled: true
-                  }}
-                />
-              </GridItem>
               <GridItem xs={12}>
                 <CustomInput
                   labelText="Título"
@@ -134,7 +138,7 @@ const ViewPublicationDialog = props => {
                   margin: "dense"
                 }}
                 inputProps={{
-                  type: "title",
+                  type: "text",
                   value: props.rejectReason,
                   onChange: event => props.onChangeReject(event)
                 }}

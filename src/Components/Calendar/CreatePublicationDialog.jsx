@@ -74,7 +74,7 @@ const AddEventDialog = props => {
                 margin: "dense"
               }}
               inputProps={{
-                type: "title",
+                type: "text",
                 value: props.publication.title,
                 onChange: event => props.onChange("title", event)
               }}
