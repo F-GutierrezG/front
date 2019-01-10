@@ -165,8 +165,7 @@ class Company extends Component {
   };
 
   componentDidMount() {
-    const companyId = this.props.location.pathname.split("/").pop();
-    this.loadUsers(companyId);
+    this.loadUsers(this.props.companyId);
   }
 
   handleCreateUserButton = () => {
@@ -254,7 +253,7 @@ class Company extends Component {
 }
 
 Company.propTypes = {
-  company_id: PropTypes.number.isRequired
+  companyId: PropTypes.number.isRequired
 };
 
 export default withStyles(companyStyle)(Company);
