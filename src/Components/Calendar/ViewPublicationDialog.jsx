@@ -76,7 +76,7 @@ const ViewPublicationDialog = props => {
                   }}
                   inputProps={{
                     type: "text",
-                    value: props.publication.title,
+                    value: props.publication.realTitle,
                     disabled: true
                   }}
                 />

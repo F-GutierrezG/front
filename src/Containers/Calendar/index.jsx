@@ -11,7 +11,7 @@ const socialNetworks = [
   { id: "TWITTER", name: "Twitter" },
   { id: "YOUTUBE", name: "YouTube" },
   { id: "PINTEREST", name: "Pinterest" },
-  { id: "GOOGLEPLUS", name: "Google+" }
+  { id: "GOOGLE", name: "Google+" }
 ];
 
 class Calendar extends React.Component {
@@ -78,7 +78,7 @@ class Calendar extends React.Component {
 
   mapToPublication = event => {
     const publication = { ...event };
-    publication.socialNetworks = event.social_networks;
+    publication.socialNetworks = event.socialNetworks;
     return publication;
   };
 
@@ -185,14 +185,31 @@ class Calendar extends React.Component {
 
     const color = this.getEventColor(publication.status);
 
+    const title = (
+      <div>
+        <div>
+          {publication.social_networks.map((socialNetwork, key) => {
+            return (
+              <span key={key}>
+                &nbsp;
+                <i className={`fab fa-${socialNetwork.toLowerCase()}`} />
+              </span>
+            );
+          })}
+        </div>
+        {publication.title}
+      </div>
+    );
+
     return {
       id: publication.id,
-      title: publication.title,
+      title: title,
+      realTitle: publication.title,
       date: publication.date,
       time: publication.time,
       message: publication.message,
       image: publication.image_url,
-      social_networks: publication.social_networks,
+      socialNetworks: publication.social_networks,
       start: date,
       end: date,
       color: color
