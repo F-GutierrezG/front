@@ -36,11 +36,11 @@ const ViewPublicationDialog = props => {
         >
           <Create
             style={{ color: "#9c27b0" }}
-            onClick={() => alert("Editar")}
+            onClick={props.onEdit}
           />
           <Delete
             style={{ color: "#f44336" }}
-            onClick={() => alert("Eliminar")}
+            onClick={props.onDelete}
           />
         </span>
       </DialogTitle>

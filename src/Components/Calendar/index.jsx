@@ -17,9 +17,11 @@ import CardBody from "Components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
-import CreatePublicationDialog from "./CreatePublicationDialog";
 import ViewPublicationDialog from "./ViewPublicationDialog";
+import CreatePublicationDialog from "./CreatePublicationDialog";
+import EditPublicationDialog from "./EditPublicationDialog";
 import RejectPublicationDialog from "./RejectPublicationDialog";
+import DeletePublicationDialog from "./DeletePublicationDialog";
 
 import withErrors from "Components/withErrors";
 
@@ -63,6 +65,21 @@ const Calendar = props => {
         rejecting={props.rejecting}
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
+        onEdit={props.onEditPublication}
+        onDelete={props.onDeletePublication}
+      />
+      <EditPublicationDialog
+        open={props.openEditPublication}
+        publication={props.selectedPublication}
+        errors={props.editPublicationErrors}
+        socialNetworks={props.socialNetworks}
+        onCancel={props.onCancelEdit}
+        onAccept={props.onAcceptEdit}
+      />
+      <DeletePublicationDialog
+        open={props.openDeletePublication}
+        onCancel={props.onCancelDelete}
+        onAccept={props.onAcceptDelete}
       />
       <RejectPublicationDialog
         open={props.rejecting}
@@ -97,6 +114,8 @@ const Calendar = props => {
 
 Calendar.propTypes = {
   openCreatePublication: PropTypes.bool.isRequired,
+  openEditPublication: PropTypes.bool.isRequired,
+  openDeletePublication: PropTypes.bool.isRequired,
   createPublication: PropTypes.object.isRequired,
   createPublicationErrors: PropTypes.object.isRequired,
   socialNetworks: PropTypes.array.isRequired,
@@ -109,6 +128,8 @@ Calendar.propTypes = {
   onCloseViewPublication: PropTypes.func.isRequired,
   onRejectViewPublication: PropTypes.func.isRequired,
   onAcceptViewPublication: PropTypes.func.isRequired,
+  onEditPublication: PropTypes.func.isRequired,
+  onDeletePublication: PropTypes.func.isRequired,
   onCancelRejectViewPublication: PropTypes.func.isRequired,
   onAcceptRejectViewPublication: PropTypes.func.isRequired,
   events: PropTypes.array.isRequired,

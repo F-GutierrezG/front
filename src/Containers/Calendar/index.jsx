@@ -20,6 +20,8 @@ class Calendar extends React.Component {
     error: "",
     openCreatePublication: false,
     openViewPublication: false,
+    openEditPublication: false,
+    openDeletePublication: false,
     publication: {
       date: "",
       time: "",
@@ -400,6 +402,32 @@ class Calendar extends React.Component {
     this.setState({ rejectReason: event.target.value });
   };
 
+  handleOnEdit = () => {
+    this.setState({
+      openViewPublication: false,
+      openEditPublication: true
+    });
+  };
+
+  handleOnCancelEdit = () => {
+    this.setState({
+      openEditPublication: false
+    });
+  };
+
+  handleOnDelete = () => {
+    this.setState({
+      openViewPublication: false,
+      openDeletePublication: true
+    });
+  };
+
+  handleOnCancelDelete = () => {
+    this.setState({
+      openDeletePublication: false
+    });
+  };
+
   render() {
     return (
       <CalendarWithErrors
@@ -407,18 +435,28 @@ class Calendar extends React.Component {
         error={this.state.error}
         closeError={this.closeError}
         openCreatePublication={this.state.openCreatePublication}
+        openViewPublication={this.state.openViewPublication}
+        openEditPublication={this.state.openEditPublication}
+        openDeletePublication={this.state.openDeletePublication}
         createPublication={this.state.publication}
         createPublicationErrors={this.state.publicationErrors}
         socialNetworks={socialNetworks}
         onChangeCreate={this.handleChangeValue}
         onCancelCreate={this.handleOnCancel}
         onAcceptCreate={this.handleOnAcceptCreate}
+        onChangeEdit={this.handleEditChangeValue}
+        onCancelEdit={this.handleOnCancelEdit}
+        onAcceptEdit={this.handleOnAcceptEdit}
+        onCancelDelete={this.handleOnCancelDelete}
+        onAcceptDelete={this.handleOnAcceptDelete}
         buttonsDisabled={this.state.publicationButtonsDisabled}
-        openViewPublication={this.state.openViewPublication}
         selectedPublication={this.state.selectedPublication}
         onCloseViewPublication={this.handleOnClose}
         onRejectViewPublication={this.handleOnReject}
         onAcceptViewPublication={this.handleOnAccept}
+        onEditPublication={this.handleOnEdit}
+        editPublicationErrors={this.state.publicationErrors}
+        onDeletePublication={this.handleOnDelete}
         onCancelRejectViewPublication={this.handleOnCancelReject}
         onAcceptRejectViewPublication={this.handleOnAcceptReject}
         onSelectEvent={this.selectedEvent}
