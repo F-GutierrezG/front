@@ -79,6 +79,7 @@ class Calendar extends React.Component {
   mapToPublication = event => {
     const publication = { ...event };
     publication.socialNetworks = event.socialNetworks;
+    publication.title = event.realTitle;
     return publication;
   };
 

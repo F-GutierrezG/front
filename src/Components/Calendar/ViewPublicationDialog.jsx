@@ -92,7 +92,7 @@ const ViewPublicationDialog = props => {
               }}
               inputProps={{
                 type: "text",
-                value: props.publication.realTitle,
+                value: props.publication.title,
                 disabled: true
               }}
             />
@@ -165,7 +165,6 @@ ViewPublicationDialog.propTypes = {
     date: PropTypes.string,
     time: PropTypes.string,
     title: PropTypes.string,
-    realTitle: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
     image: PropTypes.string

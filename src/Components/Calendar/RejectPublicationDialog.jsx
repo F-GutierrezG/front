@@ -50,23 +50,9 @@ const RejectPublicationDialog = props => {
 };
 
 RejectPublicationDialog.propTypes = {
-  classes: PropTypes.object,
   open: PropTypes.bool.isRequired,
-  publication: PropTypes.shape({
-    date: PropTypes.string,
-    time: PropTypes.string,
-    title: PropTypes.string,
-    socialNetworks: PropTypes.array,
-    message: PropTypes.string,
-    image: PropTypes.string
-  }).isRequired,
-  onClose: PropTypes.func.isRequired,
-  onReject: PropTypes.func,
-  onAccept: PropTypes.func,
   onCancelReject: PropTypes.func,
   onAcceptReject: PropTypes.func,
-  socialNetworks: PropTypes.array.isRequired,
-  rejecting: PropTypes.bool.isRequired,
   onChangeReject: PropTypes.func.isRequired,
   rejectReason: PropTypes.string.isRequired
 };
