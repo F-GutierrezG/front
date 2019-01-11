@@ -298,7 +298,10 @@ class Calendar extends React.Component {
   };
 
   handleOnReject = () => {
-    this.setState({ rejecting: true });
+    this.setState({
+      rejecting: true,
+      openViewPublication: false
+    });
   };
 
   handleOnAccept = () => {
@@ -344,7 +347,8 @@ class Calendar extends React.Component {
   handleOnCancelReject = () => {
     this.setState({
       rejecting: false,
-      rejectReason: ""
+      rejectReason: "",
+      openViewPublication: true
     });
   };
 

@@ -39,149 +39,113 @@ const ViewPublicationDialog = props => {
       </DialogTitle>
       <DialogContent>
         <GridContainer>
-          {!props.rejecting && (
-            <GridItem xs={6}>
-              <CustomInput
-                labelText="Fecha"
-                formControlProps={{
-                  fullWidth: true,
-                  margin: "dense"
-                }}
-                labelProps={{
-                  shrink: true
-                }}
-                inputProps={{
-                  type: "date",
-                  value: props.publication.date,
-                  disabled: true
-                }}
-              />
-            </GridItem>
-          )}
-          {!props.rejecting && (
-            <GridItem xs={6}>
-              <CustomInput
-                labelText="Hora"
-                formControlProps={{
-                  fullWidth: true,
-                  margin: "dense"
-                }}
-                labelProps={{
-                  shrink: true
-                }}
-                inputProps={{
-                  type: "time",
-                  value: props.publication.time,
-                  disabled: true
-                }}
-              />
-            </GridItem>
-          )}
-          {!props.rejecting && (
-            <div>
-              <GridItem xs={12}>
-                <CustomInput
-                  labelText="Título"
-                  formControlProps={{
-                    fullWidth: true,
-                    margin: "dense"
-                  }}
-                  labelProps={{
-                    shrink: true
-                  }}
-                  inputProps={{
-                    type: "text",
-                    value: props.publication.realTitle,
-                    disabled: true
-                  }}
-                />
-              </GridItem>
-              <GridItem xs={12}>
-                <CustomInput
-                  labelText="Redes Sociales"
-                  formControlProps={{
-                    fullWidth: true,
-                    margin: "dense"
-                  }}
-                  labelProps={{
-                    shrink: true
-                  }}
-                  inputProps={{
-                    type: "text",
-                    value: props.publication.socialNetworks
-                      .map(network => {
-                        return props.socialNetworks.find(options => {
-                          return options.id === network;
-                        }).name;
-                      })
-                      .join(", "),
-                    disabled: true
-                  }}
-                />
-              </GridItem>
-              <GridItem xs={12}>
-                <CustomInput
-                  labelText="Mensaje"
-                  formControlProps={{
-                    fullWidth: true,
-                    margin: "dense"
-                  }}
-                  inputProps={{
-                    multiline: true,
-                    value: props.publication.message,
-                    disabled: true
-                  }}
-                />
-              </GridItem>
-              <GridItem xs={12} className={classes.publicationImageContainer}>
-                <a
-                  href={props.publication.image}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {props.publication.image}
-                </a>
-              </GridItem>
-            </div>
-          )}
-          {props.rejecting && (
-            <GridItem xs={12}>
-              <CustomInput
-                labelText="Motivo de Rechazo"
-                formControlProps={{
-                  fullWidth: true,
-                  margin: "dense"
-                }}
-                inputProps={{
-                  type: "text",
-                  value: props.rejectReason,
-                  onChange: event => props.onChangeReject(event)
-                }}
-              />
-            </GridItem>
-          )}
+          <GridItem xs={6}>
+            <CustomInput
+              labelText="Fecha"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "date",
+                value: props.publication.date,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={6}>
+            <CustomInput
+              labelText="Hora"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "time",
+                value: props.publication.time,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Título"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.realTitle,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Redes Sociales"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.socialNetworks
+                  .map(network => {
+                    return props.socialNetworks.find(options => {
+                      return options.id === network;
+                    }).name;
+                  })
+                  .join(", "),
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Mensaje"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                multiline: true,
+                value: props.publication.message,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12} className={classes.publicationImageContainer}>
+            <a
+              href={props.publication.image}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.publication.image}
+            </a>
+          </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
-        {!props.rejecting && (
-          <div>
-            <Button onClick={props.onClose}>Cerrar</Button>
-            <Button onClick={props.onReject} color="danger">
-              Rechazar
-            </Button>
-            <Button onClick={props.onAccept} color="success">
-              Aceptar
-            </Button>
-          </div>
-        )}
-        {props.rejecting && (
-          <div>
-            <Button onClick={props.onCancelReject}>Cancelar</Button>
-            <Button onClick={props.onAcceptReject} color="danger">
-              Rechazar
-            </Button>
-          </div>
-        )}
+        <Button onClick={props.onClose}>Cerrar</Button>
+        <Button onClick={props.onReject} color="danger">
+          Rechazar
+        </Button>
+        <Button onClick={props.onAccept} color="success">
+          Aceptar
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -194,6 +158,7 @@ ViewPublicationDialog.propTypes = {
     date: PropTypes.string,
     time: PropTypes.string,
     title: PropTypes.string,
+    realTitle: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
     image: PropTypes.string

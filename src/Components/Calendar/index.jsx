@@ -19,6 +19,7 @@ import buttonStyle from "assets/jss/material-dashboard-pro-react/components/butt
 
 import CreatePublicationDialog from "./CreatePublicationDialog";
 import ViewPublicationDialog from "./ViewPublicationDialog";
+import RejectPublicationDialog from "./RejectPublicationDialog";
 
 import withErrors from "Components/withErrors";
 
@@ -60,6 +61,13 @@ const Calendar = props => {
         onCancelReject={props.onCancelRejectViewPublication}
         onAcceptReject={props.onAcceptRejectViewPublication}
         rejecting={props.rejecting}
+        onChangeReject={props.onChangeReject}
+        rejectReason={props.rejectReason}
+      />
+      <RejectPublicationDialog
+        open={props.rejecting}
+        onCancelReject={props.onCancelRejectViewPublication}
+        onAcceptReject={props.onAcceptRejectViewPublication}
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
       />
