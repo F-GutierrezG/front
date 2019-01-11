@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import Create from "@material-ui/icons/Create";
+import Delete from "@material-ui/icons/Delete";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -24,18 +25,24 @@ const ViewPublicationDialog = props => {
   return (
     <Dialog open={props.open} styles={{ overflow: "visible" }}>
       <DialogTitle>
-        <div>
-          Publicación
+        Publicación
+        <span
+          style={{
+            position: "absolute",
+            right: "15px",
+            color: "#9c27b0",
+            cursor: "pointer"
+          }}
+        >
           <Create
-            style={{
-              position: "absolute",
-              right: "15px",
-              color: "#9c27b0",
-              cursor: "pointer"
-            }}
+            style={{ color: "#9c27b0" }}
             onClick={() => alert("Editar")}
           />
-        </div>
+          <Delete
+            style={{ color: "#f44336" }}
+            onClick={() => alert("Eliminar")}
+          />
+        </span>
       </DialogTitle>
       <DialogContent>
         <GridContainer>
