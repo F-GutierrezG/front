@@ -34,14 +34,8 @@ const ViewPublicationDialog = props => {
             cursor: "pointer"
           }}
         >
-          <Create
-            style={{ color: "#9c27b0" }}
-            onClick={props.onEdit}
-          />
-          <Delete
-            style={{ color: "#f44336" }}
-            onClick={props.onDelete}
-          />
+          <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
+          <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
         </span>
       </DialogTitle>
       <DialogContent>
