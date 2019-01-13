@@ -9,11 +9,12 @@ import withErrors from "Components/withErrors";
 import Management from "Components/Management";
 
 import CreateCompanyDialog from "./CreateCompanyDialog";
+import EditCompanyDialog from "./EditCompanyDialog";
 
 const columns = [
   { Header: "Rut", accessor: "identifier" },
   { Header: "Razón Social", accessor: "name" },
-  { Header: "Giro", accessor: "classification" },
+  { Header: "Giro", accessor: "classificationName" },
   { Header: "Estado", accessor: "status" },
   {
     Header: "Acciones",
@@ -34,6 +35,15 @@ const Companies = props => {
         handleOnChange={props.onChangeCreateCompany}
         company={props.companyCreated}
         errors={props.createCompanyErrors}
+      />
+      <EditCompanyDialog
+        open={props.openEditCompany}
+        classifications={props.classifications}
+        onCancel={props.onCancelEditCompany}
+        onAccept={props.onAcceptEditCompany}
+        handleOnChange={props.onEditCompaniChange}
+        company={props.selectedCompany}
+        errors=""
       />
       <Management
         icon={<Business />}

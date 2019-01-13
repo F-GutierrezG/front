@@ -226,9 +226,42 @@ class Users extends Component {
   };
 
   handleOnAcceptEditUserDialog = () => {
-    this.setState({
-      editUserDialogOpen: false
-    });
+    const id = this.state.selectedUser.id;
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `${process.env.REACT_APP_USERS_SERVICE_URL}/${id}`,
+        {
+          email: this.state.selectedUser.email,
+          first_name: this.state.selectedUser.firstName,
+          last_name: this.state.selectedUser.lastName
+        },
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const users = [
+          ...this.state.users.map(user => {
+            if (user.id === id) {
+              return this.mapUser(response.data);
+            } else {
+              return user;
+            }
+          })
+        ];
+
+        this.setState({
+          users: users,
+          editUserDialogOpen: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
   };
 
   handleOnAcceptCreateUserDialog = () => {

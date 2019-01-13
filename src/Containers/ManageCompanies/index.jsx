@@ -20,12 +20,18 @@ class Companies extends Component {
     companies: [],
     classifications: [],
     createCompanyDialogOpen: false,
+    editCompanyDialogOpen: false,
     createCompanyErrors: {
       identifier: null,
       name: null,
       classification: null
     },
     newCompany: {
+      identifier: "",
+      name: "",
+      classification: ""
+    },
+    selectedCompany: {
       identifier: "",
       name: "",
       classification: ""
@@ -38,7 +44,8 @@ class Companies extends Component {
       identifier: company.identifier,
       name: company.name,
       active: company.active,
-      classification: company.classification,
+      classificationId: company.classification.id,
+      classificationName: company.classification.name,
       status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
@@ -50,7 +57,14 @@ class Companies extends Component {
           >
             <ActionButton color="info" name="view" icon={<People />} />
           </Link>
-          <ActionButton color="primary" name="edit" icon={<Create />} />
+
+          <ActionButton
+            onClick={() => this.handleOnEditCompanyClick(company.id)}
+            color="primary"
+            name="edit"
+            icon={<Create />}
+          />
+
           {company.active ? (
             <ActionButton
               color="danger"
@@ -212,6 +226,65 @@ class Companies extends Component {
     });
   };
 
+  handleOnChangeEditCompanyDialog = (field, evt) => {
+    const selectedCompany = { ...this.state.selectedCompany };
+    selectedCompany[field] = evt.target.value;
+    this.setState({ selectedCompany });
+  };
+
+  handleOnEditCompanyClick = id => {
+    const company = this.state.companies.find(company => company.id === id);
+    this.setState({
+      selectedCompany: company,
+      editCompanyDialogOpen: true
+    });
+  };
+
+  handleOnCancelEditCompanyDialog = () => {
+    this.setState({
+      editCompanyDialogOpen: false
+    });
+  };
+
+  handleOnAcceptEditCompanyDialog = () => {
+    const id = this.state.selectedCompany.id;
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}`,
+        {
+          identifier: this.state.selectedCompany.identifier,
+          name: this.state.selectedCompany.name,
+          classification_id: this.state.selectedCompany.classificationId
+        },
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const companies = [
+          ...this.state.companies.map(company => {
+            if (company.id === id) {
+              return this.mapCompany(response.data);
+            } else {
+              return company;
+            }
+          })
+        ];
+
+        this.setState({
+          companies: companies,
+          editCompanyDialogOpen: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  };
+
   handleOnAcceptCreateCompanyDialog = () => {
     const company = this.state.newCompany;
 
@@ -291,6 +364,11 @@ class Companies extends Component {
         createCompanyErrors={this.state.createCompanyErrors}
         companies={this.state.companies}
         onCreateCompanyButton={this.handleCreateCompanyButton}
+        openEditCompany={this.state.editCompanyDialogOpen}
+        onCancelEditCompany={this.handleOnCancelEditCompanyDialog}
+        selectedCompany={this.state.selectedCompany}
+        onEditCompaniChange={this.handleOnChangeEditCompanyDialog}
+        onAcceptEditCompany={this.handleOnAcceptEditCompanyDialog}
       />
     );
   }
