@@ -231,6 +231,76 @@ class Users extends Component {
     });
   };
 
+  handleOnAcceptCreateUserDialog = () => {
+    const user = this.state.newUser;
+
+    if (this.validateCreateUser(user)) {
+      const token = localStorage.getItem("token");
+      axios
+        .post(
+          this.props.createUserURL,
+          {
+            email: user.email,
+            first_name: user.firstName,
+            last_name: user.lastName,
+            password: user.password
+          },
+          {
+            headers: { Authorization: "Bearer " + token }
+          }
+        )
+        .then(response => {
+          const users = [...this.state.users];
+          users.push(this.mapUser(response.data));
+          this.setState({
+            users,
+            createUserErrors: {
+              email: null,
+              firstName: null,
+              lastName: null,
+              password: null
+            },
+            newUser: {
+              mail: "",
+              firstName: "",
+              lastName: "",
+              password: ""
+            },
+            createUserDialogOpen: false
+          });
+        })
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err
+          });
+        });
+    }
+  };
+
+  validateCreateUser = user => {
+    let emailError = false;
+    let firstNameError = false;
+    let lastNameError = false;
+    let passwordError = false;
+
+    if (user.email.trim() === "") emailError = true;
+    if (user.firstName.trim() === "") firstNameError = true;
+    if (user.lastName.trim() === "") lastNameError = true;
+    if (user.password.trim() === "") passwordError = true;
+
+    this.setState({
+      createUserErrors: {
+        email: emailError,
+        firstName: firstNameError,
+        lastName: lastNameError,
+        password: passwordError
+      }
+    });
+
+    return !(emailError || firstNameError || lastNameError);
+  };
+
   render() {
     return (
       <UsersWithError
@@ -259,7 +329,8 @@ class Users extends Component {
 Users.propTypes = {
   listUsersURL: PropTypes.string.isRequired,
   deactivateUserURL: PropTypes.string.isRequired,
-  activateUserURL: PropTypes.string.isRequired
+  activateUserURL: PropTypes.string.isRequired,
+  createUserURL: PropTypes.string.isRerequired
 };
 
 export default Users;
