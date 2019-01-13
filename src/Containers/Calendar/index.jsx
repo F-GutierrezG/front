@@ -19,6 +19,7 @@ class Calendar extends React.Component {
     hasError: false,
     error: "",
     openCreatePublication: false,
+    openLinkPublication: false,
     openViewPublication: false,
     openEditPublication: false,
     openDeletePublication: false,
@@ -40,7 +41,9 @@ class Calendar extends React.Component {
       socialNetworks: [],
       message: "",
       additional: "",
-      image: ""
+      image: "",
+      file: {},
+      status: ""
     },
     publicationErrors: {
       date: false,
@@ -51,10 +54,14 @@ class Calendar extends React.Component {
       additional: false,
       image: false
     },
+    linkErrors: {
+      link: false
+    },
     events: [],
     publicationButtonsDisabled: false,
     rejecting: false,
-    rejectReason: ""
+    rejectReason: "",
+    link: ""
   };
 
   closeError = () => {
@@ -82,6 +89,8 @@ class Calendar extends React.Component {
     const publication = { ...event };
     publication.socialNetworks = event.socialNetworks;
     publication.title = event.realTitle;
+    publication.imageUrl = event.image;
+    publication.image = "";
     return publication;
   };
 
@@ -135,7 +144,7 @@ class Calendar extends React.Component {
         socialNetworks: [],
         message: "",
         additional: "",
-        image: []
+        image: ""
       },
       publicationErrors: {
         date: false,
@@ -213,6 +222,7 @@ class Calendar extends React.Component {
       message: publication.message,
       image: publication.image_url,
       socialNetworks: publication.social_networks,
+      status: publication.status,
       start: date,
       end: date,
       color: color
@@ -254,7 +264,7 @@ class Calendar extends React.Component {
             socialNetworks: [],
             message: "",
             additional: "",
-            image: []
+            image: ""
           },
           publicationButtonsDisabled: false
         });
@@ -290,6 +300,7 @@ class Calendar extends React.Component {
     };
 
     updatedEvent.color = this.getEventColor(status);
+    updatedEvent.status = status;
 
     return this.state.events.map(event => {
       if (event.id === this.state.selectedPublication.id) {
@@ -335,7 +346,8 @@ class Calendar extends React.Component {
             socialNetworks: [],
             message: "",
             additional: "",
-            image: ""
+            image: "",
+            status: ""
           }
         });
       })
@@ -386,7 +398,9 @@ class Calendar extends React.Component {
             socialNetworks: [],
             message: "",
             additional: "",
-            image: ""
+            image: "",
+            file: {},
+            status: ""
           }
         });
       })
@@ -428,12 +442,199 @@ class Calendar extends React.Component {
     });
   };
 
+  handleOnAcceptDelete = () => {
+    this.setState({ publicationButtonsDisabled: true });
+
+    const token = localStorage.getItem("token");
+
+    axios
+      .delete(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }`,
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      )
+      .then(() => {
+        this.setState({
+          events: this.state.events.map(
+            event => event.id !== this.state.selectedPublication.id
+          ),
+          openDeletePublication: false,
+          selectedPublication: {
+            id: 0,
+            date: "",
+            time: "",
+            title: "",
+            socialNetworks: [],
+            message: "",
+            additional: "",
+            image: "",
+            file: {},
+            status: ""
+          },
+          publicationButtonsDisabled: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err,
+          publicationButtonsDisabled: false
+        });
+      });
+  };
+
+  handleOnAcceptEdit = () => {
+    this.setState({
+      publicationButtonsDisabled: true
+    });
+
+    const token = localStorage.getItem("token");
+    const publication = this.state.selectedPublication;
+
+    const formData = new FormData();
+    formData.append("date", publication.date);
+    formData.append("time", publication.time);
+    formData.append("title", publication.title);
+    formData.append("social_networks", publication.socialNetworks);
+    formData.append("message", publication.message);
+    formData.append("additional", publication.additional);
+    formData.append("image", publication.file);
+
+    axios
+      .put(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          publication.id
+        }`,
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      )
+      .then(response => {
+        const updatedEvent = this.mapToEvent(response.data);
+        const events = this.state.events.map(event => {
+          if (event.id === updatedEvent.id) {
+            return updatedEvent;
+          } else {
+            return event;
+          }
+        });
+        this.setState({
+          events: events,
+          openEditPublication: false,
+          selectedPublication: {
+            id: 0,
+            date: "",
+            time: "",
+            title: "",
+            socialNetworks: [],
+            message: "",
+            additional: "",
+            image: "",
+            file: {}
+          },
+          publicationButtonsDisabled: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err,
+          publicationButtonsDisabled: false
+        });
+      });
+  };
+
+  handleEditChangeValue = (field, event) => {
+    const files = event.target.files;
+    const publication = { ...this.state.selectedPublication };
+    if (files) {
+      publication["file"] = event.target.files[0];
+    }
+    publication[field] = event.target.value;
+    this.setState({ selectedPublication: publication });
+  };
+
+  handleOnLink = () => {
+    this.setState({
+      openViewPublication: false,
+      openLinkPublication: true
+    });
+  };
+
+  handleChangeLink = event => {
+    this.setState({
+      link: event.target.value
+    });
+  };
+
+  handleOnCancelLink = () => {
+    this.setState({
+      openLinkPublication: false,
+      link: ""
+    });
+  };
+
+  handleOnAcceptLink = () => {
+    this.setState({
+      publicationButtonsDisabled: true
+    });
+
+    const token = localStorage.getItem("token");
+
+    axios
+      .put(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }/link`,
+        {
+          link: this.state.link
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      )
+      .then(response => {
+        const updatedPublication = response.data;
+        this.setState({
+          events: this.state.events.map(event => {
+            if (event.id === updatedPublication.id) {
+              return this.mapToEvent(updatedPublication);
+            } else {
+              return event;
+            }
+          }),
+          openLinkPublication: false,
+          publicationButtonsDisabled: false,
+          link: ""
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err,
+          publicationButtonsDisabled: false
+        });
+      });
+  };
+
   render() {
     return (
       <CalendarWithErrors
         hasError={this.state.hasError}
         error={this.state.error}
         closeError={this.closeError}
+        openLinkPublication={this.state.openLinkPublication}
         openCreatePublication={this.state.openCreatePublication}
         openViewPublication={this.state.openViewPublication}
         openEditPublication={this.state.openEditPublication}
@@ -454,7 +655,9 @@ class Calendar extends React.Component {
         onCloseViewPublication={this.handleOnClose}
         onRejectViewPublication={this.handleOnReject}
         onAcceptViewPublication={this.handleOnAccept}
+        onLinkPublication={this.handleOnLink}
         onEditPublication={this.handleOnEdit}
+        linkPublicationErrors={this.state.linkErrors}
         editPublicationErrors={this.state.publicationErrors}
         onDeletePublication={this.handleOnDelete}
         onCancelRejectViewPublication={this.handleOnCancelReject}
@@ -466,6 +669,10 @@ class Calendar extends React.Component {
         rejecting={this.state.rejecting}
         onChangeReject={this.handleChangeRejectReason}
         rejectReason={this.state.rejectReason}
+        onChangeLink={this.handleChangeLink}
+        link={this.state.link}
+        onCancelLink={this.handleOnCancelLink}
+        onAcceptLink={this.handleOnAcceptLink}
       />
     );
   }

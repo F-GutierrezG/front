@@ -17,6 +17,7 @@ import CardBody from "Components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
+import LinkPublicationDialog from "./LinkPublicationDialog";
 import ViewPublicationDialog from "./ViewPublicationDialog";
 import CreatePublicationDialog from "./CreatePublicationDialog";
 import EditPublicationDialog from "./EditPublicationDialog";
@@ -43,6 +44,15 @@ const messages = {
 const Calendar = props => {
   return (
     <div>
+      <LinkPublicationDialog
+        open={props.openLinkPublication}
+        link={props.link}
+        errors={props.linkPublicationErrors}
+        onChange={props.onChangeLink}
+        buttonsDisabled={props.buttonsDisabled}
+        onCancel={props.onCancelLink}
+        onAccept={props.onAcceptLink}
+      />
       <CreatePublicationDialog
         open={props.openCreatePublication}
         publication={props.createPublication}
@@ -65,6 +75,7 @@ const Calendar = props => {
         rejecting={props.rejecting}
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
+        onLink={props.onLinkPublication}
         onEdit={props.onEditPublication}
         onDelete={props.onDeletePublication}
       />
@@ -75,11 +86,14 @@ const Calendar = props => {
         socialNetworks={props.socialNetworks}
         onCancel={props.onCancelEdit}
         onAccept={props.onAcceptEdit}
+        buttonsDisabled={props.buttonsDisabled}
+        onChange={props.onChangeEdit}
       />
       <DeletePublicationDialog
         open={props.openDeletePublication}
         onCancel={props.onCancelDelete}
         onAccept={props.onAcceptDelete}
+        buttonsDisabled={props.buttonsDisabled}
       />
       <RejectPublicationDialog
         open={props.rejecting}
@@ -87,6 +101,7 @@ const Calendar = props => {
         onAcceptReject={props.onAcceptRejectViewPublication}
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
+        buttonsDisabled={props.buttonsDisabled}
       />
       <GridContainer justify="center">
         <GridItem xs={12}>
@@ -113,6 +128,7 @@ const Calendar = props => {
 };
 
 Calendar.propTypes = {
+  openLinkPublication: PropTypes.bool.isRequired,
   openCreatePublication: PropTypes.bool.isRequired,
   openEditPublication: PropTypes.bool.isRequired,
   openDeletePublication: PropTypes.bool.isRequired,
@@ -128,6 +144,7 @@ Calendar.propTypes = {
   onCloseViewPublication: PropTypes.func.isRequired,
   onRejectViewPublication: PropTypes.func.isRequired,
   onAcceptViewPublication: PropTypes.func.isRequired,
+  onLinkPublication: PropTypes.func.isRequired,
   onEditPublication: PropTypes.func.isRequired,
   onDeletePublication: PropTypes.func.isRequired,
   onCancelRejectViewPublication: PropTypes.func.isRequired,
@@ -138,7 +155,18 @@ Calendar.propTypes = {
   eventColors: PropTypes.func.isRequired,
   rejecting: PropTypes.bool.isRequired,
   onChangeReject: PropTypes.func.isRequired,
-  rejectReason: PropTypes.string.isRequired
+  rejectReason: PropTypes.string.isRequired,
+  onCancelDelete: PropTypes.func.isRequired,
+  onAcceptDelete: PropTypes.func.isRequired,
+  editPublicationErrors: PropTypes.object.isRequired,
+  linkPublicationErrors: PropTypes.object.isRequired,
+  onCancelEdit: PropTypes.func.isRequired,
+  onAcceptEdit: PropTypes.func.isRequired,
+  onChangeEdit: PropTypes.func.isRequired,
+  onChangeLink: PropTypes.func.isRequired,
+  link: PropTypes.string,
+  onCancelLink: PropTypes.func.isRequired,
+  onAcceptLink: PropTypes.func.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

@@ -11,19 +11,32 @@ import DialogActions from "@material-ui/core/DialogActions";
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
 
+import CustomInput from "Components/CustomInput/CustomInput.jsx";
+
 import Button from "Components/CustomButtons/Button.jsx";
 
 import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
 
-const DeletePublicationDialog = props => {
+const LinkPublicationDialog = props => {
   return (
     <Dialog open={props.open} styles={{ overflow: "visible" }}>
-      <DialogTitle>Eliminar Publicación</DialogTitle>
+      <DialogTitle>Enlazar Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
           <GridItem xs={12}>
-            ¿Está seguro que desea eliminar esta publicación? Esta acción no
-            puede deshacerse.
+            <CustomInput
+              labelText="Publicación"
+              error={props.errors.link}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                type: "text",
+                value: props.link,
+                onChange: event => props.onChange(event)
+              }}
+            />
           </GridItem>
         </GridContainer>
       </DialogContent>
@@ -34,21 +47,25 @@ const DeletePublicationDialog = props => {
         <Button
           onClick={props.onAccept}
           disabled={props.buttonsDisabled}
-          color="danger"
+          color="primary"
         >
-          Eliminar
+          Enlazar
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-DeletePublicationDialog.propTypes = {
+LinkPublicationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onChange: PropTypes.func,
   onCancel: PropTypes.func,
   onAccept: PropTypes.func,
-  buttonsDisabled: PropTypes.bool.isRequired
+  buttonsDisabled: PropTypes.bool.isRequired,
+  link: PropTypes.string,
+  errors: PropTypes.shape({
+    link: PropTypes.bool.isRequired
+  }).isRequired
 };
 
-export default withStyles(extendedFormsStyle)(DeletePublicationDialog);
+export default withStyles(extendedFormsStyle)(LinkPublicationDialog);

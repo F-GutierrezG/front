@@ -5,6 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
+import CompareArrows from "@material-ui/icons/CompareArrows";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -34,8 +35,18 @@ const ViewPublicationDialog = props => {
             cursor: "pointer"
           }}
         >
-          <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
-          <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
+          {props.publication.status === "ACCEPTED" && (
+            <CompareArrows
+              style={{ color: "#9c27b0" }}
+              onClick={props.onLink}
+            />
+          )}
+          {props.publication.status !== "ACCEPTED" && (
+            <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
+          )}
+          {props.publication.status === "PENDING" && (
+            <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
+          )}
         </span>
       </DialogTitle>
       <DialogContent>
@@ -130,23 +141,35 @@ const ViewPublicationDialog = props => {
           </GridItem>
           <GridItem xs={12} className={classes.publicationImageContainer}>
             <a
-              href={props.publication.image}
+              href={props.publication.imageUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {props.publication.image}
+              {props.publication.imageUrl}
             </a>
           </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cerrar</Button>
-        <Button onClick={props.onReject} color="danger">
-          Rechazar
-        </Button>
-        <Button onClick={props.onAccept} color="success">
-          Aceptar
-        </Button>
+        {props.publication.status === "PENDING" && (
+          <Button
+            onClick={props.onReject}
+            color="danger"
+            disabled={props.buttonsDisabled}
+          >
+            Rechazar
+          </Button>
+        )}
+        {props.publication.status === "PENDING" && (
+          <Button
+            onClick={props.onAccept}
+            color="success"
+            disabled={props.buttonsDisabled}
+          >
+            Aceptar
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
@@ -161,7 +184,9 @@ ViewPublicationDialog.propTypes = {
     title: PropTypes.string,
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
-    image: PropTypes.string
+    image: PropTypes.string,
+    imageUrl: PropTypes.string,
+    status: PropTypes.string
   }).isRequired,
   onClose: PropTypes.func.isRequired,
   onReject: PropTypes.func,
@@ -171,7 +196,11 @@ ViewPublicationDialog.propTypes = {
   socialNetworks: PropTypes.array.isRequired,
   rejecting: PropTypes.bool.isRequired,
   onChangeReject: PropTypes.func.isRequired,
-  rejectReason: PropTypes.string.isRequired
+  rejectReason: PropTypes.string.isRequired,
+  onLink: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  buttonsDisabled: PropTypes.bool
 };
 
 export default withStyles(viewPublicationDialogStyle)(ViewPublicationDialog);

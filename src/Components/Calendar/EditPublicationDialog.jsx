@@ -30,7 +30,129 @@ const EditPublicationDialog = props => {
       <DialogContent>
         <GridContainer>
           <GridItem xs={6}>
-
+            <CustomInput
+              labelText="Fecha"
+              error={props.errors.date}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "date",
+                value: props.publication.date,
+                onChange: event => props.onChange("date", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={6}>
+            <CustomInput
+              labelText="Hora"
+              error={props.errors.time}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "time",
+                value: props.publication.time,
+                onChange: event => props.onChange("time", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Título"
+              error={props.errors.title}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.title,
+                onChange: event => props.onChange("title", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            <FormControl fullWidth error={props.errors.socialNetworks}>
+              <InputLabel
+                htmlFor="multiple-select"
+                className={classes.selectLabel}
+              >
+                Redes Sociales
+              </InputLabel>
+              <Select
+                multiple
+                value={props.publication.socialNetworks}
+                onChange={event => props.onChange("socialNetworks", event)}
+                MenuProps={{ className: classes.selectMenu }}
+                classes={{ select: classes.select }}
+              >
+                <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
+                  Redes Sociales
+                </MenuItem>
+                {props.socialNetworks.map(socialNetwork => {
+                  return (
+                    <MenuItem
+                      key={socialNetwork.id}
+                      classes={{ root: classes.selectMenuItem }}
+                      value={socialNetwork.id}
+                    >
+                      {socialNetwork.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Mensaje"
+              error={props.errors.message}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              inputProps={{
+                multiline: true,
+                value: props.publication.message,
+                onChange: event => props.onChange("message", event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12} className={classes.publicationImageContainer}>
+            <a
+              href={props.publication.imageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.publication.imageUrl}
+            </a>
+          </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Archivo"
+              error={props.errors.image}
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "file",
+                value: props.publication.image,
+                onChange: event => props.onChange("image", event)
+              }}
+            />
           </GridItem>
         </GridContainer>
       </DialogContent>
@@ -60,7 +182,9 @@ EditPublicationDialog.propTypes = {
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
     additional: PropTypes.string,
-    image: PropTypes.string
+    image: PropTypes.string,
+    file: PropTypes.object,
+    imageUrl: PropTypes.string
   }).isRequired,
   errors: PropTypes.shape({
     date: PropTypes.bool.isRequired,
@@ -69,7 +193,8 @@ EditPublicationDialog.propTypes = {
     socialNetworks: PropTypes.bool.isRequired,
     message: PropTypes.bool.isRequired,
     additional: PropTypes.bool.isRequired,
-    image: PropTypes.bool.isRequired
+    image: PropTypes.bool.isRequired,
+    imageUrl: PropTypes.string
   }).isRequired,
   onChange: PropTypes.func,
   onCancel: PropTypes.func,
