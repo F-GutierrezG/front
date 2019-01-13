@@ -9,11 +9,14 @@ const CompanyInfo = props => {
   const listUsersURL = `${
     process.env.REACT_APP_COMPANIES_SERVICE_URL
   }/${companyId}/users`;
+  const createUserURL = `${
+    process.env.REACT_APP_COMPANIES_SERVICE_URL
+  }/${companyId}/users`;
 
   return (
     <Users
       listUsersURL={listUsersURL}
-      createUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
+      createUserURL={createUserURL}
       deactivateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
       activateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
     />
