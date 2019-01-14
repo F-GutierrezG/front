@@ -6,6 +6,7 @@ import axios from "axios";
 import Create from "@material-ui/icons/Create";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
+import VpnKey from "@material-ui/icons/VpnKey";
 
 import { ActionButton } from "Components/Management";
 import UsersWithError from "Components/Users";
@@ -18,6 +19,7 @@ class Users extends Component {
     createUserDialogOpen: false,
     deleteUserDialogOpen: false,
     editUserDialogOpen: false,
+    editUserDialogOpenPassword: false,
     createUserErrors: {
       email: false,
       firstName: false,
@@ -37,6 +39,12 @@ class Users extends Component {
       password: ""
     },
     selectedUser: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: ""
+    },
+    selectedUserPassword: {
       email: "",
       firstName: "",
       lastName: "",
@@ -61,6 +69,13 @@ class Users extends Component {
       status: user.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
+          <ActionButton
+            onClick={() => this.handleOnEditPaswordUserClick(user.id)}
+            color="primary"
+            name="edit"
+            icon={<VpnKey />}
+          />
+
           <ActionButton
             onClick={() => this.handleOnEditUserClick(user.id)}
             color="primary"
@@ -211,6 +226,19 @@ class Users extends Component {
     this.setState({ selectedUser });
   };
 
+
+  handleOnChangeEditUserDialogPassword = (field, evt) => {
+
+    const selectedUserPassword = { ...this.state.selectedUserPassword };
+    selectedUserPassword[field] = evt.target.value;
+    this.setState({ selectedUserPassword });
+
+  };
+
+
+
+
+
   handleOnEditUserClick = id => {
     const user = this.state.users.find(user => user.id === id);
     this.setState({
@@ -219,11 +247,34 @@ class Users extends Component {
     });
   };
 
+
+  handleOnEditPaswordUserClick = id => {
+    const user = this.state.users.find(user => user.id === id);
+    this.setState({
+      selectedUserPassword: user,
+      editUserDialogOpenPassword: true
+    });
+  };
+
+
+
   handleOnCancelEditUserDialog = () => {
     this.setState({
       editUserDialogOpen: false
     });
   };
+
+
+
+  handleOnCancelEditUserDialogPassword = () => {
+    this.setState({
+      editUserDialogOpenPassword: false
+    });
+  };
+
+
+
+
 
   handleOnAcceptEditUserDialog = () => {
     const id = this.state.selectedUser.id;
@@ -254,6 +305,43 @@ class Users extends Component {
         this.setState({
           users: users,
           editUserDialogOpen: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  };
+
+  handleOnAcceptEditPaswordUserDialog = () => {
+    const id = this.state.selectedUserPassword.id;
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        `${process.env.REACT_APP_USERS_SERVICE_URL}/${id}/password`,
+        {
+          password: this.state.selectedUserPassword.password
+        },
+        {
+          headers: { Authorization: "Bearer " + token }
+        }
+      )
+      .then(response => {
+        const users = [
+          ...this.state.users.map(user => {
+            if (user.id === id) {
+              return this.mapUser(response.data);
+            } else {
+              return user;
+            }
+          })
+        ];
+
+        this.setState({
+          users: users,
+          editUserDialogOpenPassword: false
         });
       })
       .catch(err => {
@@ -347,11 +435,16 @@ class Users extends Component {
         onCancelCreateUser={this.handleOnCancelCreateUserDialog}
         onAcceptCreateUser={this.handleOnAcceptCreateUserDialog}
         openEditUser={this.state.editUserDialogOpen}
+        openEditUserPassword={this.state.editUserDialogOpenPassword}
         editUserErrors={this.state.editUserErrors}
         userEdited={this.state.selectedUser}
+        userEditedPassword={this.state.selectedUserPassword}
         onEditUserChange={this.handleOnChangeEditUserDialog}
+        onEditUserChangePassword={this.handleOnChangeEditUserDialogPassword}
         onCancelEditUser={this.handleOnCancelEditUserDialog}
+        onCancelEditUserPassword={this.handleOnCancelEditUserDialogPassword}
         onAcceptEditUser={this.handleOnAcceptEditUserDialog}
+        onAcceptEditUserPassword={this.handleOnAcceptEditPaswordUserDialog}
         users={this.state.users}
         onAddUserClick={this.handleCreateUserButton}
       />
