@@ -355,7 +355,8 @@ class Calendar extends React.Component {
             message: "",
             additional: "",
             image: "",
-            status: ""
+            status: "",
+            tags: []
           }
         });
       })
@@ -408,7 +409,8 @@ class Calendar extends React.Component {
             additional: "",
             image: "",
             file: {},
-            status: ""
+            status: "",
+            tags: []
           }
         });
       })
@@ -482,7 +484,8 @@ class Calendar extends React.Component {
             additional: "",
             image: "",
             file: {},
-            status: ""
+            status: "",
+            tags: []
           },
           publicationButtonsDisabled: false
         });
