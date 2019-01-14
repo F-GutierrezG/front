@@ -31,7 +31,8 @@ class Calendar extends React.Component {
       message: "",
       additional: "",
       image: "",
-      file: ""
+      file: "",
+      tags: []
     },
     selectedPublication: {
       id: 0,
@@ -43,7 +44,8 @@ class Calendar extends React.Component {
       additional: "",
       image: "",
       file: {},
-      status: ""
+      status: "",
+      tags: []
     },
     publicationErrors: {
       date: false,
@@ -61,7 +63,8 @@ class Calendar extends React.Component {
     publicationButtonsDisabled: false,
     rejecting: false,
     rejectReason: "",
-    link: ""
+    link: "",
+    tag: ""
   };
 
   closeError = () => {
@@ -144,7 +147,8 @@ class Calendar extends React.Component {
         socialNetworks: [],
         message: "",
         additional: "",
-        image: ""
+        image: "",
+        tags: []
       },
       publicationErrors: {
         date: false,
@@ -225,7 +229,9 @@ class Calendar extends React.Component {
       status: publication.status,
       start: date,
       end: date,
-      color: color
+      color: color,
+      link: publication.link,
+      tags: publication.tags
     };
   };
 
@@ -240,6 +246,7 @@ class Calendar extends React.Component {
     formData.append("message", publication.message);
     formData.append("additional", publication.additional);
     formData.append("image", publication.file);
+    formData.append("tags", publication.tags.join(","));
 
     axios
       .post(
@@ -264,7 +271,8 @@ class Calendar extends React.Component {
             socialNetworks: [],
             message: "",
             additional: "",
-            image: ""
+            image: "",
+            tags: []
           },
           publicationButtonsDisabled: false
         });
@@ -504,6 +512,7 @@ class Calendar extends React.Component {
     formData.append("message", publication.message);
     formData.append("additional", publication.additional);
     formData.append("image", publication.file);
+    formData.append("tags", publication.tags.join(","));
 
     axios
       .put(
@@ -539,7 +548,8 @@ class Calendar extends React.Component {
             message: "",
             additional: "",
             image: "",
-            file: {}
+            file: {},
+            tags: []
           },
           publicationButtonsDisabled: false
         });
@@ -628,6 +638,60 @@ class Calendar extends React.Component {
       });
   };
 
+  handleOnChangeTag = event => {
+    this.setState({ tag: event.target.value });
+  };
+
+  handleOnTagKeyPress = event => {
+    if (event.key === "Enter") {
+      const newTag = this.state.tag.toLowerCase();
+      const tags = [...this.state.publication.tags];
+
+      if (!this.state.publication.tags.find(tag => tag === newTag)) {
+        tags.push(newTag);
+      }
+      this.setState({
+        tag: "",
+        publication: { ...this.state.publication, tags }
+      });
+    }
+  };
+
+  handleOnEditTagKeyPress = event => {
+    if (event.key === "Enter") {
+      const newTag = this.state.tag.toLowerCase();
+      const tags = [...this.state.selectedPublication.tags];
+
+      if (!this.state.selectedPublication.tags.find(tag => tag === newTag)) {
+        tags.push(newTag);
+      }
+      this.setState({
+        tag: "",
+        selectedPublication: { ...this.state.selectedPublication, tags }
+      });
+    }
+  };
+
+  handleOnDeleteTag = tag => {
+    const tags = this.state.publication.tags.filter(existingTag => {
+      return existingTag !== tag;
+    });
+
+    this.setState({
+      publication: { ...this.state.publication, tags }
+    });
+  };
+
+  handleOnEditDeleteTag = tag => {
+    const tags = this.state.selectedPublication.tags.filter(existingTag => {
+      return existingTag !== tag;
+    });
+
+    this.setState({
+      selectedPublication: { ...this.state.selectedPublication, tags }
+    });
+  };
+
   render() {
     return (
       <CalendarWithErrors
@@ -673,6 +737,12 @@ class Calendar extends React.Component {
         link={this.state.link}
         onCancelLink={this.handleOnCancelLink}
         onAcceptLink={this.handleOnAcceptLink}
+        onChangeTag={this.handleOnChangeTag}
+        onTagKeyPress={this.handleOnTagKeyPress}
+        onEditTagKeyPress={this.handleOnEditTagKeyPress}
+        tag={this.state.tag}
+        onDeleteTag={this.handleOnDeleteTag}
+        onEditDeleteTag={this.handleOnEditDeleteTag}
       />
     );
   }

@@ -7,6 +7,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import Chip from "@material-ui/core/Chip";
 
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
@@ -160,6 +161,35 @@ const AddEventDialog = props => {
               }}
             />
           </GridItem>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Tags"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.tag,
+                onChange: event => props.onChangeTag(event),
+                onKeyPress: event => props.onTagKeyPress(event)
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12}>
+            {props.publication.tags.map((tag, key) => {
+              return (
+                <Chip
+                  key={key}
+                  label={tag}
+                  onDelete={() => props.onDeleteTag(tag)}
+                />
+              );
+            })}
+          </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
@@ -188,7 +218,8 @@ AddEventDialog.propTypes = {
     socialNetworks: PropTypes.array,
     message: PropTypes.string,
     additional: PropTypes.string,
-    image: PropTypes.string
+    image: PropTypes.string,
+    tags: PropTypes.array.isRequired
   }).isRequired,
   errors: PropTypes.shape({
     date: PropTypes.bool.isRequired,
@@ -203,7 +234,11 @@ AddEventDialog.propTypes = {
   onCancel: PropTypes.func,
   onAccept: PropTypes.func,
   buttonsDisabled: PropTypes.bool.isRequired,
-  socialNetworks: PropTypes.array.isRequired
+  socialNetworks: PropTypes.array.isRequired,
+  onChangeTag: PropTypes.func.isRequired,
+  onTagKeyPress: PropTypes.func.isRequired,
+  tag: PropTypes.string.isRequired,
+  onDeleteTag: PropTypes.func.isRequired
 };
 
 export default withStyles(extendedFormsStyle)(AddEventDialog);

@@ -56,12 +56,16 @@ const Calendar = props => {
       <CreatePublicationDialog
         open={props.openCreatePublication}
         publication={props.createPublication}
+        tag={props.tag}
         errors={props.createPublicationErrors}
         socialNetworks={props.socialNetworks}
         onChange={props.onChangeCreate}
+        onChangeTag={props.onChangeTag}
+        onTagKeyPress={props.onTagKeyPress}
         onCancel={props.onCancelCreate}
         onAccept={props.onAcceptCreate}
         buttonsDisabled={props.buttonsDisabled}
+        onDeleteTag={props.onDeleteTag}
       />
       <ViewPublicationDialog
         open={props.openViewPublication}
@@ -88,6 +92,10 @@ const Calendar = props => {
         onAccept={props.onAcceptEdit}
         buttonsDisabled={props.buttonsDisabled}
         onChange={props.onChangeEdit}
+        onChangeTag={props.onChangeTag}
+        onTagKeyPress={props.onEditTagKeyPress}
+        tag={props.tag}
+        onDeleteTag={props.onEditDeleteTag}
       />
       <DeletePublicationDialog
         open={props.openDeletePublication}
@@ -166,7 +174,13 @@ Calendar.propTypes = {
   onChangeLink: PropTypes.func.isRequired,
   link: PropTypes.string,
   onCancelLink: PropTypes.func.isRequired,
-  onAcceptLink: PropTypes.func.isRequired
+  onAcceptLink: PropTypes.func.isRequired,
+  onChangeTag: PropTypes.func.isRequired,
+  onTagKeyPress: PropTypes.func.isRequired,
+  onEditTagKeyPress: PropTypes.func.isRequired,
+  tag: PropTypes.string.isRequired,
+  onDeleteTag: PropTypes.func.isRequired,
+  onEditDeleteTag: PropTypes.func.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

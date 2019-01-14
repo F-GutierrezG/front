@@ -11,6 +11,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import Chip from "@material-ui/core/Chip";
 
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
@@ -148,6 +149,11 @@ const ViewPublicationDialog = props => {
               {props.publication.imageUrl}
             </a>
           </GridItem>
+          <GridItem xs={12}>
+            {props.publication.tags.map((tag, key) => (
+              <Chip key={key} label={tag} />
+            ))}
+          </GridItem>
         </GridContainer>
       </DialogContent>
       <DialogActions>
@@ -186,7 +192,8 @@ ViewPublicationDialog.propTypes = {
     message: PropTypes.string,
     image: PropTypes.string,
     imageUrl: PropTypes.string,
-    status: PropTypes.string
+    status: PropTypes.string,
+    tags: PropTypes.array.isRequired
   }).isRequired,
   onClose: PropTypes.func.isRequired,
   onReject: PropTypes.func,
