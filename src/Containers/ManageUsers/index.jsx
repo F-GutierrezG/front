@@ -405,6 +405,10 @@ class Users extends Component {
     return !(emailError || firstNameError || lastNameError);
   };
 
+  handleOnClickDownload = () => {
+    alert("DESCARGANDO");
+  };
+
   render() {
     return (
       <UsersWithError
@@ -430,6 +434,7 @@ class Users extends Component {
         onAcceptEditUserPassword={this.handleOnAcceptEditPaswordUserDialog}
         users={this.state.users}
         onAddUserClick={this.handleCreateUserButton}
+        onClickDownload={this.handleOnClickDownload}
       />
     );
   }

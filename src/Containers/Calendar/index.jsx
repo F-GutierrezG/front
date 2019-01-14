@@ -692,6 +692,10 @@ class Calendar extends React.Component {
     });
   };
 
+  handleOnClickDownload = () => {
+    alert("DESCARGANDO");
+  };
+
   render() {
     return (
       <CalendarWithErrors
@@ -743,6 +747,7 @@ class Calendar extends React.Component {
         tag={this.state.tag}
         onDeleteTag={this.handleOnDeleteTag}
         onEditDeleteTag={this.handleOnEditDeleteTag}
+        onClickDownload={this.handleOnClickDownload}
       />
     );
   }

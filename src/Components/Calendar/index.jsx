@@ -113,7 +113,7 @@ const Calendar = props => {
         rejectReason={props.rejectReason}
         buttonsDisabled={props.buttonsDisabled}
       />
-      <DownloadToolbar />
+      <DownloadToolbar onClick={props.onClickDownload} />
       <GridContainer justify="center">
         <GridItem xs={12}>
           <Card>
@@ -183,7 +183,8 @@ Calendar.propTypes = {
   onEditTagKeyPress: PropTypes.func.isRequired,
   tag: PropTypes.string.isRequired,
   onDeleteTag: PropTypes.func.isRequired,
-  onEditDeleteTag: PropTypes.func.isRequired
+  onEditDeleteTag: PropTypes.func.isRequired,
+  onClickDownload: PropTypes.func.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

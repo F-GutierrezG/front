@@ -9,7 +9,7 @@ const DownloadToolbar = props => {
   return (
     <div style={{ "text-align": "right" }}>
       <Tooltip title="Descargar">
-        <IconButton>
+        <IconButton onClick={props.onClick}>
           <CloudDownloadOutlined style={{ color: "#26c6da" }} />
         </IconButton>
       </Tooltip>
@@ -18,7 +18,7 @@ const DownloadToolbar = props => {
 };
 
 DownloadToolbar.propTypes = {
-  
+  onClick: PropTypes.func.isRequired
 };
 
 export default DownloadToolbar;

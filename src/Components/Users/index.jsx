@@ -45,7 +45,7 @@ const Users = props => {
         onCancel={props.onCancelEditUser}
         onAccept={props.onAcceptEditUser}
       />
-      <DownloadToolbar />
+      <DownloadToolbar onClick={props.onClickDownload} />
       <EditUserPasswordDialog
         open={props.openEditUserPassword}
         errors=""
@@ -84,7 +84,12 @@ Users.propTypes = {
   onCancelEditUser: PropTypes.func.isRequired,
   onAcceptEditUser: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
-  onAddUserClick: PropTypes.func.isRequired
+  onAddUserClick: PropTypes.func.isRequired,
+  openEditUserPassword: PropTypes.bool.isRequired,
+  onEditUserChangePassword: PropTypes.func.isRequired,
+  onCancelEditUserPassword: PropTypes.func.isRequired,
+  onAcceptEditUserPassword: PropTypes.func.isRequired,
+  onClickDownload: PropTypes.func.isRequired
 };
 
 export default withErrors(Users);

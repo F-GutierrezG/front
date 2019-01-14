@@ -345,6 +345,10 @@ class Companies extends Component {
     return !(identifierError || nameError || classificationError);
   };
 
+  handleOnClickDownload = () => {
+    alert("DESCARGANDO");
+  };
+
   render() {
     return (
       <CompaniesWithError
@@ -365,6 +369,7 @@ class Companies extends Component {
         selectedCompany={this.state.selectedCompany}
         onEditCompaniChange={this.handleOnChangeEditCompanyDialog}
         onAcceptEditCompany={this.handleOnAcceptEditCompanyDialog}
+        onClickDownload={this.handleOnClickDownload}
       />
     );
   }

@@ -46,7 +46,7 @@ const Companies = props => {
         company={props.selectedCompany}
         errors=""
       />
-      <DownloadToolbar />
+      <DownloadToolbar onClick={props.onClickDownload} />
       <Management
         icon={<Business />}
         color="success"
@@ -76,7 +76,8 @@ Companies.propTypes = {
   onCancelEditCompany: PropTypes.func.isRequired,
   onAcceptEditCompany: PropTypes.func.isRequired,
   onEditCompaniChange: PropTypes.func.isRequired,
-  selectedCompany: PropTypes.object.isRequired
+  selectedCompany: PropTypes.object.isRequired,
+  onClickDownload: PropTypes.func.isRequired
 };
 
 export default withErrors(Companies);
