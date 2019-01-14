@@ -71,7 +71,9 @@ class Users extends Component {
       actions: (
         <div className="actions-right">
           <Tooltip title="Cambiar Contraseña">
-            <IconButton onClick={() => this.handleOnEditPaswordUserClick(user.id)}>
+            <IconButton
+              onClick={() => this.handleOnEditPaswordUserClick(user.id)}
+            >
               <VpnKey style={{ color: "#9c27b0" }} />
             </IconButton>
           </Tooltip>
@@ -223,18 +225,11 @@ class Users extends Component {
     this.setState({ selectedUser });
   };
 
-
   handleOnChangeEditUserDialogPassword = (field, evt) => {
-
     const selectedUserPassword = { ...this.state.selectedUserPassword };
     selectedUserPassword[field] = evt.target.value;
     this.setState({ selectedUserPassword });
-
   };
-
-
-
-
 
   handleOnEditUserClick = id => {
     const user = this.state.users.find(user => user.id === id);
@@ -244,7 +239,6 @@ class Users extends Component {
     });
   };
 
-
   handleOnEditPaswordUserClick = id => {
     const user = this.state.users.find(user => user.id === id);
     this.setState({
@@ -253,25 +247,17 @@ class Users extends Component {
     });
   };
 
-
-
   handleOnCancelEditUserDialog = () => {
     this.setState({
       editUserDialogOpen: false
     });
   };
 
-
-
   handleOnCancelEditUserDialogPassword = () => {
     this.setState({
       editUserDialogOpenPassword: false
     });
   };
-
-
-
-
 
   handleOnAcceptEditUserDialog = () => {
     const id = this.state.selectedUser.id;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -76,7 +77,6 @@ const CreateCompanyDialog = props => (
               </MenuItem>
             );
           })}
-
         </Select>
       </FormControl>
     </DialogContent>
@@ -87,6 +87,25 @@ const CreateCompanyDialog = props => (
       </Button>
     </DialogActions>
   </Dialog>
-)
+);
+
+CreateCompanyDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func,
+  errors: PropTypes.shape({
+    identifier: PropTypes.bool.isRequired,
+    name: PropTypes.bool.isRequired,
+    classification: PropTypes.bool.isRequired
+  }).isRequired,
+  company: PropTypes.shape({
+    identifier: PropTypes.string,
+    name: PropTypes.string,
+    classification: PropTypes.number
+  }).isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  classifications: PropTypes.array.isRequired,
+  onCancel: PropTypes.func,
+  onAccept: PropTypes.func
+};
 
 export default CreateCompanyDialog;

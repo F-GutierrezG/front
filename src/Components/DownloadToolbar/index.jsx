@@ -17,4 +17,8 @@ const DownloadToolbar = props => {
   );
 };
 
+DownloadToolbar.propTypes = {
+  
+};
+
 export default DownloadToolbar;

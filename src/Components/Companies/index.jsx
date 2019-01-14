@@ -71,7 +71,12 @@ Companies.propTypes = {
   companyCreated: PropTypes.object.isRequired,
   createCompanyErrors: PropTypes.object.isRequired,
   onCreateCompanyButton: PropTypes.func.isRequired,
-  companies: PropTypes.array.isRequired
+  companies: PropTypes.array.isRequired,
+  openEditCompany: PropTypes.bool.isRequired,
+  onCancelEditCompany: PropTypes.func.isRequired,
+  onAcceptEditCompany: PropTypes.func.isRequired,
+  onEditCompaniChange: PropTypes.func.isRequired,
+  selectedCompany: PropTypes.object.isRequired
 };
 
 export default withErrors(Companies);

@@ -12,6 +12,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Grow from "@material-ui/core/Grow";
 import Hidden from "@material-ui/core/Hidden";
@@ -19,9 +21,6 @@ import Popper from "@material-ui/core/Popper";
 
 // @material-ui/icons
 import NotificationsIcon from "@material-ui/icons/Notifications";
-
-// core components
-import Button from "Components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 
@@ -78,35 +77,37 @@ class Notifications extends Component {
     return (
       <div className={wrapper}>
         <div className={managerClasses}>
-          <Button
-            color="transparent"
-            justIcon
-            aria-label="Notifications"
-            aria-owns={open ? "menu-list" : null}
-            aria-haspopup="true"
-            onClick={this.handleClick}
-            className={classes.buttonLink}
-            muiClasses={{ label: "" }}
-            buttonRef={node => {
-              this.anchorEl = node;
-            }}
-          >
-            <NotificationsIcon
-              className={classes.headerLinksSvg + " " + classes.links}
-            />
-          {this.state.notifications.length > 0 && (
-              <span className={classes.notifications}>
-                {this.state.notifications.length > 9
-                  ? "9+"
-                  : this.state.notifications.length}
-              </span>
-            )}
-            <Hidden mdUp implementation="css">
-              <span onClick={this.handleClick} className={classes.linkText}>
-                {"Notification"}
-              </span>
-            </Hidden>
-          </Button>
+          <Tooltip title="Notificaciones">
+            <IconButton
+              color="transparent"
+              justIcon
+              aria-label="Notifications"
+              aria-owns={open ? "menu-list" : null}
+              aria-haspopup="true"
+              onClick={this.handleClick}
+              className={classes.buttonLink}
+              muiClasses={{ label: "" }}
+              buttonRef={node => {
+                this.anchorEl = node;
+              }}
+            >
+              <NotificationsIcon
+                className={classes.headerLinksSvg + " " + classes.links}
+              />
+              {this.state.notifications.length > 0 && (
+                <span className={classes.notifications}>
+                  {this.state.notifications.length > 9
+                    ? "9+"
+                    : this.state.notifications.length}
+                </span>
+              )}
+              <Hidden mdUp implementation="css">
+                <span onClick={this.handleClick} className={classes.linkText}>
+                  {"Notification"}
+                </span>
+              </Hidden>
+            </IconButton>
+          </Tooltip>
           <Popper
             open={open}
             anchorEl={this.anchorEl}
@@ -128,6 +129,14 @@ class Notifications extends Component {
                 <Paper className={classes.dropdown}>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList role="menu">
+                      {this.state.notifications.length === 0 && (
+                        <MenuItem
+                          onClick={this.handleClose}
+                          className={dropdownItem}
+                        >
+                          No tienes ninguna notificación
+                        </MenuItem>
+                      )}
                       {this.state.notifications.map(notification => (
                         <MenuItem
                           key={notification.id}
