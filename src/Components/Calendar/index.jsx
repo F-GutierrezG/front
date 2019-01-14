@@ -10,9 +10,6 @@ import "moment/locale/es";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import CloudDownloadOutlined from "@material-ui/icons/CloudDownloadOutlined";
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
 import Card from "Components/Card/Card.jsx";
@@ -20,14 +17,16 @@ import CardBody from "Components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
+import DownloadToolbar from "Components/DownloadToolbar";
+
+import withErrors from "Components/withErrors";
+
 import LinkPublicationDialog from "./LinkPublicationDialog";
 import ViewPublicationDialog from "./ViewPublicationDialog";
 import CreatePublicationDialog from "./CreatePublicationDialog";
 import EditPublicationDialog from "./EditPublicationDialog";
 import RejectPublicationDialog from "./RejectPublicationDialog";
 import DeletePublicationDialog from "./DeletePublicationDialog";
-
-import withErrors from "Components/withErrors";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -114,13 +113,7 @@ const Calendar = props => {
         rejectReason={props.rejectReason}
         buttonsDisabled={props.buttonsDisabled}
       />
-      <div style={{ "text-align": "right" }}>
-        <Tooltip title="Descargar">
-          <IconButton>
-            <CloudDownloadOutlined style={{ color: "#26c6da" }} />
-          </IconButton>
-        </Tooltip>
-      </div>
+      <DownloadToolbar />
       <GridContainer justify="center">
         <GridItem xs={12}>
           <Card>

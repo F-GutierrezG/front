@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import CloudDownloadOutlined from "@material-ui/icons/CloudDownloadOutlined";
 import Add from "@material-ui/icons/Add";
 import Person from "@material-ui/icons/Person";
 
 import Management from "Components/Management";
+import DownloadToolbar from "Components/DownloadToolbar";
 
 import withErrors from "Components/withErrors";
 
@@ -47,13 +45,7 @@ const Users = props => {
         onCancel={props.onCancelEditUser}
         onAccept={props.onAcceptEditUser}
       />
-      <div style={{ "text-align": "right" }}>
-        <Tooltip title="Descargar">
-          <IconButton>
-            <CloudDownloadOutlined style={{ color: "#26c6da" }} />
-          </IconButton>
-        </Tooltip>
-      </div>
+      <DownloadToolbar />
       <EditUserPasswordDialog
         open={props.openEditUserPassword}
         errors=""
