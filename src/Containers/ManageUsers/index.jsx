@@ -312,18 +312,7 @@ class Users extends Component {
         }
       )
       .then(response => {
-        const users = [
-          ...this.state.users.map(user => {
-            if (user.id === id) {
-              return this.mapUser(response.data);
-            } else {
-              return user;
-            }
-          })
-        ];
-
         this.setState({
-          users: users,
           editUserDialogOpenPassword: false
         });
       })
