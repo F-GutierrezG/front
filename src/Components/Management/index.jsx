@@ -13,8 +13,6 @@ import AddButton from "Components/AddButton";
 
 import ReactTable from "react-table";
 
-import "./TableStyle.css";
-
 const Management = ({
   color,
   icon,
@@ -75,4 +73,3 @@ Management.propTypes = {
 };
 
 export default Management;
-export { default as ActionButton } from "./ActionButton";

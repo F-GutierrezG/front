@@ -4,12 +4,12 @@ import axios from "axios";
 
 import { Link } from "react-router-dom";
 
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import Create from "@material-ui/icons/Create";
 import People from "@material-ui/icons/People";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
-
-import { ActionButton } from "Components/Management";
 
 import CompaniesWithError from "Components/Companies";
 
@@ -49,34 +49,39 @@ class Companies extends Component {
       status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
-          <Link
-            to={{
-              pathname: `/company/${company.id}`,
-              state: { title: company.name }
-            }}
-          >
-            <ActionButton color="info" name="view" icon={<People />} />
-          </Link>
+          <Tooltip title="Administrar usuarios">
+            <Link
+              to={{
+                pathname: `/company/${company.id}`,
+                state: { title: company.name }
+              }}
+            >
+              <IconButton>
+                <People style={{ color: "#26c6da" }} />
+              </IconButton>
+            </Link>
+          </Tooltip>
 
-          <ActionButton
-            onClick={() => this.handleOnEditCompanyClick(company.id)}
-            color="primary"
-            name="edit"
-            icon={<Create />}
-          />
+          <Tooltip title="Editar">
+            <IconButton
+              onClick={() => this.handleOnEditCompanyClick(company.id)}
+            >
+              <Create style={{ color: "#9c27b0" }} />
+            </IconButton>
+          </Tooltip>
 
           {company.active ? (
-            <ActionButton
-              color="danger"
-              icon={<Block />}
-              onClick={() => this.deactivate(company.id)}
-            />
+            <Tooltip title="Desactivar">
+              <IconButton onClick={() => this.deactivate(company.id)}>
+                <Block style={{ color: "#f44336" }} />
+              </IconButton>
+            </Tooltip>
           ) : (
-            <ActionButton
-              color="success"
-              icon={<DoneAll />}
-              onClick={() => this.activate(company.id)}
-            />
+            <Tooltip title="Activar">
+              <IconButton onClick={() => this.activate(company.id)}>
+                <DoneAll style={{ color: "#4caf50" }} />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       )
@@ -99,11 +104,8 @@ class Companies extends Component {
           headers: { Authorization: "Bearer " + token }
         }
       )
-      .then(() => {
-        const updatedCompany = {
-          ...this.state.companies.find(company => company.id === id)
-        };
-        updatedCompany.active = false;
+      .then(response => {
+        const updatedCompany = this.mapCompany(response.data);
 
         const companies = this.state.companies.map(company => {
           if (company.id === id) {
@@ -113,9 +115,7 @@ class Companies extends Component {
           }
         });
 
-        this.setState({
-          companies: companies.map(company => this.mapCompany(company))
-        });
+        this.setState({ companies });
       })
       .catch(err => {
         this.setState({
@@ -135,10 +135,8 @@ class Companies extends Component {
           headers: { Authorization: "Bearer " + token }
         }
       )
-      .then(() => {
-        const updatedCompany = {
-          ...this.state.companies.find(company => company.id === id)
-        };
+      .then(response => {
+        const updatedCompany = this.mapCompany(response.data);
         updatedCompany.active = true;
 
         const companies = this.state.companies.map(company => {
@@ -149,9 +147,7 @@ class Companies extends Component {
           }
         });
 
-        this.setState({
-          companies: companies.map(company => this.mapCompany(company))
-        });
+        this.setState({ companies });
       })
       .catch(err => {
         this.setState({

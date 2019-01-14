@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
 import CompareArrows from "@material-ui/icons/CompareArrows";
+import AddToPhotosOutlined from "@material-ui/icons/AddToPhotosOutlined";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -37,16 +40,38 @@ const ViewPublicationDialog = props => {
           }}
         >
           {props.publication.status === "ACCEPTED" && (
-            <CompareArrows
-              style={{ color: "#9c27b0" }}
-              onClick={props.onLink}
-            />
+            <span>
+              <Tooltip title="Enlazar">
+                <IconButton arial-label="Enlazar">
+                  <CompareArrows
+                    style={{ color: "#9c27b0" }}
+                    onClick={props.onLink}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Clonar">
+                <IconButton arial-label="Clonar">
+                  <AddToPhotosOutlined
+                    style={{ color: "green" }}
+                    onClick={props.onClone}
+                  />
+                </IconButton>
+              </Tooltip>
+            </span>
           )}
           {props.publication.status !== "ACCEPTED" && (
-            <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
+            <Tooltip title="Editar">
+              <IconButton arial-label="Editar">
+                <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
+              </IconButton>
+            </Tooltip>
           )}
           {props.publication.status === "PENDING" && (
-            <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
+            <Tooltip title="Eliminar">
+              <IconButton arial-label="Eliminar">
+                <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
+              </IconButton>
+            </Tooltip>
           )}
         </span>
       </DialogTitle>
@@ -205,6 +230,7 @@ ViewPublicationDialog.propTypes = {
   onChangeReject: PropTypes.func.isRequired,
   rejectReason: PropTypes.string.isRequired,
   onLink: PropTypes.func.isRequired,
+  onClone: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   buttonsDisabled: PropTypes.bool

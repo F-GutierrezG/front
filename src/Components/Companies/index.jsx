@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import CloudDownloadOutlined from "@material-ui/icons/CloudDownloadOutlined";
 import Add from "@material-ui/icons/Add";
 import Business from "@material-ui/icons/Business";
 
@@ -45,6 +48,13 @@ const Companies = props => {
         company={props.selectedCompany}
         errors=""
       />
+      <div style={{ "text-align": "right" }}>
+        <Tooltip title="Descargar">
+          <IconButton>
+            <CloudDownloadOutlined style={{ color: "#26c6da" }} />
+          </IconButton>
+        </Tooltip>
+      </div>
       <Management
         icon={<Business />}
         color="success"

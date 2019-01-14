@@ -10,6 +10,9 @@ import "moment/locale/es";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import CloudDownloadOutlined from "@material-ui/icons/CloudDownloadOutlined";
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
 import Card from "Components/Card/Card.jsx";
@@ -111,6 +114,13 @@ const Calendar = props => {
         rejectReason={props.rejectReason}
         buttonsDisabled={props.buttonsDisabled}
       />
+      <div style={{ "text-align": "right" }}>
+        <Tooltip title="Descargar">
+          <IconButton>
+            <CloudDownloadOutlined style={{ color: "#26c6da" }} />
+          </IconButton>
+        </Tooltip>
+      </div>
       <GridContainer justify="center">
         <GridItem xs={12}>
           <Card>

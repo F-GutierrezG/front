@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import Create from "@material-ui/icons/Create";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
 
-import { ActionButton } from "Components/Management";
 import UsersWithError from "Components/Users";
 
 class Users extends Component {
@@ -61,25 +62,23 @@ class Users extends Component {
       status: user.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
-          <ActionButton
-            onClick={() => this.handleOnEditUserClick(user.id)}
-            color="primary"
-            name="edit"
-            icon={<Create />}
-          />
-
+          <Tooltip title="Editar">
+            <IconButton onClick={() => this.handleOnEditUserClick(user.id)}>
+              <Create style={{ color: "#9c27b0" }} />
+            </IconButton>
+          </Tooltip>
           {user.active ? (
-            <ActionButton
-              color="danger"
-              icon={<Block />}
-              onClick={() => this.deactivate(user.id)}
-            />
+            <Tooltip title="Desactivar">
+              <IconButton onClick={() => this.deactivate(user.id)}>
+                <Block style={{ color: "#f44336" }} />
+              </IconButton>
+            </Tooltip>
           ) : (
-            <ActionButton
-              color="success"
-              icon={<DoneAll />}
-              onClick={() => this.activate(user.id)}
-            />
+            <Tooltip title="Activar">
+              <IconButton onClick={() => this.activate(user.id)}>
+                <DoneAll style={{ color: "#4caf50" }} />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       )
