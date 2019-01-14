@@ -13,6 +13,7 @@ import withErrors from "Components/withErrors";
 
 import CreateUserDialog from "./CreateUserDialog";
 import EditUserDialog from "./EditUserDialog";
+import EditUserPasswordDialog from "./EditUserPasswordDialog";
 
 const columns = [
   { Header: "Nombre", accessor: "firstName" },
@@ -53,6 +54,14 @@ const Users = props => {
           </IconButton>
         </Tooltip>
       </div>
+      <EditUserPasswordDialog
+        open={props.openEditUserPassword}
+        errors=""
+        user={props.userEditedPassword}
+        handleOnChange={props.onEditUserChangePassword}
+        onCancel={props.onCancelEditUserPassword}
+        onAccept={props.onAcceptEditUserPassword}
+      />
       <Management
         icon={<Person />}
         color="info"
@@ -78,6 +87,7 @@ Users.propTypes = {
   openEditUser: PropTypes.bool.isRequired,
   editUserErrors: PropTypes.object.isRequired,
   userEdited: PropTypes.object.isRequired,
+  userEditedPassword: PropTypes.object.isRequired,
   onEditUserChange: PropTypes.func.isRequired,
   onCancelEditUser: PropTypes.func.isRequired,
   onAcceptEditUser: PropTypes.func.isRequired,
