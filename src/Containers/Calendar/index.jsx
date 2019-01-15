@@ -14,7 +14,7 @@ const socialNetworks = [
   { id: "GOOGLE", name: "Google+" }
 ];
 
-const cloneTypes = [
+const clonePeriodicities = [
   { id: "DAILY", name: "Diariamente" },
   { id: "WEEKLY", name: "Semanalmente" },
   { id: "MONTHLY", name: "Mensualmente" }
@@ -26,16 +26,45 @@ const cloneDurations = [
 ];
 
 class Calendar extends React.Component {
-  state = {
-    hasError: false,
-    error: "",
-    openCreatePublication: false,
-    openLinkPublication: false,
-    openViewPublication: false,
-    openEditPublication: false,
-    openDeletePublication: false,
-    openClonePublication: false,
-    publication: {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: "",
+      openCreatePublication: false,
+      openLinkPublication: false,
+      openViewPublication: false,
+      openEditPublication: false,
+      openDeletePublication: false,
+      openClonePublication: false,
+      publication: this.getCleanedPublication(),
+      selectedPublication: this.getCleanedSelectedPublication(),
+      publicationErrors: this.getCleanedPublicationErrors(),
+      linkErrors: {
+        link: false
+      },
+      cloneErrors: this.getCleanedCloneErrors(),
+      events: [],
+      publicationButtonsDisabled: false,
+      rejecting: false,
+      rejectReason: "",
+      link: "",
+      clone: this.getCleanedClone(),
+      tag: ""
+    };
+  }
+
+  getCleanedClone = () => {
+    return {
+      periodicity: "",
+      duration: "",
+      repetitions: "",
+      until: ""
+    };
+  };
+
+  getCleanedPublication = () => {
+    return {
       date: "",
       time: "",
       title: "",
@@ -45,8 +74,11 @@ class Calendar extends React.Component {
       image: "",
       file: "",
       tags: []
-    },
-    selectedPublication: {
+    };
+  };
+
+  getCleanedSelectedPublication = () => {
+    return {
       id: 0,
       date: "",
       time: "",
@@ -58,8 +90,11 @@ class Calendar extends React.Component {
       file: {},
       status: "",
       tags: []
-    },
-    publicationErrors: {
+    };
+  };
+
+  getCleanedPublicationErrors = () => {
+    return {
       date: false,
       time: false,
       title: false,
@@ -67,19 +102,16 @@ class Calendar extends React.Component {
       message: false,
       additional: false,
       image: false
-    },
-    linkErrors: {
-      link: false
-    },
-    cloneErrors: {
-      clone: false
-    },
-    events: [],
-    publicationButtonsDisabled: false,
-    rejecting: false,
-    rejectReason: "",
-    link: "",
-    tag: ""
+    };
+  };
+
+  getCleanedCloneErrors = () => {
+    return {
+      periodicity: false,
+      duration: false,
+      repetitions: false,
+      until: false
+    };
   };
 
   closeError = () => {
@@ -155,25 +187,8 @@ class Calendar extends React.Component {
   handleOnCancel = () => {
     this.setState({
       openCreatePublication: false,
-      publication: {
-        date: "",
-        time: "",
-        title: "",
-        socialNetworks: [],
-        message: "",
-        additional: "",
-        image: "",
-        tags: []
-      },
-      publicationErrors: {
-        date: false,
-        time: false,
-        title: false,
-        socialNetworks: false,
-        message: false,
-        additional: false,
-        image: false
-      }
+      publication: this.getCleanedPublication(),
+      publicationErrors: this.getCleanedPublicationErrors()
     });
   };
 
@@ -279,16 +294,7 @@ class Calendar extends React.Component {
         this.setState({
           events: [...this.state.events, event],
           openCreatePublication: false,
-          publication: {
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: "",
-            tags: []
-          },
+          publication: this.getCleanedPublication(),
           publicationButtonsDisabled: false
         });
       })
@@ -361,18 +367,7 @@ class Calendar extends React.Component {
         this.setState({
           events: this.updateEvents("ACCEPTED"),
           openViewPublication: false,
-          selectedPublication: {
-            id: 0,
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: "",
-            status: "",
-            tags: []
-          }
+          selectedPublication: this.getCleanedSelectedPublication()
         });
       })
       .catch(err => {
@@ -414,19 +409,7 @@ class Calendar extends React.Component {
           openViewPublication: false,
           rejecting: false,
           rejectReason: "",
-          selectedPublication: {
-            id: 0,
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: "",
-            file: {},
-            status: "",
-            tags: []
-          }
+          selectedPublication: this.getCleanedSelectedPublication()
         });
       })
       .catch(err => {
@@ -489,19 +472,7 @@ class Calendar extends React.Component {
             event => event.id !== this.state.selectedPublication.id
           ),
           openDeletePublication: false,
-          selectedPublication: {
-            id: 0,
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: "",
-            file: {},
-            status: "",
-            tags: []
-          },
+          selectedPublication: this.getCleanedSelectedPublication(),
           publicationButtonsDisabled: false
         });
       })
@@ -557,18 +528,7 @@ class Calendar extends React.Component {
         this.setState({
           events: events,
           openEditPublication: false,
-          selectedPublication: {
-            id: 0,
-            date: "",
-            time: "",
-            title: "",
-            socialNetworks: [],
-            message: "",
-            additional: "",
-            image: "",
-            file: {},
-            tags: []
-          },
+          selectedPublication: this.getCleanedSelectedPublication(),
           publicationButtonsDisabled: false
         });
       })
@@ -723,14 +683,58 @@ class Calendar extends React.Component {
 
   handleOnCancelClone = () => {
     this.setState({
-      openClonePublication: false
+      openClonePublication: false,
+      clone: this.getCleanedClone()
     });
   };
 
   handleOnAcceptClone = () => {
-    this.setState({
-      openClonePublication: false
-    });
+    const token = localStorage.getItem("token");
+    const clone = this.state.clone;
+    clone.parent_id = this.state.selectedPublication.id;
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+          this.state.selectedPublication.id
+        }/clone`,
+        clone,
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      )
+      .then(response => {
+        console.log(response);
+        const events = response.data.map(event => this.mapToEvent(event));
+        this.setState({
+          events: [...this.state.events, events],
+          openClonePublication: false,
+          clone: this.getCleanedClone(),
+          cloneErrors: this.getCleanedCloneErrors(),
+          publicationButtonsDisabled: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err,
+          publicationButtonsDisabled: false
+        });
+      });
+  };
+
+  handleOnChangeClone = (field, event) => {
+    const clone = { ...this.state.clone };
+    clone[field] = event.target.value;
+
+    if (field === "duration") {
+      clone.repetitions = "";
+      clone.until = "";
+    }
+
+    this.setState({ clone });
   };
 
   render() {
@@ -779,6 +783,7 @@ class Calendar extends React.Component {
         rejectReason={this.state.rejectReason}
         onChangeLink={this.handleChangeLink}
         link={this.state.link}
+        clone={this.state.clone}
         onCancelLink={this.handleOnCancelLink}
         onAcceptLink={this.handleOnAcceptLink}
         onCancelClone={this.handleOnCancelClone}
@@ -790,8 +795,9 @@ class Calendar extends React.Component {
         onDeleteTag={this.handleOnDeleteTag}
         onEditDeleteTag={this.handleOnEditDeleteTag}
         onClickDownload={this.handleOnClickDownload}
-        cloneTypes={cloneTypes}
+        clonePeriodicities={clonePeriodicities}
         cloneDurations={cloneDurations}
+        onChangeClone={this.handleOnChangeClone}
       />
     );
   }

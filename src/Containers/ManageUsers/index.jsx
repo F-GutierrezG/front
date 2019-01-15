@@ -311,7 +311,7 @@ class Users extends Component {
           headers: { Authorization: "Bearer " + token }
         }
       )
-      .then(response => {
+      .then(() => {
         this.setState({
           editUserDialogOpenPassword: false
         });

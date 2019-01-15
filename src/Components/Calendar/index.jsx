@@ -53,8 +53,10 @@ const Calendar = props => {
         buttonsDisabled={props.buttonsDisabled}
         onCancel={props.onCancelClone}
         onAccept={props.onAcceptClone}
-        types={props.cloneTypes}
+        periodicities={props.clonePeriodicities}
         durations={props.cloneDurations}
+        clone={props.clone}
+        onChange={props.onChangeClone}
       />
       <LinkPublicationDialog
         open={props.openLinkPublication}
@@ -192,6 +194,10 @@ Calendar.propTypes = {
   onCancelClone: PropTypes.func.isRequired,
   onAcceptClone: PropTypes.func.isRequired,
   link: PropTypes.string,
+  clone: PropTypes.shape({
+    periodicity: PropTypes.string,
+    duration: PropTypes.string
+  }).isRequired,
   onCancelLink: PropTypes.func.isRequired,
   onAcceptLink: PropTypes.func.isRequired,
   onChangeTag: PropTypes.func.isRequired,
@@ -201,8 +207,9 @@ Calendar.propTypes = {
   onDeleteTag: PropTypes.func.isRequired,
   onEditDeleteTag: PropTypes.func.isRequired,
   onClickDownload: PropTypes.func.isRequired,
-  cloneTypes: PropTypes.array.isRequired,
-  cloneDurations: PropTypes.array.isRequired
+  clonePeriodicities: PropTypes.array.isRequired,
+  cloneDurations: PropTypes.array.isRequired,
+  onChangeClone: PropTypes.func.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

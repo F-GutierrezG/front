@@ -23,25 +23,26 @@ import Button from "Components/CustomButtons/Button.jsx";
 import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
 
 const ClonePublicationDialog = props => {
+  const { classes } = props;
   return (
     <Dialog open={props.open} styles={{ overflow: "visible" }}>
       <DialogTitle>Clonar Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
           <GridItem xs={12}>
-            <FormControl fullWidth error={props.errors.type}>
-              <InputLabel>Tipo</InputLabel>
+            <FormControl fullWidth error={props.errors.periodicity}>
+              <InputLabel>Periodicidad</InputLabel>
               <Select
-                value={props.clone}
-                onChange={event => props.handleOnChange("classification", event)}
-                //MenuProps={{ className: classes.selectMenu }}
-                //classes={{ select: classes.select }}
+                value={props.clone.periodicity}
+                onChange={event => props.onChange("periodicity", event)}
+                MenuProps={{ className: classes.selectMenu }}
+                classes={{ select: classes.select }}
               >
-                <MenuItem disabled>Tipo</MenuItem>
-                {props.types.map(type => {
+                <MenuItem disabled>Periodicidad</MenuItem>
+                {props.periodicities.map(periodicity => {
                   return (
-                    <MenuItem key={type.id} value={type.id}>
-                      {type.name}
+                    <MenuItem key={periodicity.id} value={periodicity.id}>
+                      {periodicity.name}
                     </MenuItem>
                   );
                 })}
@@ -52,22 +53,61 @@ const ClonePublicationDialog = props => {
             <FormControl fullWidth error={props.errors.duration}>
               <InputLabel>Duración</InputLabel>
               <Select
-                value={props.clone}
-                onChange={event => props.handleOnChange("classification", event)}
-                //MenuProps={{ className: classes.selectMenu }}
-                //classes={{ select: classes.select }}
+                value={props.clone.duration}
+                onChange={event => props.onChange("duration", event)}
+                MenuProps={{ className: classes.selectMenu }}
+                classes={{ select: classes.select }}
               >
-                <MenuItem disabled>Tipo</MenuItem>
-                {props.durations.map(type => {
+                <MenuItem disabled>Duración</MenuItem>
+                {props.durations.map(duration => {
                   return (
-                    <MenuItem key={type.id} value={type.id}>
-                      {type.name}
+                    <MenuItem key={duration.id} value={duration.id}>
+                      {duration.name}
                     </MenuItem>
                   );
                 })}
               </Select>
             </FormControl>
           </GridItem>
+          {props.clone.duration === "REPETITIONS" && (
+            <GridItem xs={12}>
+              <CustomInput
+                labelText="Repeticiones"
+                error={props.errors.repetitions}
+                formControlProps={{
+                  fullWidth: true,
+                  margin: "dense"
+                }}
+                inputProps={{
+                  type: "number",
+                  step: 1,
+                  min: 0,
+                  value: props.clone.repetitions,
+                  onChange: event => props.onChange("repetitions", event)
+                }}
+              />
+            </GridItem>
+          )}
+          {props.clone.duration === "UNTIL" && (
+            <GridItem xs={12}>
+              <CustomInput
+                labelText="Hasta"
+                error={props.errors.until}
+                formControlProps={{
+                  fullWidth: true,
+                  margin: "dense"
+                }}
+                labelProps={{
+                  shrink: true
+                }}
+                inputProps={{
+                  type: "date",
+                  value: props.clone.until,
+                  onChange: event => props.onChange("until", event)
+                }}
+              />
+            </GridItem>
+          )}
         </GridContainer>
       </DialogContent>
       <DialogActions>
@@ -88,15 +128,25 @@ const ClonePublicationDialog = props => {
 
 ClonePublicationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
   onAccept: PropTypes.func,
   buttonsDisabled: PropTypes.bool.isRequired,
-  link: PropTypes.string,
-  errors: PropTypes.shape({
-    clone: PropTypes.bool.isRequired
+  clone: PropTypes.shape({
+    periodicity: PropTypes.string,
+    duration: PropTypes.string,
+    repetitions: PropTypes.string,
+    until: PropTypes.string
   }).isRequired,
-  types: PropTypes.array.isRequired
+  errors: PropTypes.shape({
+    periodicity: PropTypes.bool.isRequired,
+    duration: PropTypes.bool.isRequired,
+    repetitions: PropTypes.bool.isRequired,
+    until: PropTypes.bool.isRequired
+  }).isRequired,
+  periodicities: PropTypes.array.isRequired,
+  durations: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(extendedFormsStyle)(ClonePublicationDialog);
