@@ -678,7 +678,28 @@ class Calendar extends React.Component {
   };
 
   handleOnClickDownload = () => {
-    alert("DESCARGANDO");
+    const token = localStorage.getItem("token");
+
+    axios({
+      url: `${process.env.REACT_APP_EXPORTER_SERVICE_URL}/publications`,
+      method: "GET",
+      responseType: "blob",
+      headers: { Authorization: "Bearer " + token }
+    })
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "file.csv");
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
   };
 
   handleOnCancelClone = () => {
