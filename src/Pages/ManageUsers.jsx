@@ -10,6 +10,7 @@ const ManageUsers = () => {
       createUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
       deactivateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
       activateUserURL={process.env.REACT_APP_USERS_SERVICE_URL}
+      downloadURL={`${process.env.REACT_APP_EXPORTER_SERVICE_URL}/admins`}
     />
   );
 };

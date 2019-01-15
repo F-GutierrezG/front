@@ -398,18 +398,25 @@ class Users extends Component {
     const token = localStorage.getItem("token");
 
     axios({
-      url: `${process.env.REACT_APP_EXPORTER_SERVICE_URL}/admins`,
+      url: this.props.downloadURL,
       method: "GET",
       responseType: "blob",
       headers: { Authorization: "Bearer " + token }
-    }).then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "file.csv");
-      document.body.appendChild(link);
-      link.click();
-    });
+    })
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "file.csv");
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
   };
 
   render() {
@@ -447,7 +454,8 @@ Users.propTypes = {
   listUsersURL: PropTypes.string.isRequired,
   deactivateUserURL: PropTypes.string.isRequired,
   activateUserURL: PropTypes.string.isRequired,
-  createUserURL: PropTypes.string.isRerequired
+  createUserURL: PropTypes.string.isRequired,
+  downloadURL: PropTypes.string.isRequired
 };
 
 export default Users;
