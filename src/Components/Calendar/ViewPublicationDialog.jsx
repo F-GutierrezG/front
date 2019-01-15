@@ -49,8 +49,8 @@ const ViewPublicationDialog = props => {
                   />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Clonar">
-                <IconButton arial-label="Clonar">
+              <Tooltip title="Repetir Publicación">
+                <IconButton arial-label="Repetir Publicación">
                   <AddToPhotosOutlined
                     style={{ color: "green" }}
                     onClick={props.onClone}

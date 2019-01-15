@@ -26,7 +26,7 @@ const ClonePublicationDialog = props => {
   const { classes } = props;
   return (
     <Dialog open={props.open} styles={{ overflow: "visible" }}>
-      <DialogTitle>Clonar Publicación</DialogTitle>
+      <DialogTitle>Repetir Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
           <GridItem xs={12}>
@@ -119,7 +119,7 @@ const ClonePublicationDialog = props => {
           disabled={props.buttonsDisabled}
           color="success"
         >
-          Clonar
+          Repetir
         </Button>
       </DialogActions>
     </Dialog>
