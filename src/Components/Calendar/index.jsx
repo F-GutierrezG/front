@@ -27,6 +27,7 @@ import CreatePublicationDialog from "./CreatePublicationDialog";
 import EditPublicationDialog from "./EditPublicationDialog";
 import RejectPublicationDialog from "./RejectPublicationDialog";
 import DeletePublicationDialog from "./DeletePublicationDialog";
+import ClonePublicationDialog from "./ClonePublicationDialog";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -46,6 +47,15 @@ const messages = {
 const Calendar = props => {
   return (
     <div>
+      <ClonePublicationDialog
+        open={props.openClonePublication}
+        errors={props.clonePublicationErrors}
+        buttonsDisabled={props.buttonsDisabled}
+        onCancel={props.onCancelClone}
+        onAccept={props.onAcceptClone}
+        types={props.cloneTypes}
+        durations={props.cloneDurations}
+      />
       <LinkPublicationDialog
         open={props.openLinkPublication}
         link={props.link}
@@ -82,6 +92,7 @@ const Calendar = props => {
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
         onLink={props.onLinkPublication}
+        onClone={props.onClonePublication}
         onEdit={props.onEditPublication}
         onDelete={props.onDeletePublication}
       />
@@ -143,6 +154,7 @@ Calendar.propTypes = {
   openCreatePublication: PropTypes.bool.isRequired,
   openEditPublication: PropTypes.bool.isRequired,
   openDeletePublication: PropTypes.bool.isRequired,
+  openClonePublication: PropTypes.bool.isRequired,
   createPublication: PropTypes.object.isRequired,
   createPublicationErrors: PropTypes.object.isRequired,
   socialNetworks: PropTypes.array.isRequired,
@@ -157,6 +169,7 @@ Calendar.propTypes = {
   onAcceptViewPublication: PropTypes.func.isRequired,
   onLinkPublication: PropTypes.func.isRequired,
   onEditPublication: PropTypes.func.isRequired,
+  onClonePublication: PropTypes.func.isRequired,
   onDeletePublication: PropTypes.func.isRequired,
   onCancelRejectViewPublication: PropTypes.func.isRequired,
   onAcceptRejectViewPublication: PropTypes.func.isRequired,
@@ -171,10 +184,13 @@ Calendar.propTypes = {
   onAcceptDelete: PropTypes.func.isRequired,
   editPublicationErrors: PropTypes.object.isRequired,
   linkPublicationErrors: PropTypes.object.isRequired,
+  clonePublicationErrors: PropTypes.object.isRequired,
   onCancelEdit: PropTypes.func.isRequired,
   onAcceptEdit: PropTypes.func.isRequired,
   onChangeEdit: PropTypes.func.isRequired,
   onChangeLink: PropTypes.func.isRequired,
+  onCancelClone: PropTypes.func.isRequired,
+  onAcceptClone: PropTypes.func.isRequired,
   link: PropTypes.string,
   onCancelLink: PropTypes.func.isRequired,
   onAcceptLink: PropTypes.func.isRequired,
@@ -184,7 +200,9 @@ Calendar.propTypes = {
   tag: PropTypes.string.isRequired,
   onDeleteTag: PropTypes.func.isRequired,
   onEditDeleteTag: PropTypes.func.isRequired,
-  onClickDownload: PropTypes.func.isRequired
+  onClickDownload: PropTypes.func.isRequired,
+  cloneTypes: PropTypes.array.isRequired,
+  cloneDurations: PropTypes.array.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

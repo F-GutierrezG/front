@@ -24,6 +24,8 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components/headerLinksStyle";
 
+import PublicationNotification from "./Publication";
+
 class Notifications extends Component {
   state = {
     open: false,
@@ -79,14 +81,11 @@ class Notifications extends Component {
         <div className={managerClasses}>
           <Tooltip title="Notificaciones">
             <IconButton
-              color="transparent"
-              justIcon
               aria-label="Notifications"
               aria-owns={open ? "menu-list" : null}
               aria-haspopup="true"
               onClick={this.handleClick}
               className={classes.buttonLink}
-              muiClasses={{ label: "" }}
               buttonRef={node => {
                 this.anchorEl = node;
               }}
@@ -140,10 +139,11 @@ class Notifications extends Component {
                       {this.state.notifications.map(notification => (
                         <MenuItem
                           key={notification.id}
-                          onClick={this.handleClose}
                           className={dropdownItem}
                         >
-                          {notification.message.title}
+                          <PublicationNotification
+                            notification={notification}
+                          />
                         </MenuItem>
                       ))}
                     </MenuList>

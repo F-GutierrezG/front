@@ -7,7 +7,7 @@ import CloudDownloadOutlined from "@material-ui/icons/CloudDownloadOutlined";
 
 const DownloadToolbar = props => {
   return (
-    <div style={{ "text-align": "right" }}>
+    <div style={{ textAlign: "right" }}>
       <Tooltip title="Descargar">
         <IconButton onClick={props.onClick}>
           <CloudDownloadOutlined style={{ color: "#26c6da" }} />

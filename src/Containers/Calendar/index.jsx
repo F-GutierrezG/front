@@ -14,6 +14,17 @@ const socialNetworks = [
   { id: "GOOGLE", name: "Google+" }
 ];
 
+const cloneTypes = [
+  { id: "DAILY", name: "Diariamente" },
+  { id: "WEEKLY", name: "Semanalmente" },
+  { id: "MONTHLY", name: "Mensualmente" }
+];
+
+const cloneDurations = [
+  { id: "REPETITIONS", name: "Repeticiones" },
+  { id: "UNTIL", name: "Hasta" }
+];
+
 class Calendar extends React.Component {
   state = {
     hasError: false,
@@ -23,6 +34,7 @@ class Calendar extends React.Component {
     openViewPublication: false,
     openEditPublication: false,
     openDeletePublication: false,
+    openClonePublication: false,
     publication: {
       date: "",
       time: "",
@@ -58,6 +70,9 @@ class Calendar extends React.Component {
     },
     linkErrors: {
       link: false
+    },
+    cloneErrors: {
+      clone: false
     },
     events: [],
     publicationButtonsDisabled: false,
@@ -695,8 +710,27 @@ class Calendar extends React.Component {
     });
   };
 
+  handleOnClone = () => {
+    this.setState({
+      openClonePublication: true,
+      openViewPublication: false
+    });
+  };
+
   handleOnClickDownload = () => {
     alert("DESCARGANDO");
+  };
+
+  handleOnCancelClone = () => {
+    this.setState({
+      openClonePublication: false
+    });
+  };
+
+  handleOnAcceptClone = () => {
+    this.setState({
+      openClonePublication: false
+    });
   };
 
   render() {
@@ -710,6 +744,7 @@ class Calendar extends React.Component {
         openViewPublication={this.state.openViewPublication}
         openEditPublication={this.state.openEditPublication}
         openDeletePublication={this.state.openDeletePublication}
+        openClonePublication={this.state.openClonePublication}
         createPublication={this.state.publication}
         createPublicationErrors={this.state.publicationErrors}
         socialNetworks={socialNetworks}
@@ -728,8 +763,10 @@ class Calendar extends React.Component {
         onAcceptViewPublication={this.handleOnAccept}
         onLinkPublication={this.handleOnLink}
         onEditPublication={this.handleOnEdit}
+        onClonePublication={this.handleOnClone}
         linkPublicationErrors={this.state.linkErrors}
         editPublicationErrors={this.state.publicationErrors}
+        clonePublicationErrors={this.state.cloneErrors}
         onDeletePublication={this.handleOnDelete}
         onCancelRejectViewPublication={this.handleOnCancelReject}
         onAcceptRejectViewPublication={this.handleOnAcceptReject}
@@ -744,6 +781,8 @@ class Calendar extends React.Component {
         link={this.state.link}
         onCancelLink={this.handleOnCancelLink}
         onAcceptLink={this.handleOnAcceptLink}
+        onCancelClone={this.handleOnCancelClone}
+        onAcceptClone={this.handleOnAcceptClone}
         onChangeTag={this.handleOnChangeTag}
         onTagKeyPress={this.handleOnTagKeyPress}
         onEditTagKeyPress={this.handleOnEditTagKeyPress}
@@ -751,6 +790,8 @@ class Calendar extends React.Component {
         onDeleteTag={this.handleOnDeleteTag}
         onEditDeleteTag={this.handleOnEditDeleteTag}
         onClickDownload={this.handleOnClickDownload}
+        cloneTypes={cloneTypes}
+        cloneDurations={cloneDurations}
       />
     );
   }
