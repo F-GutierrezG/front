@@ -727,7 +727,6 @@ class Calendar extends React.Component {
         }
       )
       .then(response => {
-        console.log(response);
         const events = response.data.map(event => this.mapToEvent(event));
         this.setState({
           events: [...this.state.events, events],
