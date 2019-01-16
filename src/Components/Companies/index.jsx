@@ -44,7 +44,7 @@ const Companies = props => {
         onAccept={props.onAcceptEditCompany}
         handleOnChange={props.onEditCompaniChange}
         company={props.selectedCompany}
-        errors=""
+        errors={props.editCompanyErrors}
       />
       <DownloadToolbar onClick={props.onClickDownload} />
       <Management
@@ -77,7 +77,8 @@ Companies.propTypes = {
   onAcceptEditCompany: PropTypes.func.isRequired,
   onEditCompaniChange: PropTypes.func.isRequired,
   selectedCompany: PropTypes.object.isRequired,
-  onClickDownload: PropTypes.func.isRequired
+  onClickDownload: PropTypes.func.isRequired,
+  editCompanyErrors: PropTypes.object.isRequired
 };
 
 export default withErrors(Companies);

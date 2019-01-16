@@ -100,7 +100,7 @@ CreateCompanyDialog.propTypes = {
   company: PropTypes.shape({
     identifier: PropTypes.string,
     name: PropTypes.string,
-    classification: PropTypes.number
+    classification: PropTypes.string
   }).isRequired,
   handleOnChange: PropTypes.func.isRequired,
   classifications: PropTypes.array.isRequired,

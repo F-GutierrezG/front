@@ -50,6 +50,9 @@ class Users extends Component {
       firstName: "",
       lastName: "",
       password: ""
+    },
+    editPasswordErrors: {
+      password: false
     }
   };
 
@@ -445,6 +448,7 @@ class Users extends Component {
         users={this.state.users}
         onAddUserClick={this.handleCreateUserButton}
         onClickDownload={this.handleOnClickDownload}
+        editPasswordErrors={this.state.editPasswordErrors}
       />
     );
   }

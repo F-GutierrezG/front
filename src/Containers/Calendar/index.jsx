@@ -2,7 +2,6 @@ import React from "react";
 
 import axios from "axios";
 
-import PublicationActions from "Containers/PublicationActions";
 import CalendarWithErrors from "Components/Calendar";
 
 import DownloadToolbar from "Components/DownloadToolbar";
@@ -32,6 +31,28 @@ class Calendar extends React.Component {
           error: err
         });
       });
+
+    window.publicationActionsComponent.addOnAddPublicationListener(
+      this.handleOnAddPublication
+    );
+    window.publicationActionsComponent.addOnUpdatePublicationListener(
+      this.handleOnUpdatePublication
+    );
+    window.publicationActionsComponent.addOnDeletePublicationListener(
+      this.handleOnDeletePublication
+    );
+  }
+
+  componentWillUnmount() {
+    window.publicationActionsComponent.removeOnAddPublicationListener(
+      this.handleOnAddPublication
+    );
+    window.publicationActionsComponent.removeOnUpdatePublicationListener(
+      this.handleOnUpdatePublication
+    );
+    window.publicationActionsComponent.removeOnDeletePublicationListener(
+      this.handleOnDeletePublication
+    );
   }
 
   selectedEvent = event => {
@@ -106,12 +127,6 @@ class Calendar extends React.Component {
   render() {
     return (
       <div>
-        <PublicationActions
-          onAddPublications={this.handleOnAddPublications}
-          onAddPublication={this.handleOnAddPublication}
-          onUpdatePublication={this.handleOnUpdatePublication}
-          onDeletePublication={this.handleOnDeletePublication}
-        />
         <DownloadToolbar onClick={this.handleOnClickDownload} />
         <CalendarWithErrors
           publications={this.state.publications}

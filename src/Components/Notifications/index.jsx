@@ -26,6 +26,8 @@ import headerLinksStyle from "assets/jss/material-dashboard-pro-react/components
 
 import PublicationNotification from "./Publication";
 
+import PublicationActions from "Containers/PublicationActions";
+
 class Notifications extends Component {
   state = {
     open: false,
@@ -84,6 +86,16 @@ class Notifications extends Component {
       });
   };
 
+  handleOnNotificationClick = id => {
+    const notification = this.state.notifications.find(
+      notification => notification.id === id
+    );
+    const publication = notification.message;
+    publication.socialNetworks = publication.social_networks;
+    window.publicationActionsComponent.state.selectedPublication = publication;
+    window.publicationActionsComponent.selectPublication(publication);
+  };
+
   render() {
     const { classes } = this.props;
     const { open } = this.state;
@@ -93,82 +105,88 @@ class Notifications extends Component {
       [classes.managerClasses]: true
     });
     return (
-      <div className={wrapper}>
-        <div className={managerClasses}>
-          <Tooltip title="Notificaciones">
-            <IconButton
-              aria-label="Notifications"
-              aria-owns={open ? "menu-list" : null}
-              aria-haspopup="true"
-              onClick={this.handleClick}
-              className={classes.buttonLink}
-              buttonRef={node => {
-                this.anchorEl = node;
-              }}
-            >
-              <NotificationsIcon
-                className={classes.headerLinksSvg + " " + classes.links}
-              />
-              {this.state.notifications.length > 0 && (
-                <span className={classes.notifications}>
-                  {this.state.notifications.length > 9
-                    ? "9+"
-                    : this.state.notifications.length}
-                </span>
-              )}
-              <Hidden mdUp implementation="css">
-                <span onClick={this.handleClick} className={classes.linkText}>
-                  {"Notification"}
-                </span>
-              </Hidden>
-            </IconButton>
-          </Tooltip>
-          <Popper
-            open={open}
-            anchorEl={this.anchorEl}
-            transition
-            disablePortal
-            placement="bottom"
-            className={classNames({
-              [classes.popperClose]: !open,
-              [classes.pooperResponsive]: true,
-              [classes.pooperNav]: true
-            })}
-          >
-            {({ TransitionProps }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list"
-                style={{ transformOrigin: "0 0 0" }}
+      <div>
+        <PublicationActions />
+        <div className={wrapper}>
+          <div className={managerClasses}>
+            <Tooltip title="Notificaciones">
+              <IconButton
+                aria-label="Notifications"
+                aria-owns={open ? "menu-list" : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+                className={classes.buttonLink}
+                buttonRef={node => {
+                  this.anchorEl = node;
+                }}
               >
-                <Paper className={classes.dropdown}>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList role="menu">
-                      {this.state.notifications.length === 0 && (
-                        <MenuItem
-                          onClick={this.handleClose}
-                          className={dropdownItem}
-                        >
-                          No tienes ninguna notificación
-                        </MenuItem>
-                      )}
-                      {this.state.notifications.map(notification => (
-                        <MenuItem
-                          key={notification.id}
-                          className={dropdownItem}
-                        >
-                          <PublicationNotification
-                            onDelete={this.handleOnDeleteNotification}
-                            notification={notification}
-                          />
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
+                <NotificationsIcon
+                  className={classes.headerLinksSvg + " " + classes.links}
+                />
+                {this.state.notifications.length > 0 && (
+                  <span className={classes.notifications}>
+                    {this.state.notifications.length > 9
+                      ? "9+"
+                      : this.state.notifications.length}
+                  </span>
+                )}
+                <Hidden mdUp implementation="css">
+                  <span onClick={this.handleClick} className={classes.linkText}>
+                    {"Notification"}
+                  </span>
+                </Hidden>
+              </IconButton>
+            </Tooltip>
+            <Popper
+              open={open}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal
+              placement="bottom"
+              className={classNames({
+                [classes.popperClose]: !open,
+                [classes.pooperResponsive]: true,
+                [classes.pooperNav]: true
+              })}
+            >
+              {({ TransitionProps }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list"
+                  style={{ transformOrigin: "0 0 0" }}
+                >
+                  <Paper className={classes.dropdown}>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList role="menu">
+                        {this.state.notifications.length === 0 && (
+                          <MenuItem
+                            onClick={this.handleClose}
+                            className={dropdownItem}
+                          >
+                            No tienes ninguna notificación
+                          </MenuItem>
+                        )}
+                        {this.state.notifications.map(notification => (
+                          <MenuItem
+                            key={notification.id}
+                            className={dropdownItem}
+                          >
+                            <PublicationNotification
+                              onDelete={this.handleOnDeleteNotification}
+                              onNotificationClick={
+                                this.handleOnNotificationClick
+                              }
+                              notification={notification}
+                            />
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
         </div>
       </div>
     );

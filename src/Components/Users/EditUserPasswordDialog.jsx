@@ -21,7 +21,6 @@ const EditUserPasswordDialog = props => (
           disabled: true,
           margin: "dense"
         }}
-        error={props.errors.email}
         inputProps={{
           value: props.user.email
         }}
@@ -34,9 +33,7 @@ const EditUserPasswordDialog = props => (
           disabled: true,
           margin: "dense"
         }}
-        error={props.errors.firstName}
         inputProps={{
-
           value: props.user.firstName
         }}
       />
@@ -47,9 +44,7 @@ const EditUserPasswordDialog = props => (
           fullWidth: true,
           margin: "dense"
         }}
-        error={props.errors.lastName}
         inputProps={{
-
           value: props.user.lastName
         }}
       />
@@ -60,15 +55,12 @@ const EditUserPasswordDialog = props => (
           fullWidth: true,
           margin: "dense"
         }}
-
         inputProps={{
           type: "password",
           onChange: evt => props.handleOnChange("password", evt),
           value: props.user.password
         }}
       />
-
-
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
@@ -85,14 +77,13 @@ EditUserPasswordDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
   errors: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string
+    password: PropTypes.bool
   }).isRequired,
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired
+    lastName: PropTypes.string.isRequired,
+    password: PropTypes.string
   }).isRequired,
   handleOnChange: PropTypes.func.isRequired
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -88,5 +89,24 @@ const EditCompanyDialog = props => (
     </DialogActions>
   </Dialog>
 );
+
+EditCompanyDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func,
+  company: PropTypes.shape({
+    identifier: PropTypes.string,
+    name: PropTypes.string,
+    classificationId: PropTypes.number
+  }).isRequired,
+  errors: PropTypes.shape({
+    identifier: PropTypes.bool,
+    name: PropTypes.bool,
+    classification: PropTypes.bool
+  }).isRequired,
+  classifications: PropTypes.array.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onAccept: PropTypes.func.isRequired
+};
 
 export default EditCompanyDialog;

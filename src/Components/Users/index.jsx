@@ -48,7 +48,7 @@ const Users = props => {
       <DownloadToolbar onClick={props.onClickDownload} />
       <EditUserPasswordDialog
         open={props.openEditUserPassword}
-        errors=""
+        errors={props.editPasswordErrors}
         user={props.userEditedPassword}
         handleOnChange={props.onEditUserChangePassword}
         onCancel={props.onCancelEditUserPassword}
@@ -72,6 +72,7 @@ const Users = props => {
 Users.propTypes = {
   openCreateUser: PropTypes.bool.isRequired,
   createUserErrors: PropTypes.object.isRequired,
+  editPasswordErrors: PropTypes.object.isRequired,
   userCreated: PropTypes.object.isRequired,
   onCreateUserChange: PropTypes.func.isRequired,
   onCancelCreateUser: PropTypes.func.isRequired,

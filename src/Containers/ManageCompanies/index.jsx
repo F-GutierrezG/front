@@ -22,9 +22,14 @@ class Companies extends Component {
     createCompanyDialogOpen: false,
     editCompanyDialogOpen: false,
     createCompanyErrors: {
-      identifier: null,
-      name: null,
-      classification: null
+      identifier: false,
+      name: false,
+      classification: false
+    },
+    editCompanyErrors: {
+      identifier: false,
+      name: false,
+      classification: false
     },
     newCompany: {
       identifier: "",
@@ -392,6 +397,7 @@ class Companies extends Component {
         onEditCompaniChange={this.handleOnChangeEditCompanyDialog}
         onAcceptEditCompany={this.handleOnAcceptEditCompanyDialog}
         onClickDownload={this.handleOnClickDownload}
+        editCompanyErrors={this.state.editCompanyErrors}
       />
     );
   }

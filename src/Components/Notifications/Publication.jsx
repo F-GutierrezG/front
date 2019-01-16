@@ -14,10 +14,10 @@ const mapStatus = status => {
   }
 };
 
-const Publication = ({ notification, onDelete }) => {
+const Publication = ({ notification, onDelete, onNotificationClick }) => {
   const { id, message } = notification;
   return (
-    <div>
+    <div onClick={() => onNotificationClick(id)}>
       <div style={{ textAlign: "right" }}>
         <Tooltip title="Descartar">
           <i className={"fas fa-times"} onClick={() => onDelete(id)} />
@@ -28,7 +28,7 @@ const Publication = ({ notification, onDelete }) => {
           return (
             <span key={key}>
               <i className={`fab fa-${network.toLowerCase()}`} />
-              <span>&nbsp</span>
+              <span>&nbsp;</span>
             </span>
           );
         })}
@@ -48,7 +48,8 @@ Publication.propTypes = {
       status: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onNotificationClick: PropTypes.func.isRequired
 };
 
 export default Publication;

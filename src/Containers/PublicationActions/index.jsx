@@ -50,7 +50,10 @@ class PublicationActions extends React.Component {
       rejectReason: "",
       link: "",
       clone: this.getCleanedClone(),
-      tag: ""
+      tag: "",
+      onAddPublicationListeners: [],
+      onDeletePublicationListeners: [],
+      onUpdatePublicationListeners: []
     };
     window.publicationActionsComponent = this;
   }
@@ -143,6 +146,13 @@ class PublicationActions extends React.Component {
     publication.imageUrl = event.image;
     publication.image = "";
     return publication;
+  };
+
+  selectPublication = publication => {
+    this.setState({
+      openViewPublication: true,
+      selectedPublication: publication
+    });
   };
 
   selectedEvent = event => {
@@ -291,7 +301,9 @@ class PublicationActions extends React.Component {
         }
       )
       .then(response => {
-        this.props.onAddPublication(response.data);
+        this.state.onAddPublicationListeners.forEach(listener => {
+          listener(response.data);
+        });
         this.setState({
           openCreatePublication: false,
           publication: this.getCleanedPublication(),
@@ -303,6 +315,60 @@ class PublicationActions extends React.Component {
           publicationButtonsDisabled: false
         });
       });
+  };
+
+  addOnAddPublicationListener = listener => {
+    this.setState({
+      onAddPublicationListeners: [
+        ...this.state.onAddPublicationListeners,
+        listener
+      ]
+    });
+  };
+
+  addOnUpdatePublicationListener = listener => {
+    this.setState({
+      onUpdatePublicationListeners: [
+        ...this.state.onUpdatePublicationListeners,
+        listener
+      ]
+    });
+  };
+
+  addOnDeletePublicationListener = listener => {
+    this.setState({
+      onDeletePublicationListeners: [
+        ...this.state.onDeletePublicationListeners,
+        listener
+      ]
+    });
+  };
+
+  removeOnAddPublicationListener = listener => {
+    const listeners = this.state.onAddPublicationListeners.filter(
+      l => l !== listener
+    );
+    this.setState({
+      onAddPublicationListeners: listeners
+    });
+  };
+
+  removeOnUpdatePublicationListener = listener => {
+    const listeners = this.state.onUpdatePublicationListeners.filter(
+      l => l !== listener
+    );
+    this.setState({
+      onUpdatePublicationListeners: listeners
+    });
+  };
+
+  removeOnDeletePublicationListener = listener => {
+    const listeners = this.state.onDeletePublicationListeners.filter(
+      l => l !== listener
+    );
+    this.setState({
+      onDeletePublicationListeners: listeners
+    });
   };
 
   handleOnAcceptCreate = () => {
@@ -365,7 +431,9 @@ class PublicationActions extends React.Component {
       )
       .then(response => {
         const updatedPublication = response.data;
-        this.props.onUpdatePublication(updatedPublication);
+        this.state.onUpdatePublicationListeners.forEach(listener => {
+          listener(updatedPublication);
+        });
         this.setState({
           openViewPublication: false,
           selectedPublication: this.getCleanedSelectedPublication()
@@ -406,7 +474,9 @@ class PublicationActions extends React.Component {
       )
       .then(response => {
         const updatedPublication = response.data;
-        this.props.onUpdatePublication(updatedPublication);
+        this.state.onUpdatePublicationListeners.forEach(listener => {
+          listener(updatedPublication);
+        });
         this.setState({
           openViewPublication: false,
           rejecting: false,
@@ -469,7 +539,9 @@ class PublicationActions extends React.Component {
         }
       )
       .then(() => {
-        this.props.onDeletePublication(this.state.selectedPublication);
+        this.state.onDeletePublicationListeners.forEach(listener => {
+          listener(this.state.selectedPublication);
+        });
         this.setState({
           openDeletePublication: false,
           selectedPublication: this.getCleanedSelectedPublication(),
@@ -518,7 +590,9 @@ class PublicationActions extends React.Component {
       )
       .then(response => {
         const updatedPublication = response.data;
-        this.props.onUpdatePublication(updatedPublication);
+        this.state.onUpdatePublicationListeners.forEach(listener => {
+          listener(updatedPublication);
+        });
         this.setState({
           openEditPublication: false,
           selectedPublication: this.getCleanedSelectedPublication(),
@@ -587,7 +661,9 @@ class PublicationActions extends React.Component {
       )
       .then(response => {
         const updatedPublication = response.data;
-        this.props.onUpdatePublication(updatedPublication);
+        this.state.onUpdatePublicationListeners.forEach(listener => {
+          listener(updatedPublication);
+        });
         this.setState({
           openLinkPublication: false,
           publicationButtonsDisabled: false,
