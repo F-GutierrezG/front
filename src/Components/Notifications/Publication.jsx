@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -36,6 +37,18 @@ const Publication = ({ notification, onDelete }) => {
       <div>{mapStatus(message.status)}</div>
     </div>
   );
+};
+
+Publication.propTypes = {
+  notification: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    message: PropTypes.shape({
+      social_networks: PropTypes.array.isRequired,
+      title: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default Publication;
