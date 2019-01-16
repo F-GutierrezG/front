@@ -46,7 +46,7 @@ class Notifications extends Component {
         }
       });
 
-      socket.on("notification", notification => {
+      socket.on("PUBLICATION", notification => {
         this.setState({
           notifications: [...this.state.notifications, notification]
         });

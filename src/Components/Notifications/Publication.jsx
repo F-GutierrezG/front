@@ -23,7 +23,7 @@ const Publication = ({ notification }) => {
         </Tooltip>
       </div>
       <div>
-        {message.socialNetworks.map((network, key) => {
+        {message.social_networks.map((network, key) => {
           return (
             <span key={key}>
               <i className={`fab fa-${network.toLowerCase()}`} />
