@@ -13,13 +13,13 @@ const mapStatus = status => {
   }
 };
 
-const Publication = ({ notification }) => {
+const Publication = ({ notification, onDelete }) => {
   const { id, message } = notification;
   return (
     <div>
       <div style={{ textAlign: "right" }}>
         <Tooltip title="Descartar">
-          <i className={"fas fa-times"} onClick={() => alert("eliminando" + id)} />
+          <i className={"fas fa-times"} onClick={() => onDelete(id)} />
         </Tooltip>
       </div>
       <div>

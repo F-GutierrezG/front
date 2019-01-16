@@ -68,6 +68,22 @@ class Notifications extends Component {
     this.setState({ open: false });
   };
 
+  handleOnDeleteNotification = id => {
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`${process.env.REACT_APP_NOTIFICATIONS_SERVICE_URL}/${id}`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(() => {
+        this.setState({
+          notifications: this.state.notifications.filter(
+            notification => notification.id !== id
+          ),
+          open: this.state.notifications.length <= 1 ? false : true
+        });
+      });
+  };
+
   render() {
     const { classes } = this.props;
     const { open } = this.state;
@@ -142,6 +158,7 @@ class Notifications extends Component {
                           className={dropdownItem}
                         >
                           <PublicationNotification
+                            onDelete={this.handleOnDeleteNotification}
                             notification={notification}
                           />
                         </MenuItem>
