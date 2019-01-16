@@ -17,17 +17,7 @@ import CardBody from "Components/Card/CardBody.jsx";
 
 import buttonStyle from "assets/jss/material-dashboard-pro-react/components/buttonStyle.jsx";
 
-import DownloadToolbar from "Components/DownloadToolbar";
-
 import withErrors from "Components/withErrors";
-
-import LinkPublicationDialog from "./LinkPublicationDialog";
-import ViewPublicationDialog from "./ViewPublicationDialog";
-import CreatePublicationDialog from "./CreatePublicationDialog";
-import EditPublicationDialog from "./EditPublicationDialog";
-import RejectPublicationDialog from "./RejectPublicationDialog";
-import DeletePublicationDialog from "./DeletePublicationDialog";
-import ClonePublicationDialog from "./ClonePublicationDialog";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -44,172 +34,94 @@ const messages = {
   agenda: "Agenda"
 };
 
-const Calendar = props => {
-  return (
+const getEventColor = status => {
+  switch (status) {
+    case "REJECTED":
+      return "red";
+    case "ACCEPTED":
+      return "green";
+    default:
+      return "azure";
+  }
+};
+
+const mapPublicationToEvent = publication => {
+  const [year, month, day] = publication.date.split("-");
+  const [hour, minute] = publication.time.split(":");
+  const date = new Date(year, month - 1, day, hour, minute);
+
+  const color = getEventColor(publication.status);
+
+  const title = (
     <div>
-      <ClonePublicationDialog
-        open={props.openClonePublication}
-        errors={props.clonePublicationErrors}
-        buttonsDisabled={props.buttonsDisabled}
-        onCancel={props.onCancelClone}
-        onAccept={props.onAcceptClone}
-        periodicities={props.clonePeriodicities}
-        durations={props.cloneDurations}
-        clone={props.clone}
-        onChange={props.onChangeClone}
-      />
-      <LinkPublicationDialog
-        open={props.openLinkPublication}
-        link={props.link}
-        errors={props.linkPublicationErrors}
-        onChange={props.onChangeLink}
-        buttonsDisabled={props.buttonsDisabled}
-        onCancel={props.onCancelLink}
-        onAccept={props.onAcceptLink}
-      />
-      <CreatePublicationDialog
-        open={props.openCreatePublication}
-        publication={props.createPublication}
-        tag={props.tag}
-        errors={props.createPublicationErrors}
-        socialNetworks={props.socialNetworks}
-        onChange={props.onChangeCreate}
-        onChangeTag={props.onChangeTag}
-        onTagKeyPress={props.onTagKeyPress}
-        onCancel={props.onCancelCreate}
-        onAccept={props.onAcceptCreate}
-        buttonsDisabled={props.buttonsDisabled}
-        onDeleteTag={props.onDeleteTag}
-      />
-      <ViewPublicationDialog
-        open={props.openViewPublication}
-        publication={props.selectedPublication}
-        socialNetworks={props.socialNetworks}
-        onClose={props.onCloseViewPublication}
-        onReject={props.onRejectViewPublication}
-        onAccept={props.onAcceptViewPublication}
-        onCancelReject={props.onCancelRejectViewPublication}
-        onAcceptReject={props.onAcceptRejectViewPublication}
-        rejecting={props.rejecting}
-        onChangeReject={props.onChangeReject}
-        rejectReason={props.rejectReason}
-        onLink={props.onLinkPublication}
-        onClone={props.onClonePublication}
-        onEdit={props.onEditPublication}
-        onDelete={props.onDeletePublication}
-      />
-      <EditPublicationDialog
-        open={props.openEditPublication}
-        publication={props.selectedPublication}
-        errors={props.editPublicationErrors}
-        socialNetworks={props.socialNetworks}
-        onCancel={props.onCancelEdit}
-        onAccept={props.onAcceptEdit}
-        buttonsDisabled={props.buttonsDisabled}
-        onChange={props.onChangeEdit}
-        onChangeTag={props.onChangeTag}
-        onTagKeyPress={props.onEditTagKeyPress}
-        tag={props.tag}
-        onDeleteTag={props.onEditDeleteTag}
-      />
-      <DeletePublicationDialog
-        open={props.openDeletePublication}
-        onCancel={props.onCancelDelete}
-        onAccept={props.onAcceptDelete}
-        buttonsDisabled={props.buttonsDisabled}
-      />
-      <RejectPublicationDialog
-        open={props.rejecting}
-        onCancelReject={props.onCancelRejectViewPublication}
-        onAcceptReject={props.onAcceptRejectViewPublication}
-        onChangeReject={props.onChangeReject}
-        rejectReason={props.rejectReason}
-        buttonsDisabled={props.buttonsDisabled}
-      />
-      <DownloadToolbar onClick={props.onClickDownload} />
-      <GridContainer justify="center">
-        <GridItem xs={12}>
-          <Card>
-            <CardBody calendar>
-              <BigCalendar
-                messages={messages}
-                selectable
-                localizer={localizer}
-                events={props.events}
-                defaultView="month"
-                scrollToTime={new Date(1970, 1, 1, 6)}
-                defaultDate={new Date()}
-                onSelectEvent={event => props.onSelectEvent(event)}
-                onSelectSlot={slotInfo => props.onSelectSlot(slotInfo)}
-                eventPropGetter={props.eventColors}
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <div>
+        {publication.social_networks.map((socialNetwork, key) => {
+          return (
+            <span key={key}>
+              &nbsp;
+              <i className={`fab fa-${socialNetwork.toLowerCase()}`} />
+            </span>
+          );
+        })}
+      </div>
+      {publication.title}
     </div>
+  );
+
+  return {
+    id: publication.id,
+    title: title,
+    realTitle: publication.title,
+    date: publication.date,
+    time: publication.time,
+    message: publication.message,
+    image: publication.image_url,
+    socialNetworks: publication.social_networks,
+    status: publication.status,
+    start: date,
+    end: date,
+    color: color,
+    link: publication.link,
+    tags: publication.tags
+  };
+};
+
+const mapPublicationsToEvents = publications => {
+  return publications.map(publication => mapPublicationToEvent(publication));
+};
+
+const Calendar = props => {
+  const events = mapPublicationsToEvents(props.publications);
+
+  return (
+    <GridContainer justify="center">
+      <GridItem xs={12}>
+        <Card>
+          <CardBody calendar>
+            <BigCalendar
+              messages={messages}
+              selectable
+              localizer={localizer}
+              events={events}
+              defaultView="month"
+              scrollToTime={new Date(1970, 1, 1, 6)}
+              defaultDate={new Date()}
+              onSelectEvent={event => props.onSelectEvent(event)}
+              onSelectSlot={slotInfo => props.onSelectSlot(slotInfo)}
+              eventPropGetter={props.eventColors}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
+    </GridContainer>
   );
 };
 
 Calendar.propTypes = {
-  openLinkPublication: PropTypes.bool.isRequired,
-  openCreatePublication: PropTypes.bool.isRequired,
-  openEditPublication: PropTypes.bool.isRequired,
-  openDeletePublication: PropTypes.bool.isRequired,
-  openClonePublication: PropTypes.bool.isRequired,
-  createPublication: PropTypes.object.isRequired,
-  createPublicationErrors: PropTypes.object.isRequired,
-  socialNetworks: PropTypes.array.isRequired,
-  onChangeCreate: PropTypes.func.isRequired,
-  onCancelCreate: PropTypes.func.isRequired,
-  onAcceptCreate: PropTypes.func.isRequired,
-  buttonsDisabled: PropTypes.bool.isRequired,
-  openViewPublication: PropTypes.bool.isRequired,
-  selectedPublication: PropTypes.object.isRequired,
-  onCloseViewPublication: PropTypes.func.isRequired,
-  onRejectViewPublication: PropTypes.func.isRequired,
-  onAcceptViewPublication: PropTypes.func.isRequired,
-  onLinkPublication: PropTypes.func.isRequired,
-  onEditPublication: PropTypes.func.isRequired,
-  onClonePublication: PropTypes.func.isRequired,
-  onDeletePublication: PropTypes.func.isRequired,
-  onCancelRejectViewPublication: PropTypes.func.isRequired,
-  onAcceptRejectViewPublication: PropTypes.func.isRequired,
-  events: PropTypes.array.isRequired,
   onSelectEvent: PropTypes.func.isRequired,
   onSelectSlot: PropTypes.func.isRequired,
   eventColors: PropTypes.func.isRequired,
-  rejecting: PropTypes.bool.isRequired,
-  onChangeReject: PropTypes.func.isRequired,
-  rejectReason: PropTypes.string.isRequired,
-  onCancelDelete: PropTypes.func.isRequired,
-  onAcceptDelete: PropTypes.func.isRequired,
-  editPublicationErrors: PropTypes.object.isRequired,
-  linkPublicationErrors: PropTypes.object.isRequired,
-  clonePublicationErrors: PropTypes.object.isRequired,
-  onCancelEdit: PropTypes.func.isRequired,
-  onAcceptEdit: PropTypes.func.isRequired,
-  onChangeEdit: PropTypes.func.isRequired,
-  onChangeLink: PropTypes.func.isRequired,
-  onCancelClone: PropTypes.func.isRequired,
-  onAcceptClone: PropTypes.func.isRequired,
-  link: PropTypes.string,
-  clone: PropTypes.shape({
-    periodicity: PropTypes.string,
-    duration: PropTypes.string
-  }).isRequired,
-  onCancelLink: PropTypes.func.isRequired,
-  onAcceptLink: PropTypes.func.isRequired,
-  onChangeTag: PropTypes.func.isRequired,
-  onTagKeyPress: PropTypes.func.isRequired,
-  onEditTagKeyPress: PropTypes.func.isRequired,
-  tag: PropTypes.string.isRequired,
-  onDeleteTag: PropTypes.func.isRequired,
-  onEditDeleteTag: PropTypes.func.isRequired,
-  onClickDownload: PropTypes.func.isRequired,
-  clonePeriodicities: PropTypes.array.isRequired,
-  cloneDurations: PropTypes.array.isRequired,
-  onChangeClone: PropTypes.func.isRequired
+  publications: PropTypes.array.isRequired
 };
 
 export default withErrors(withStyles(buttonStyle)(Calendar));

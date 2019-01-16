@@ -206,6 +206,7 @@ class Companies extends Component {
     newCompany[field] = evt.target.value;
     this.setState({ newCompany });
   };
+
   handleOnCancelCreateCompanyDialog = () => {
     this.setState({
       createCompanyDialogOpen: false,

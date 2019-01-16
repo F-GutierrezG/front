@@ -5,7 +5,7 @@ import io from "socket.io-client";
 
 import classNames from "classnames";
 import PropTypes from "prop-types";
-// import { Manager, Target, Popper } from "react-popper";
+// import { Manager, Target, Popper } from "react-popper"
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";

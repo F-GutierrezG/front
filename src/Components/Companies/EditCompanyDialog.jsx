@@ -77,7 +77,6 @@ const EditCompanyDialog = props => (
               </MenuItem>
             );
           })}
-
         </Select>
       </FormControl>
     </DialogContent>
@@ -88,6 +87,6 @@ const EditCompanyDialog = props => (
       </Button>
     </DialogActions>
   </Dialog>
-)
+);
 
 export default EditCompanyDialog;

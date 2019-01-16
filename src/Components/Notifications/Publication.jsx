@@ -28,7 +28,7 @@ const Publication = ({ notification, onDelete }) => {
           return (
             <span key={key}>
               <i className={`fab fa-${network.toLowerCase()}`} />
-              <span>&nbsp;</span>
+              <span>&nbsp</span>
             </span>
           );
         })}

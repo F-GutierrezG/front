@@ -20,7 +20,7 @@ function withErrors(Component) {
     return (
       <div>
         {errorDiv}
-        <Component {...props}>{children}</Component>;
+        <Component {...props}>{children}</Component>
       </div>
     );
   }

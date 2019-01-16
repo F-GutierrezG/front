@@ -6,6 +6,6 @@ const viewPublicationDialogStyle = {
   publicationImageContainer: {
     textAlign: "center"
   }
-};
+}
 
-export default viewPublicationDialogStyle;
+export default viewPublicationDialogStyle
