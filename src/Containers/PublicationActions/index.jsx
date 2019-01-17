@@ -16,8 +16,7 @@ const socialNetworks = [
 
 const clonePeriodicities = [
   { id: "DAILY", name: "Diariamente" },
-  { id: "WEEKLY", name: "Semanalmente" },
-  { id: "MONTHLY", name: "Mensualmente" }
+  { id: "WEEKLY", name: "Semanalmente" }
 ];
 
 const cloneDurations = [
