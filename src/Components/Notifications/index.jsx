@@ -35,13 +35,8 @@ class Notifications extends Component {
   };
 
   componentDidMount() {
-    const timer = setInterval(() => {
-      const user = JSON.parse(localStorage.getItem("user"));
-
-      if (!user) return;
-
-      clearInterval(timer);
-
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
       const socket = io(`${process.env.REACT_APP_SOCKETS_SERVICE_URL}`, {
         query: {
           hash: user.hash
@@ -59,7 +54,7 @@ class Notifications extends Component {
         .then(response => {
           this.setState({ notifications: response.data });
         });
-    }, 500);
+    }
   }
 
   handleClick = () => {

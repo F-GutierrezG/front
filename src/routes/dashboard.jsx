@@ -25,6 +25,7 @@ var dashRoutes = [
     name: "Usuarios",
     icon: "people",
     onlyUser: true,
+    requiredPermissions: ["LIST_USERS"],
     component: Users
   },
   {
