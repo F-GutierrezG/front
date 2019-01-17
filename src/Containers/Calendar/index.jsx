@@ -124,6 +124,12 @@ class Calendar extends React.Component {
     });
   };
 
+  closeError = () => {
+    this.setState({
+      hasError: false
+    });
+  };
+
   render() {
     return (
       <div>

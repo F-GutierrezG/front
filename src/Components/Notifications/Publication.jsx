@@ -17,24 +17,26 @@ const mapStatus = status => {
 const Publication = ({ notification, onDelete, onNotificationClick }) => {
   const { id, message } = notification;
   return (
-    <div onClick={() => onNotificationClick(id)}>
+    <div>
       <div style={{ textAlign: "right" }}>
         <Tooltip title="Descartar">
           <i className={"fas fa-times"} onClick={() => onDelete(id)} />
         </Tooltip>
       </div>
-      <div>
-        {message.social_networks.map((network, key) => {
-          return (
-            <span key={key}>
-              <i className={`fab fa-${network.toLowerCase()}`} />
-              <span>&nbsp;</span>
-            </span>
-          );
-        })}
+      <div onClick={() => onNotificationClick(id)}>
+        <div>
+          {message.social_networks.map((network, key) => {
+            return (
+              <span key={key}>
+                <i className={`fab fa-${network.toLowerCase()}`} />
+                <span>&nbsp;</span>
+              </span>
+            );
+          })}
+        </div>
+        <div>{message.title}</div>
+        <div>{mapStatus(message.status)}</div>
       </div>
-      <div>{message.title}</div>
-      <div>{mapStatus(message.status)}</div>
     </div>
   );
 };
