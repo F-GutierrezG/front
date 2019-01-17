@@ -32,15 +32,32 @@ class Calendar extends React.Component {
         });
       });
 
-    window.publicationActionsComponent.addOnAddPublicationListener(
-      this.handleOnAddPublication
-    );
-    window.publicationActionsComponent.addOnUpdatePublicationListener(
-      this.handleOnUpdatePublication
-    );
-    window.publicationActionsComponent.addOnDeletePublicationListener(
-      this.handleOnDeletePublication
-    );
+    const addTimer = setInterval(() => {
+      if(window.publicationActionsComponent.state.onAddPublicationListeners.length === 0){
+        window.publicationActionsComponent.addOnAddPublicationListener(
+          this.handleOnAddPublication
+        );
+        clearInterval(addTimer);
+      }
+    }, 500);
+
+    const updateTimer = setInterval(() => {
+      if(window.publicationActionsComponent.state.onUpdatePublicationListeners.length === 0){
+        window.publicationActionsComponent.addOnUpdatePublicationListener(
+          this.handleOnUpdatePublication
+        );
+        clearInterval(updateTimer);
+      }
+    }, 500);
+
+    const deleteTimer = setInterval(() => {
+      if(window.publicationActionsComponent.state.onDeletePublicationListeners.length === 0){
+        window.publicationActionsComponent.addOnDeletePublicationListener(
+          this.handleOnDeletePublication
+        );
+        clearInterval(deleteTimer);
+      }
+    }, 500);
   }
 
   componentWillUnmount() {

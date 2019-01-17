@@ -765,9 +765,12 @@ class PublicationActions extends React.Component {
         }
       )
       .then(response => {
-        const events = response.data.map(event => this.mapToEvent(event));
+        response.data.forEach(publication => {
+          this.state.onAddPublicationListeners.forEach(listener => {
+            listener(publication);
+          });
+        });
         this.setState({
-          events: [...this.state.events, events],
           openClonePublication: false,
           clone: this.getCleanedClone(),
           cloneErrors: this.getCleanedCloneErrors(),
