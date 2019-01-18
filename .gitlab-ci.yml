@@ -43,10 +43,28 @@ Build:
     - docker image rm -f $(docker images front -q)
     - sudo git clean -ffdx
 
-Front:
+Front Stage:
   stage: registry
   only:
     - stage
+  before_script:
+    - sudo git clean -ffdx
+    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
+    - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
+    - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
+    - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
+    - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
+  script:
+    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${REACT_APP_EXPORTER_SERVICE_URL} -f Dockerfile-${CI_COMMIT_REF_NAME}
+    - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
+    - docker push $REGISTRY_REPO/$FRONT:$TAG
+  after_script:
+    - docker image rm -f $(docker images registry.gitlab.com/gusisoft/onelike/front/front -q)
+    - sudo git clean -ffdx
+
+Front Production:
+  stage: registry
+  only:
     - master
   before_script:
     - sudo git clean -ffdx
@@ -56,7 +74,7 @@ Front:
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
     - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} -f Dockerfile-${CI_COMMIT_REF_NAME}
+    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${PROD_REACT_APP_EXPORTER_SERVICE_URL} -f Dockerfile-${CI_COMMIT_REF_NAME}
     - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
   after_script:
@@ -73,13 +91,6 @@ Deploy Stage:
   before_script:
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
-    - export REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL}
-    - export REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-    - export REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL}
-    - export REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL}
-    - export REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL}
-    - export REACT_APP_SOCKETS_SERVICE_URL=${REACT_APP_SOCKETS_SERVICE_URL}
-    - export REACT_APP_EXPORTER_SERVICE_URL=${REACT_APP_EXPORTER_SERVICE_URL}
     - rm -rf ~/.ssh
     - mkdir -p ~/.ssh
     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -98,13 +109,6 @@ Deploy Production:
   before_script:
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
-    - export REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL}
-    - export REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL}
-    - export REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL}
-    - export REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL}
-    - export REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL}
-    - export REACT_APP_SOCKETS_SERVICE_URL=${PROD_REACT_APP_SOCKETS_SERVICE_URL}
-    - export REACT_APP_EXPORTER_SERVICE_URL=${PROD_REACT_APP_EXPORTER_SERVICE_URL}
     - rm -rf ~/.ssh
     - mkdir -p ~/.ssh
     - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
