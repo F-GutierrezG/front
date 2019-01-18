@@ -14,3 +14,5 @@ ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker image rm $(docker
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} "docker run -d --restart always --name front --network front-network --ip 172.19.0.2 $REGISTRY_REPO/$FRONT:$TAG"
 
 ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'docker network connect onelike-network --ip 172.18.0.5 front'
+
+ssh -o StrictHostKeyChecking=no ubuntu@${STAGE_SERVER} 'echo OK'
