@@ -49,6 +49,7 @@ class Companies extends Component {
       identifier: company.identifier,
       name: company.name,
       active: company.active,
+      expiration: company.expiration,
       classificationId: company.classification.id,
       classificationName: company.classification.name,
       status: company.active ? "Activo" : "Desactivo",
@@ -257,6 +258,7 @@ class Companies extends Component {
         {
           identifier: this.state.selectedCompany.identifier,
           name: this.state.selectedCompany.name,
+          expiration: this.state.selectedCompany.expiration,
           classification_id: this.state.selectedCompany.classificationId
         },
         {

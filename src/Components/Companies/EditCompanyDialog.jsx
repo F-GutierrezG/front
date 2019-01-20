@@ -80,10 +80,26 @@ const EditCompanyDialog = props => (
           })}
         </Select>
       </FormControl>
+
+      <CustomInput
+        labelText="Fecha de corte de servicio"
+        formControlProps={{
+          fullWidth: true,
+          margin: "dense"
+        }}
+        labelProps={{
+          shrink: true
+        }}
+        inputProps={{
+          type: "date",
+          onChange: evt => props.handleOnChange("expiration", evt),
+          value: props.company.expiration
+        }}
+      />
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
-      <Button onClick={props.onAccept} color="success">
+      <Button onClick={props.onAccept} color="primary">
         Editar
       </Button>
     </DialogActions>
@@ -96,12 +112,14 @@ EditCompanyDialog.propTypes = {
   company: PropTypes.shape({
     identifier: PropTypes.string,
     name: PropTypes.string,
-    classificationId: PropTypes.number
+    classificationId: PropTypes.number,
+    expiration: PropTypes.string
   }).isRequired,
   errors: PropTypes.shape({
     identifier: PropTypes.bool,
     name: PropTypes.bool,
-    classification: PropTypes.bool
+    classification: PropTypes.bool,
+    expiration: PropTypes.string
   }).isRequired,
   classifications: PropTypes.array.isRequired,
   handleOnChange: PropTypes.func.isRequired,

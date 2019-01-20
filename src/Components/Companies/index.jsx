@@ -16,6 +16,7 @@ const columns = [
   { Header: "Rut", accessor: "identifier" },
   { Header: "Razón Social", accessor: "name" },
   { Header: "Giro", accessor: "classificationName" },
+  { Header: "Expiración", accessor: "expiration" },
   { Header: "Estado", accessor: "status" },
   {
     Header: "Acciones",
