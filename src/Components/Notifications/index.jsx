@@ -87,6 +87,8 @@ class Notifications extends Component {
     );
     const publication = notification.message;
     publication.socialNetworks = publication.social_networks;
+    publication.companyIdentifier = publication.company_identifier;
+    publication.companyName = publication.company_name;
     window.publicationActionsComponent.state.selectedPublication = publication;
     window.publicationActionsComponent.selectPublication(publication);
   };

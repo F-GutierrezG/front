@@ -31,6 +31,37 @@ const AddEventDialog = props => {
       <DialogTitle>Crear Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
+          <GridItem xs={12}>
+            <FormControl fullWidth error={props.errors.companyId}>
+              <InputLabel
+                htmlFor="company-select"
+                className={classes.selectLabel}
+              >
+                Empresa
+              </InputLabel>
+              <Select
+                value={props.publication.companyId}
+                onChange={event => props.onChange("companyId", event)}
+                MenuProps={{ className: classes.selectMenu }}
+                classes={{ select: classes.select }}
+              >
+                <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
+                  Empresa
+                </MenuItem>
+                {props.companies.map(company => {
+                  return (
+                    <MenuItem
+                      key={company.id}
+                      classes={{ root: classes.selectMenuItem }}
+                      value={company.id}
+                    >
+                      {company.identifier} - {company.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </GridItem>
           <GridItem xs={6}>
             <CustomInput
               labelText="Fecha"
@@ -216,6 +247,7 @@ AddEventDialog.propTypes = {
   classes: PropTypes.object,
   open: PropTypes.bool.isRequired,
   publication: PropTypes.shape({
+    companyId: PropTypes.number,
     date: PropTypes.string,
     time: PropTypes.string,
     title: PropTypes.string,
@@ -226,6 +258,7 @@ AddEventDialog.propTypes = {
     tags: PropTypes.array.isRequired
   }).isRequired,
   errors: PropTypes.shape({
+    companyId: PropTypes.bool.isRequired,
     date: PropTypes.bool.isRequired,
     time: PropTypes.bool.isRequired,
     title: PropTypes.bool.isRequired,
@@ -239,6 +272,7 @@ AddEventDialog.propTypes = {
   onAccept: PropTypes.func,
   buttonsDisabled: PropTypes.bool.isRequired,
   socialNetworks: PropTypes.array.isRequired,
+  companies: PropTypes.array.isRequired,
   onChangeTag: PropTypes.func.isRequired,
   onTagKeyPress: PropTypes.func.isRequired,
   tag: PropTypes.string.isRequired,

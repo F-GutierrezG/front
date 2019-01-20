@@ -77,6 +77,23 @@ const ViewPublicationDialog = props => {
       </DialogTitle>
       <DialogContent>
         <GridContainer>
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Empresa"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: `${props.publication.companyIdentifier} - ${props.publication.companyName}`,
+                disabled: true
+              }}
+            />
+          </GridItem>
           <GridItem xs={6}>
             <CustomInput
               labelText="Fecha"

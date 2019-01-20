@@ -5,19 +5,39 @@ import axios from "axios";
 import CalendarWithErrors from "Components/Calendar";
 
 import DownloadToolbar from "Components/DownloadToolbar";
+import SearchCompany from "Components/SearchCompany";
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       publications: [],
+      companies: [],
       hasError: false,
-      error: ""
+      error: "",
+      selectedCompany: null
     };
   }
 
   componentDidMount() {
     const token = localStorage.getItem("token");
+
+    axios
+      .get(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({ companies: response.data }, () => {
+          window.publicationActionsComponent.state.companies = this.state.companies;
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+
     axios
       .get(`${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications`, {
         headers: { Authorization: "Bearer " + token }
@@ -147,10 +167,68 @@ class Calendar extends React.Component {
     });
   };
 
+  handleOnChangeSelectedCompany = event => {
+    if (event.target.value) {
+      this.loadPublications(event.target.value);
+      this.setState({
+        selectedCompany: this.state.companies.find(
+          company => company.id === event.target.value
+        )
+      });
+    } else {
+      this.loadPublications();
+      this.setState({ selectedCompany: null });
+    }
+  };
+
+  loadPublications = companyId => {
+    const token = localStorage.getItem("token");
+
+    if (companyId) {
+      axios
+        .get(
+          `${
+            process.env.REACT_APP_SOCIAL_SERVICE_URL
+          }/publications/${companyId}`,
+          {
+            headers: { Authorization: "Bearer " + token }
+          }
+        )
+        .then(response => {
+          this.setState({ publications: response.data });
+        })
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err
+          });
+        });
+    } else {
+      axios
+        .get(`${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications`, {
+          headers: { Authorization: "Bearer " + token }
+        })
+        .then(response => {
+          this.setState({ publications: response.data });
+        })
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err
+          });
+        });
+    }
+  };
+
   render() {
     return (
       <div>
         <DownloadToolbar onClick={this.handleOnClickDownload} />
+        <SearchCompany
+          companies={this.state.companies}
+          onChange={this.handleOnChangeSelectedCompany}
+          company={this.state.selectedCompany}
+        />
         <CalendarWithErrors
           publications={this.state.publications}
           hasError={this.state.hasError}

@@ -52,7 +52,8 @@ class PublicationActions extends React.Component {
       tag: "",
       onAddPublicationListeners: [],
       onDeletePublicationListeners: [],
-      onUpdatePublicationListeners: []
+      onUpdatePublicationListeners: [],
+      companies: []
     };
     window.publicationActionsComponent = this;
   }
@@ -68,6 +69,7 @@ class PublicationActions extends React.Component {
 
   getCleanedPublication = () => {
     return {
+      companyId: -1,
       date: "",
       time: "",
       title: "",
@@ -83,6 +85,7 @@ class PublicationActions extends React.Component {
   getCleanedSelectedPublication = () => {
     return {
       id: 0,
+      companyId: -1,
       date: "",
       time: "",
       title: "",
@@ -98,6 +101,7 @@ class PublicationActions extends React.Component {
 
   getCleanedPublicationErrors = () => {
     return {
+      companyId: false,
       date: false,
       time: false,
       title: false,
@@ -271,7 +275,9 @@ class PublicationActions extends React.Component {
       end: date,
       color: color,
       link: publication.link,
-      tags: publication.tags
+      tags: publication.tags,
+      companyIdentifier: publication.company_identifier,
+      companyName: publication.company_name
     };
   };
 
@@ -279,6 +285,7 @@ class PublicationActions extends React.Component {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
+    formData.append("company_id", publication.companyId);
     formData.append("date", publication.date);
     formData.append("time", publication.time);
     formData.append("title", publication.title);
@@ -857,6 +864,7 @@ class PublicationActions extends React.Component {
         clonePeriodicities={clonePeriodicities}
         cloneDurations={cloneDurations}
         onChangeClone={this.handleOnChangeClone}
+        companies={this.state.companies}
       />
     );
   }

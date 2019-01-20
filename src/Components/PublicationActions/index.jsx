@@ -47,6 +47,7 @@ const PublicationActions = props => {
         onAccept={props.onAcceptCreate}
         buttonsDisabled={props.buttonsDisabled}
         onDeleteTag={props.onDeleteTag}
+        companies={props.companies}
       />
       <ViewPublicationDialog
         open={props.openViewPublication}
@@ -154,7 +155,8 @@ PublicationActions.propTypes = {
   onEditDeleteTag: PropTypes.func.isRequired,
   clonePeriodicities: PropTypes.array.isRequired,
   cloneDurations: PropTypes.array.isRequired,
-  onChangeClone: PropTypes.func.isRequired
+  onChangeClone: PropTypes.func.isRequired,
+  companies: PropTypes.array.isRequired
 };
 
 export default withErrors(PublicationActions);
