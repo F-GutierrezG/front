@@ -17,6 +17,7 @@ const columns = [
   { Header: "Nombre", accessor: "firstName" },
   { Header: "Apellido", accessor: "lastName" },
   { Header: "E-Mail", accessor: "email" },
+  { Header: "Expiración", accessor: "expiration" },
   { Header: "Estado", accessor: "status" },
   {
     Header: "Acciones",

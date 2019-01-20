@@ -68,6 +68,7 @@ class Users extends Component {
       firstName: user.first_name,
       lastName: user.last_name,
       email: user.email,
+      expiration: user.expiration,
       active: user.active,
       updated: user.updated,
       status: user.active ? "Activo" : "Desactivo",
@@ -271,7 +272,8 @@ class Users extends Component {
         {
           email: this.state.selectedUser.email,
           first_name: this.state.selectedUser.firstName,
-          last_name: this.state.selectedUser.lastName
+          last_name: this.state.selectedUser.lastName,
+          expiration: this.state.selectedUser.expiration
         },
         {
           headers: { Authorization: "Bearer " + token }

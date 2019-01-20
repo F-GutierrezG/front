@@ -52,6 +52,22 @@ const EditUserDialog = props => (
           value: props.user.lastName
         }}
       />
+
+      <CustomInput
+        labelText="Fecha de corte de servicio"
+        formControlProps={{
+          fullWidth: true,
+          margin: "dense"
+        }}
+        labelProps={{
+          shrink: true
+        }}
+        inputProps={{
+          type: "date",
+          onChange: evt => props.handleOnChange("expiration", evt),
+          value: props.user.expiration
+        }}
+      />
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
@@ -75,7 +91,8 @@ EditUserDialog.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired
+    lastName: PropTypes.string.isRequired,
+    expiration: PropTypes.string
   }).isRequired,
   handleOnChange: PropTypes.func.isRequired
 };
