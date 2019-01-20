@@ -22,7 +22,7 @@ import withErrors from "Components/withErrors";
 const localizer = BigCalendar.momentLocalizer(moment);
 
 const messages = {
-  today: "Hoy",
+  today: "Ahora",
   previous: "<",
   next: ">",
   month: "Mes",
@@ -31,7 +31,8 @@ const messages = {
   date: "Fecha",
   time: "Hora",
   event: "Evento",
-  agenda: "Agenda"
+  agenda: "Agenda",
+  noEventsInRange: "No hay eventos en este periodo"
 };
 
 const getEventColor = status => {

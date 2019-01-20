@@ -107,6 +107,12 @@ class LoginPage extends React.Component {
     this.setState(newState);
   };
 
+  handleOnKeyPress = evt => {
+    if (evt.key === "Enter") {
+      this.handleOnLogin();
+    }
+  };
+
   render() {
     if (localStorage.getItem("token")) {
       // TODO: Validar la autenticidad del token contra el server
@@ -141,6 +147,7 @@ class LoginPage extends React.Component {
                         </InputAdornment>
                       ),
                       onChange: evt => this.handleOnChange("email", evt),
+                      onKeyPress: evt => this.handleOnKeyPress(evt),
                       value: this.state.email
                     }}
                   />
@@ -161,6 +168,7 @@ class LoginPage extends React.Component {
                       ),
                       type: "password",
                       onChange: evt => this.handleOnChange("password", evt),
+                      onKeyPress: evt => this.handleOnKeyPress(evt),
                       value: this.state.password
                     }}
                   />

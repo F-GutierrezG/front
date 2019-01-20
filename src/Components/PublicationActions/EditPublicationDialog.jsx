@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
+import Tooltip from "@material-ui/core/Tooltip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -159,7 +160,7 @@ const EditPublicationDialog = props => {
             <CustomInput
               labelText="Tags"
               formControlProps={{
-                fullWidth: true,
+                fullWidth: false,
                 margin: "dense"
               }}
               labelProps={{
@@ -172,6 +173,9 @@ const EditPublicationDialog = props => {
                 onKeyPress: event => props.onTagKeyPress(event)
               }}
             />
+            <Tooltip title="Escriba el tag que desee y presione la tecla Enter para agregarlo">
+              <i className={"fas fa-question"} />
+            </Tooltip>
           </GridItem>
           <GridItem xs={12}>
             {props.publication.tags.map((tag, key) => {
