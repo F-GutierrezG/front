@@ -67,6 +67,18 @@ class LoginPage extends React.Component {
     return !(emailError && passwordError);
   }
 
+  validateRecoverPassword(email) {
+    let emailError = false;
+
+    if (email.trim() === "") emailError = true;
+
+    this.setState({
+      emailError
+    });
+
+    return !emailError;
+  }
+
   doLogin(email, password) {
     axios
       .post(`${process.env.REACT_APP_AUTH_SERVICE_URL}/login`, {
@@ -83,6 +95,23 @@ class LoginPage extends React.Component {
         const { history } = this.props;
         localStorage.setItem("user", JSON.stringify(response.data));
         history.push("/dashboard");
+      })
+      .catch(() => {
+        this.setState({
+          emailError: true,
+          passwordError: true,
+          userPasswordError: true
+        });
+      });
+  }
+
+  doRecoverPassword(email) {
+    axios
+      .post(`${process.env.REACT_APP_AUTH_SERVICE_URL}/recover-password`, {
+        email
+      })
+      .then(response => {
+        alert("Enviado correo de recuperación de contraseña");
       })
       .catch(() => {
         this.setState({
@@ -110,6 +139,13 @@ class LoginPage extends React.Component {
   handleOnKeyPress = evt => {
     if (evt.key === "Enter") {
       this.handleOnLogin();
+    }
+  };
+
+  handleRecoverPassword = () => {
+    const { email } = this.state;
+    if (this.validateRecoverPassword(email)) {
+      this.doRecoverPassword(email);
     }
   };
 
@@ -180,8 +216,6 @@ class LoginPage extends React.Component {
                       Usuario y/o Contraseña incorrectas.
                     </GridContainer>
                   )}
-                </CardBody>
-                <CardFooter className={classes.justifyContentCenter}>
                   <Button
                     color="rose"
                     simple
@@ -190,6 +224,16 @@ class LoginPage extends React.Component {
                     onClick={this.handleOnLogin}
                   >
                     Ingresar
+                  </Button>
+                </CardBody>
+                <CardFooter className={classes.justifyContentCenter}>
+                  <Button
+                    color="default"
+                    size="sm"
+                    block
+                    onClick={this.handleRecoverPassword}
+                  >
+                    Recuperar Contraseña
                   </Button>
                 </CardFooter>
               </Card>
