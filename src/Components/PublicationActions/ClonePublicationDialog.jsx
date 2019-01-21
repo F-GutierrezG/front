@@ -25,7 +25,11 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 const ClonePublicationDialog = props => {
   const { classes } = props;
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onCancel}
+    >
       <DialogTitle>Repetir Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>

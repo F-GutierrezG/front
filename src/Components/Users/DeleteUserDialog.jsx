@@ -10,7 +10,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "Components/CustomButtons/Button.jsx";
 
 const DeleteUserDialog = props => (
-  <Dialog open={props.open} onClose={props.onClose}>
+  <Dialog open={props.open} onClose={props.onCancel}>
     <DialogTitle>Eliminar Usuario</DialogTitle>
     <DialogContent>
       <DialogContentText>
@@ -28,7 +28,6 @@ const DeleteUserDialog = props => (
 
 DeleteUserDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired
 };

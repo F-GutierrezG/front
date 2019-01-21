@@ -27,7 +27,11 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 const AddEventDialog = props => {
   const { classes } = props;
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onCancel}
+    >
       <DialogTitle>Crear Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>

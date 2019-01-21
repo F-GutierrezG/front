@@ -19,7 +19,11 @@ import viewPublicationDialogStyle from "./jss/viewPublicationDialogStyle.jsx";
 
 const RejectPublicationDialog = props => {
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onCancelReject}
+    >
       <DialogTitle>Rechazar Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>

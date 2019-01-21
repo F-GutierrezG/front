@@ -17,7 +17,11 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 
 const DeletePublicationDialog = props => {
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onCancel}
+    >
       <DialogTitle>Eliminar Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>

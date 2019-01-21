@@ -28,7 +28,11 @@ import viewPublicationDialogStyle from "./jss/viewPublicationDialogStyle.jsx";
 const ViewPublicationDialog = props => {
   const { classes } = props;
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onAccept}
+    >
       <DialogTitle>
         Publicación
         <span
@@ -89,7 +93,9 @@ const ViewPublicationDialog = props => {
               }}
               inputProps={{
                 type: "text",
-                value: `${props.publication.companyIdentifier} - ${props.publication.companyName}`,
+                value: `${props.publication.companyIdentifier} - ${
+                  props.publication.companyName
+                }`,
                 disabled: true
               }}
             />
@@ -235,7 +241,9 @@ ViewPublicationDialog.propTypes = {
     image: PropTypes.string,
     imageUrl: PropTypes.string,
     status: PropTypes.string,
-    tags: PropTypes.array.isRequired
+    tags: PropTypes.array.isRequired,
+    companyIdentifier: PropTypes.string,
+    companyName: PropTypes.string
   }).isRequired,
   onClose: PropTypes.func.isRequired,
   onReject: PropTypes.func,

@@ -16,7 +16,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const CreateCompanyDialog = props => (
-  <Dialog open={props.open} onClose={props.onClose}>
+  <Dialog open={props.open} onClose={props.onCancel}>
     <DialogTitle>Crear Empresa</DialogTitle>
     <DialogContent>
       <CustomInput
@@ -91,7 +91,6 @@ const CreateCompanyDialog = props => (
 
 CreateCompanyDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
   errors: PropTypes.shape({
     identifier: PropTypes.bool.isRequired,
     name: PropTypes.bool.isRequired,

@@ -11,7 +11,7 @@ import Button from "Components/CustomButtons/Button.jsx";
 import CustomInput from "Components/CustomInput/CustomInput.jsx";
 
 const EditUserDialog = props => (
-  <Dialog open={props.open} onClose={props.onClose}>
+  <Dialog open={props.open} onClose={props.onCancel}>
     <DialogTitle>Editar Usuario</DialogTitle>
     <DialogContent>
       <CustomInput
@@ -80,7 +80,6 @@ const EditUserDialog = props => (
 
 EditUserDialog.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
   errors: PropTypes.shape({

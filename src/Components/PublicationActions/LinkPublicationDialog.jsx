@@ -19,7 +19,11 @@ import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/ex
 
 const LinkPublicationDialog = props => {
   return (
-    <Dialog open={props.open} styles={{ overflow: "visible" }}>
+    <Dialog
+      open={props.open}
+      styles={{ overflow: "visible" }}
+      onClose={props.onCancel}
+    >
       <DialogTitle>Enlazar Publicación</DialogTitle>
       <DialogContent>
         <GridContainer>
