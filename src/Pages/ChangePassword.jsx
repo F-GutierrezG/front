@@ -16,6 +16,8 @@ import CardBody from "Components/Card/CardBody.jsx";
 import CardHeader from "Components/Card/CardHeader.jsx";
 import CardFooter from "Components/Card/CardFooter.jsx";
 
+import PasswordChanged from "Components/PasswordChanged";
+
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
 import axios from "axios";
@@ -28,7 +30,8 @@ class RecoverPasswordPage extends React.Component {
       cardAnimaton: "cardHidden",
       password: "",
       passwordError: false,
-      userPasswordError: false
+      userPasswordError: false,
+      passwordChanged: false
     };
   }
   componentDidMount() {
@@ -64,8 +67,7 @@ class RecoverPasswordPage extends React.Component {
         token: this.props.location.search.split("=")[1]
       })
       .then(() => {
-        alert("Contraseña modificada");
-        window.location.href = "/pages/login-page";
+        this.setState({ passwordChanged: true });
       })
       .catch(() => {
         this.setState({
@@ -120,10 +122,18 @@ class RecoverPasswordPage extends React.Component {
     }
   };
 
+  handleOnClose = () => {
+    window.location.href = "/pages/login-page";
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
+        <PasswordChanged
+          open={this.state.passwordChanged}
+          onClose={this.handleOnClose}
+        />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={4}>
             <form>

@@ -21,6 +21,8 @@ import CardBody from "Components/Card/CardBody.jsx";
 import CardHeader from "Components/Card/CardHeader.jsx";
 import CardFooter from "Components/Card/CardFooter.jsx";
 
+import RecoverPasswordSended from "Components/RecoverPasswordSended";
+
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
 import axios from "axios";
@@ -35,7 +37,8 @@ class LoginPage extends React.Component {
       password: "",
       emailError: false,
       passwordError: false,
-      userPasswordError: false
+      userPasswordError: false,
+      recoverPasswordSended: false
     };
   }
   componentDidMount() {
@@ -111,7 +114,7 @@ class LoginPage extends React.Component {
         email
       })
       .then(() => {
-        alert("Enviado correo de recuperación de contraseña");
+        this.setState({ recoverPasswordSended: true });
       })
       .catch(() => {
         this.setState({
@@ -150,6 +153,10 @@ class LoginPage extends React.Component {
     }
   };
 
+  handleOnClose = () => {
+    this.setState({ recoverPasswordSended: false });
+  };
+
   render() {
     if (localStorage.getItem("token")) {
       return <Redirect to="/dashboard" />;
@@ -158,6 +165,10 @@ class LoginPage extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
+        <RecoverPasswordSended
+          open={this.state.recoverPasswordSended}
+          onClose={this.handleOnClose}
+        />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={4}>
             <form>
