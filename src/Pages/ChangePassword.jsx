@@ -1,15 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
-
-// @material-ui/icons
-import Email from "@material-ui/icons/Email";
-// import LockOutline from "@material-ui/icons/LockOutline";
 
 // core components
 import GridContainer from "Components/Grid/GridContainer.jsx";
@@ -25,15 +20,13 @@ import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginP
 
 import axios from "axios";
 
-class LoginPage extends React.Component {
+class RecoverPasswordPage extends React.Component {
   constructor(props) {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
       cardAnimaton: "cardHidden",
-      email: "",
       password: "",
-      emailError: false,
       passwordError: false,
       userPasswordError: false
     };
@@ -52,53 +45,30 @@ class LoginPage extends React.Component {
     this.timeOutFunction = null;
   }
 
-  validateLogin(email, password) {
-    let emailError = false;
+  validateChangePassword(password) {
     let passwordError = false;
 
-    if (email.trim() === "") emailError = true;
     if (password.trim() === "") passwordError = true;
 
     this.setState({
-      emailError,
       passwordError
     });
 
-    return !(emailError && passwordError);
+    return !passwordError;
   }
 
-  validateRecoverPassword(email) {
-    let emailError = false;
-
-    if (email.trim() === "") emailError = true;
-
-    this.setState({
-      emailError
-    });
-
-    return !emailError;
-  }
-
-  doLogin(email, password) {
+  doChangePassword(password) {
     axios
-      .post(`${process.env.REACT_APP_AUTH_SERVICE_URL}/login`, {
-        email,
-        password
+      .post(`${process.env.REACT_APP_AUTH_SERVICE_URL}/change-password`, {
+        password,
+        token: this.props.location.search.split("=")[1]
       })
-      .then(response => {
-        localStorage.setItem("token", response.data);
-        return axios.get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/status`, {
-          headers: { Authorization: "Bearer " + response.data }
-        });
-      })
-      .then(response => {
-        const { history } = this.props;
-        localStorage.setItem("user", JSON.stringify(response.data));
-        history.push("/dashboard");
+      .then(() => {
+        alert("Contraseña modificada");
+        window.location.href = "/pages/login-page";
       })
       .catch(() => {
         this.setState({
-          emailError: true,
           passwordError: true,
           userPasswordError: true
         });
@@ -122,10 +92,10 @@ class LoginPage extends React.Component {
       });
   }
 
-  handleOnLogin = () => {
-    const { email, password } = this.state;
-    if (this.validateLogin(email, password)) {
-      this.doLogin(email, password);
+  handleOnChangePassword = () => {
+    const { password } = this.state;
+    if (this.validateChangePassword(password)) {
+      this.doChangePassword(password);
     }
   };
 
@@ -139,7 +109,7 @@ class LoginPage extends React.Component {
   handleOnKeyPress = evt => {
     if (evt.key === "Enter") {
       evt.preventDefault();
-      this.handleOnLogin();
+      this.handleOnChangePassword();
     }
   };
 
@@ -151,10 +121,6 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    if (localStorage.getItem("token")) {
-      return <Redirect to="/dashboard" />;
-    }
-
     const { classes } = this.props;
     return (
       <div className={classes.container}>
@@ -166,27 +132,9 @@ class LoginPage extends React.Component {
                   className={`${classes.cardHeader} ${classes.textCenter}`}
                   color="rose"
                 >
-                  <h4 className={classes.cardTitle}>Acceso de Clientes</h4>
+                  <h4 className={classes.cardTitle}>Cambiar Contraseña</h4>
                 </CardHeader>
                 <CardBody>
-                  <CustomInput
-                    labelText="E-Mail"
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    error={this.state.emailError}
-                    inputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Email className={classes.inputAdornmentIcon} />
-                        </InputAdornment>
-                      ),
-                      onChange: evt => this.handleOnChange("email", evt),
-                      onKeyPress: evt => this.handleOnKeyPress(evt),
-                      value: this.state.email
-                    }}
-                  />
                   <CustomInput
                     labelText="Contraseña"
                     id="password"
@@ -213,27 +161,19 @@ class LoginPage extends React.Component {
                       justify="center"
                       style={{ color: "#f44336" }}
                     >
-                      Usuario y/o Contraseña incorrectas.
+                      El enlace de recuperación de contraseña expiró.
                     </GridContainer>
                   )}
+                </CardBody>
+                <CardFooter className={classes.justifyContentCenter}>
                   <Button
                     color="rose"
                     simple
                     size="lg"
                     block
-                    onClick={this.handleOnLogin}
+                    onClick={this.handleOnChangePassword}
                   >
-                    Ingresar
-                  </Button>
-                </CardBody>
-                <CardFooter className={classes.justifyContentCenter}>
-                  <Button
-                    color="default"
-                    size="sm"
-                    block
-                    onClick={this.handleRecoverPassword}
-                  >
-                    Recuperar Contraseña
+                    Cambiar Contraseña
                   </Button>
                 </CardFooter>
               </Card>
@@ -245,9 +185,10 @@ class LoginPage extends React.Component {
   }
 }
 
-LoginPage.propTypes = {
+RecoverPasswordPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withStyles(loginPageStyle)(RecoverPasswordPage);
