@@ -194,7 +194,11 @@ const ViewPublicationDialog = props => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {props.publication.imageUrl}
+              <img
+                style={{ width: "100px" }}
+                alt={props.publication.imageUrl}
+                src={props.publication.imageUrl}
+              />
             </a>
           </GridItem>
           <GridItem xs={12}>
