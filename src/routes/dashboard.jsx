@@ -35,6 +35,7 @@ var dashRoutes = [
     state: "openManagement",
     icon: "settings",
     onlyAdmin: true,
+    requiredPermissions: ["LIST_USERS", "LIST_COMPANIES"],
     views: [
       {
         path: "/management/users",

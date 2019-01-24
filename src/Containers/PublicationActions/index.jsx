@@ -53,7 +53,8 @@ class PublicationActions extends React.Component {
       onAddPublicationListeners: [],
       onDeletePublicationListeners: [],
       onUpdatePublicationListeners: [],
-      companies: []
+      companies: [],
+      categories: []
     };
     window.publicationActionsComponent = this;
   }
@@ -78,7 +79,8 @@ class PublicationActions extends React.Component {
       additional: "",
       image: "",
       file: "",
-      tags: []
+      tags: [],
+      category: ""
     };
   };
 
@@ -95,7 +97,8 @@ class PublicationActions extends React.Component {
       image: "",
       file: {},
       status: "",
-      tags: []
+      tags: [],
+      category: ""
     };
   };
 
@@ -108,7 +111,8 @@ class PublicationActions extends React.Component {
       socialNetworks: false,
       message: false,
       additional: false,
-      image: false
+      image: false,
+      category: false
     };
   };
 
@@ -188,6 +192,24 @@ class PublicationActions extends React.Component {
     };
   };
 
+  loadCategories = id => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`${process.env.REACT_APP_SOCIAL_SERVICE_URL}/categories/${id}`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({ categories: response.data });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  };
+
   handleChangeValue = (field, event) => {
     const files = event.target.files;
     const publication = { ...this.state.publication };
@@ -196,6 +218,11 @@ class PublicationActions extends React.Component {
     }
     publication[field] = event.target.value;
     this.setState({ publication });
+
+    if (field === "companyId") {
+      if (event.target.value !== "") this.loadCategories(event.target.value);
+      else this.setState({ categories: [] });
+    }
   };
 
   handleOnCancel = () => {
@@ -865,6 +892,7 @@ class PublicationActions extends React.Component {
         cloneDurations={cloneDurations}
         onChangeClone={this.handleOnChangeClone}
         companies={this.state.companies}
+        categories={this.state.categories}
       />
     );
   }

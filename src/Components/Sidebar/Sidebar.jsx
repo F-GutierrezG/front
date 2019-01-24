@@ -202,17 +202,16 @@ class Sidebar extends React.Component {
           if (prop.redirect) {
             return null;
           }
-          if (prop.onlyUser) {
-            for (const i in prop.requiredPermissions) {
-              if (
-                userData.permissions.findIndex(
-                  p => p === prop.requiredPermissions[i]
-                ) === -1
-              ) {
-                return null;
-              }
+          for (const i in prop.requiredPermissions) {
+            if (
+              userData.permissions.findIndex(
+                p => p === prop.requiredPermissions[i]
+              ) === -1
+            ) {
+              return null;
             }
           }
+
           if (prop.collapse) {
             const navLinkClasses =
               classes.itemLink +

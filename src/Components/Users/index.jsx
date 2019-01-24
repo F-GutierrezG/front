@@ -28,12 +28,14 @@ const columns = [
 ];
 
 const Users = props => {
+  const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <div>
       <CreateUserDialog
         open={props.openCreateUser}
         errors={props.createUserErrors}
         user={props.userCreated}
+        groups={props.groups}
         handleOnChange={props.onCreateUserChange}
         onCancel={props.onCancelCreateUser}
         onAccept={props.onAcceptCreateUser}
@@ -42,11 +44,13 @@ const Users = props => {
         open={props.openEditUser}
         errors={props.editUserErrors}
         user={props.userEdited}
+        groups={props.groups}
         handleOnChange={props.onEditUserChange}
         onCancel={props.onCancelEditUser}
         onAccept={props.onAcceptEditUser}
       />
-      <DownloadToolbar onClick={props.onClickDownload} />
+      {userData &&
+        userData.admin && <DownloadToolbar onClick={props.onClickDownload} />}
       <EditUserPasswordDialog
         open={props.openEditUserPassword}
         errors={props.editPasswordErrors}
@@ -86,6 +90,7 @@ Users.propTypes = {
   onCancelEditUser: PropTypes.func.isRequired,
   onAcceptEditUser: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
+  groups: PropTypes.array.isRequired,
   onAddUserClick: PropTypes.func.isRequired,
   openEditUserPassword: PropTypes.bool.isRequired,
   onEditUserChangePassword: PropTypes.func.isRequired,

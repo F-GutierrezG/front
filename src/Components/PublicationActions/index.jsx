@@ -48,6 +48,7 @@ const PublicationActions = props => {
         buttonsDisabled={props.buttonsDisabled}
         onDeleteTag={props.onDeleteTag}
         companies={props.companies}
+        categories={props.categories}
       />
       <ViewPublicationDialog
         open={props.openViewPublication}
@@ -79,6 +80,7 @@ const PublicationActions = props => {
         onTagKeyPress={props.onEditTagKeyPress}
         tag={props.tag}
         onDeleteTag={props.onEditDeleteTag}
+        categories={props.categories}
       />
       <DeletePublicationDialog
         open={props.openDeletePublication}

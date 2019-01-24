@@ -17,6 +17,7 @@ class Users extends Component {
     hasError: false,
     error: "",
     users: [],
+    groups: [],
     createUserDialogOpen: false,
     deleteUserDialogOpen: false,
     editUserDialogOpen: false,
@@ -25,7 +26,8 @@ class Users extends Component {
       email: false,
       firstName: false,
       lastName: false,
-      password: false
+      password: false,
+      groupId: false
     },
     editUserErrors: {
       email: null,
@@ -37,13 +39,15 @@ class Users extends Component {
       email: "",
       firstName: "",
       lastName: "",
-      password: ""
+      password: "",
+      groupId: ""
     },
     selectedUser: {
       email: "",
       firstName: "",
       lastName: "",
-      password: ""
+      password: "",
+      groupId: ""
     },
     selectedUserPassword: {
       email: "",
@@ -72,6 +76,7 @@ class Users extends Component {
       active: user.active,
       updated: user.updated,
       status: user.active ? "Activo" : "Desactivo",
+      groupId: user.group_id,
       actions: (
         <div className="actions-right">
           <Tooltip title="Cambiar Contraseña">
@@ -191,7 +196,27 @@ class Users extends Component {
 
   componentDidMount() {
     this.loadUsers();
+    this.loadGroups();
   }
+
+  loadGroups = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${process.env.REACT_APP_AUTH_SERVICE_URL}/groups`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({
+          groups: response.data
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  };
 
   handleCreateUserButton = () => {
     this.setState({
@@ -206,13 +231,15 @@ class Users extends Component {
         firstName: false,
         lastName: false,
         email: false,
-        password: false
+        password: false,
+        groupId: false
       },
       newUser: {
         email: "",
         firstName: "",
         lastName: "",
-        password: ""
+        password: "",
+        groupId: ""
       }
     });
   };
@@ -273,7 +300,8 @@ class Users extends Component {
           email: this.state.selectedUser.email,
           first_name: this.state.selectedUser.firstName,
           last_name: this.state.selectedUser.lastName,
-          expiration: this.state.selectedUser.expiration
+          expiration: this.state.selectedUser.expiration,
+          group_id: this.state.selectedUser.groupId
         },
         {
           headers: { Authorization: "Bearer " + token }
@@ -341,7 +369,8 @@ class Users extends Component {
             email: user.email,
             first_name: user.firstName,
             last_name: user.lastName,
-            password: user.password
+            password: user.password,
+            group_id: user.groupId
           },
           {
             headers: { Authorization: "Bearer " + token }
@@ -353,16 +382,18 @@ class Users extends Component {
           this.setState({
             users,
             createUserErrors: {
-              email: null,
-              firstName: null,
-              lastName: null,
-              password: null
+              email: false,
+              firstName: false,
+              lastName: false,
+              password: false,
+              groupId: false
             },
             newUser: {
               mail: "",
               firstName: "",
               lastName: "",
-              password: ""
+              password: "",
+              groupId: ""
             },
             createUserDialogOpen: false
           });
@@ -448,6 +479,7 @@ class Users extends Component {
         onAcceptEditUser={this.handleOnAcceptEditUserDialog}
         onAcceptEditUserPassword={this.handleOnAcceptEditPaswordUserDialog}
         users={this.state.users}
+        groups={this.state.groups}
         onAddUserClick={this.handleCreateUserButton}
         onClickDownload={this.handleOnClickDownload}
         editPasswordErrors={this.state.editPasswordErrors}

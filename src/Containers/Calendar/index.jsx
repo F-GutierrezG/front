@@ -19,7 +19,7 @@ class Calendar extends React.Component {
     };
   }
 
-  componentDidMount() {
+  loadCompanies = () => {
     const token = localStorage.getItem("token");
 
     axios
@@ -37,6 +37,10 @@ class Calendar extends React.Component {
           error: err
         });
       });
+  };
+
+  loadPublications = () => {
+    const token = localStorage.getItem("token");
 
     axios
       .get(`${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications`, {
@@ -51,6 +55,11 @@ class Calendar extends React.Component {
           error: err
         });
       });
+  };
+
+  componentDidMount() {
+    this.loadCompanies();
+    this.loadPublications();
 
     const addTimer = setInterval(() => {
       if(window.publicationActionsComponent.state.onAddPublicationListeners.length === 0){
@@ -221,14 +230,20 @@ class Calendar extends React.Component {
   };
 
   render() {
+    const userData = JSON.parse(localStorage.getItem("user"));
     return (
       <div>
-        <DownloadToolbar onClick={this.handleOnClickDownload} />
-        <SearchCompany
-          companies={this.state.companies}
-          onChange={this.handleOnChangeSelectedCompany}
-          company={this.state.selectedCompany}
-        />
+        {userData &&
+          userData.admin && (
+            <div>
+              <DownloadToolbar onClick={this.handleOnClickDownload} />
+              <SearchCompany
+                companies={this.state.companies}
+                onChange={this.handleOnChangeSelectedCompany}
+                company={this.state.selectedCompany}
+              />
+            </div>
+          )}
         <CalendarWithErrors
           publications={this.state.publications}
           hasError={this.state.hasError}

@@ -27,6 +27,7 @@ const columns = [
 ];
 
 const Companies = props => {
+  const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <div>
       <CreateCompanyDialog
@@ -47,7 +48,8 @@ const Companies = props => {
         company={props.selectedCompany}
         errors={props.editCompanyErrors}
       />
-      <DownloadToolbar onClick={props.onClickDownload} />
+      {userData &&
+        userData.admin && <DownloadToolbar onClick={props.onClickDownload} />}
       <Management
         icon={<Business />}
         color="success"

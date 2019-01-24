@@ -6,6 +6,11 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
 import Button from "Components/CustomButtons/Button.jsx";
 
 import CustomInput from "Components/CustomInput/CustomInput.jsx";
@@ -68,6 +73,22 @@ const EditUserDialog = props => (
           value: props.user.expiration
         }}
       />
+      <FormControl fullWidth>
+        <InputLabel htmlFor="group-select">Perfil</InputLabel>
+        <Select
+          value={props.user.groupId}
+          onChange={evt => props.handleOnChange("groupId", evt)}
+        >
+          <MenuItem disabled>Perfil</MenuItem>
+          {props.groups.map(group => {
+            return (
+              <MenuItem key={group.id} value={group.id}>
+                {group.name}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
