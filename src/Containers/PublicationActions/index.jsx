@@ -80,7 +80,8 @@ class PublicationActions extends React.Component {
       image: "",
       file: "",
       tags: [],
-      category: ""
+      category: "",
+      subcategory: ""
     };
   };
 
@@ -98,7 +99,8 @@ class PublicationActions extends React.Component {
       file: {},
       status: "",
       tags: [],
-      category: ""
+      category: "",
+      subcategory: ""
     };
   };
 
@@ -112,7 +114,8 @@ class PublicationActions extends React.Component {
       message: false,
       additional: false,
       image: false,
-      category: false
+      category: false,
+      subcategory: false
     };
   };
 
@@ -222,6 +225,16 @@ class PublicationActions extends React.Component {
     if (field === "companyId") {
       if (event.target.value !== "") this.loadCategories(event.target.value);
       else this.setState({ categories: [] });
+    }
+
+    if (field === "category") {
+      const category = this.state.categories.find(
+        category => category.name === event.target.value
+      );
+
+      this.setState({
+        subcategories: category.subcategories
+      });
     }
   };
 
@@ -893,6 +906,7 @@ class PublicationActions extends React.Component {
         onChangeClone={this.handleOnChangeClone}
         companies={this.state.companies}
         categories={this.state.categories}
+        subcategories={this.state.subcategories}
       />
     );
   }

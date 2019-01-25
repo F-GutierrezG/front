@@ -49,6 +49,7 @@ const PublicationActions = props => {
         onDeleteTag={props.onDeleteTag}
         companies={props.companies}
         categories={props.categories}
+        subcategories={props.subcategories}
       />
       <ViewPublicationDialog
         open={props.openViewPublication}
@@ -158,7 +159,9 @@ PublicationActions.propTypes = {
   clonePeriodicities: PropTypes.array.isRequired,
   cloneDurations: PropTypes.array.isRequired,
   onChangeClone: PropTypes.func.isRequired,
-  companies: PropTypes.array.isRequired
+  companies: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
+  subcategories: PropTypes.array.isRequired
 };
 
 export default withErrors(PublicationActions);

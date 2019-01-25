@@ -24,50 +24,12 @@ import Button from "Components/CustomButtons/Button.jsx";
 
 import extendedFormsStyle from "assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx";
 
-import deburr from 'lodash/deburr';
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-];
+import deburr from "lodash/deburr";
+import Autosuggest from "react-autosuggest";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 
 function renderInputComponent(inputProps) {
   const { classes, inputRef = () => {}, ref, ...other } = inputProps;
@@ -81,8 +43,8 @@ function renderInputComponent(inputProps) {
           inputRef(node);
         },
         classes: {
-          input: classes.input,
-        },
+          input: classes.input
+        }
       }}
       {...other}
     />
@@ -90,101 +52,104 @@ function renderInputComponent(inputProps) {
 }
 
 function renderSuggestion(suggestion, { query, isHighlighted }) {
-  const matches = match(suggestion.label, query);
-  const parts = parse(suggestion.label, matches);
+  const matches = match(suggestion.name, query);
+  const parts = parse(suggestion.name, matches);
 
   return (
     <MenuItem selected={isHighlighted} component="div">
       <div>
-        {parts.map((part, index) =>
-          part.highlight ? (
-            <span key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </span>
-          ) : (
-            <strong key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </strong>
-          ),
+        {parts.map(
+          (part, index) =>
+            part.highlight ? (
+              <span key={String(index)} style={{ fontWeight: 500 }}>
+                {part.text}
+              </span>
+            ) : (
+              <strong key={String(index)} style={{ fontWeight: 300 }}>
+                {part.text}
+              </strong>
+            )
         )}
       </div>
     </MenuItem>
   );
 }
 
-function getSuggestions(value) {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-        const keep =
-          count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-
-        if (keep) {
-          count += 1;
-        }
-
-        return keep;
-      });
-}
-
 function getSuggestionValue(suggestion) {
-  return suggestion.label;
+  return suggestion.name;
 }
 
 const styles = theme => ({
   root: {
     height: 250,
-    flexGrow: 1,
+    flexGrow: 1
   },
   container: {
-    position: 'relative',
+    position: "relative"
   },
   suggestionsContainerOpen: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1000,
     marginTop: theme.spacing.unit,
     left: 0,
-    right: 0,
+    right: 0
   },
   suggestion: {
-    display: 'block',
+    display: "block"
   },
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: 'none',
+    listStyleType: "none"
   },
   divider: {
-    height: theme.spacing.unit * 2,
-  },
+    height: theme.spacing.unit * 2
+  }
 });
 
 class AddEventDialog extends React.Component {
   state = {
-    single: '',
-    popper: '',
-    suggestions: [],
+    single: "",
+    popper: "",
+    suggestions: []
+  };
+
+  getSuggestions = value => {
+    const inputValue = deburr(value.trim()).toLowerCase();
+    const inputLength = inputValue.length;
+    let count = 0;
+
+    return inputLength === 0
+      ? []
+      : this.props.subcategories.filter(suggestion => {
+          const keep =
+            count < 5 &&
+            suggestion.name.slice(0, inputLength).toLowerCase() ===
+              inputValue.toLowerCase();
+
+          if (keep) {
+            count += 1;
+          }
+
+          return keep;
+        });
   };
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
+      suggestions: this.getSuggestions(value)
     });
   };
 
   handleSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: [],
+      suggestions: []
     });
   };
 
   handleChange = name => (event, { newValue }) => {
     this.setState({
-      [name]: newValue,
+      [name]: newValue
     });
   };
 
@@ -326,7 +291,7 @@ class AddEventDialog extends React.Component {
                   classes,
                   className: classes.selectLabel,
                   label: "Subcategoría",
-                  value: this.state.popper,
+                  value: publication.subcategory,
                   onChange: event => onChange("subcategory", event),
                   inputRef: node => {
                     this.popperNode = node;
