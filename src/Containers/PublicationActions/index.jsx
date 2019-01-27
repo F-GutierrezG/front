@@ -161,10 +161,15 @@ class PublicationActions extends React.Component {
   };
 
   selectedEvent = event => {
-    this.setState({
-      openViewPublication: true,
-      selectedPublication: this.mapToPublication(event)
-    });
+    this.setState(
+      {
+        openViewPublication: true,
+        selectedPublication: this.mapToPublication(event)
+      },
+      () => {
+        this.loadCategories(event.companyId);
+      }
+    );
   };
 
   addNewPublication = event => {
@@ -198,7 +203,14 @@ class PublicationActions extends React.Component {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
-        this.setState({ categories: response.data });
+        const category = response.data.find(
+          category => category.name === this.state.selectedPublication.category
+        );
+
+        this.setState({
+          categories: response.data,
+          subcategories: category.subcategories
+        });
       })
       .catch(err => {
         this.setState({
@@ -611,6 +623,7 @@ class PublicationActions extends React.Component {
     const publication = this.state.selectedPublication;
 
     const formData = new FormData();
+    formData.append("company_id", publication.companyId);
     formData.append("date", publication.date);
     formData.append("time", publication.time);
     formData.append("title", publication.title);
@@ -619,6 +632,8 @@ class PublicationActions extends React.Component {
     formData.append("additional", publication.additional);
     formData.append("image", publication.file);
     formData.append("tags", publication.tags.join(","));
+    formData.append("category", publication.category);
+    formData.append("subcategory", publication.subcategory);
 
     axios
       .put(
@@ -661,6 +676,21 @@ class PublicationActions extends React.Component {
     }
     publication[field] = event.target.value;
     this.setState({ selectedPublication: publication });
+
+    if (field === "companyId") {
+      if (event.target.value !== "") this.loadCategories(event.target.value);
+      else this.setState({ categories: [] });
+    }
+
+    if (field === "category") {
+      const category = this.state.categories.find(
+        category => category.name === event.target.value
+      );
+
+      this.setState({
+        subcategories: category.subcategories
+      });
+    }
   };
 
   handleOnLink = () => {

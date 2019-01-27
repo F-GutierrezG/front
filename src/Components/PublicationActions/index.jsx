@@ -81,7 +81,9 @@ const PublicationActions = props => {
         onTagKeyPress={props.onEditTagKeyPress}
         tag={props.tag}
         onDeleteTag={props.onEditDeleteTag}
+        companies={props.companies}
         categories={props.categories}
+        subcategories={props.subcategories}
       />
       <DeletePublicationDialog
         open={props.openDeletePublication}

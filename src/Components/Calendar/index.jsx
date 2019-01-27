@@ -84,6 +84,7 @@ const mapPublicationToEvent = publication => {
     color: color,
     link: publication.link,
     tags: publication.tags,
+    companyId: publication.company_id,
     companyIdentifier: publication.company_identifier,
     companyName: publication.company_name,
     category: publication.category,
