@@ -33,7 +33,7 @@ const ViewPublicationDialog = props => {
     <Dialog
       open={props.open}
       styles={{ overflow: "visible" }}
-      onClose={props.onAccept}
+      onClose={props.onClose}
     >
       <DialogTitle>
         Publicación
