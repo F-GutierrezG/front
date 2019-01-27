@@ -203,14 +203,21 @@ class PublicationActions extends React.Component {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
-        const category = response.data.find(
-          category => category.name === this.state.selectedPublication.category
-        );
+        if (this.state.selectedPublication.category) {
+          const category = response.data.find(
+            category => category.name === this.state.selectedPublication.category
+          );
 
-        this.setState({
-          categories: response.data,
-          subcategories: category.subcategories
-        });
+          this.setState({
+            categories: response.data,
+            subcategories: category.subcategories
+          });
+        } else {
+          this.setState({
+            categories: response.data,
+            subcategories: []
+          });
+        }
       })
       .catch(err => {
         this.setState({

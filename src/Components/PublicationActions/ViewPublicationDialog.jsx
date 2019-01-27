@@ -27,6 +27,8 @@ import viewPublicationDialogStyle from "./jss/viewPublicationDialogStyle.jsx";
 
 const ViewPublicationDialog = props => {
   const { classes } = props;
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const editPermission = userData && userData.permissions.indexOf("EDIT_PUBLICATION") > -1;
   return (
     <Dialog
       open={props.open}
@@ -43,63 +45,72 @@ const ViewPublicationDialog = props => {
             cursor: "pointer"
           }}
         >
-          {props.publication.status === "ACCEPTED" && (
-            <span>
-              <Tooltip title="Enlazar">
-                <IconButton arial-label="Enlazar">
-                  <CompareArrows
-                    style={{ color: "#9c27b0" }}
-                    onClick={props.onLink}
+          {editPermission &&
+            props.publication.status === "ACCEPTED" && (
+              <span>
+                <Tooltip title="Enlazar">
+                  <IconButton arial-label="Enlazar">
+                    <CompareArrows
+                      style={{ color: "#9c27b0" }}
+                      onClick={props.onLink}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Repetir Publicación">
+                  <IconButton arial-label="Repetir Publicación">
+                    <AddToPhotosOutlined
+                      style={{ color: "green" }}
+                      onClick={props.onClone}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </span>
+            )}
+          {editPermission &&
+            props.publication.status !== "ACCEPTED" && (
+              <Tooltip title="Editar">
+                <IconButton arial-label="Editar">
+                  <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
+                </IconButton>
+              </Tooltip>
+            )}
+          {editPermission &&
+            props.publication.status === "PENDING" && (
+              <Tooltip title="Eliminar">
+                <IconButton arial-label="Eliminar">
+                  <Delete
+                    style={{ color: "#f44336" }}
+                    onClick={props.onDelete}
                   />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Repetir Publicación">
-                <IconButton arial-label="Repetir Publicación">
-                  <AddToPhotosOutlined
-                    style={{ color: "green" }}
-                    onClick={props.onClone}
-                  />
-                </IconButton>
-              </Tooltip>
-            </span>
-          )}
-          {props.publication.status !== "ACCEPTED" && (
-            <Tooltip title="Editar">
-              <IconButton arial-label="Editar">
-                <Create style={{ color: "#9c27b0" }} onClick={props.onEdit} />
-              </IconButton>
-            </Tooltip>
-          )}
-          {props.publication.status === "PENDING" && (
-            <Tooltip title="Eliminar">
-              <IconButton arial-label="Eliminar">
-                <Delete style={{ color: "#f44336" }} onClick={props.onDelete} />
-              </IconButton>
-            </Tooltip>
-          )}
+            )}
         </span>
       </DialogTitle>
       <DialogContent>
         <GridContainer>
-          <GridItem xs={12}>
-            <CustomInput
-              labelText="Empresa"
-              formControlProps={{
-                fullWidth: true,
-                margin: "dense"
-              }}
-              labelProps={{
-                shrink: true
-              }}
-              inputProps={{
-                type: "text",
-                value: `${props.publication.companyIdentifier} - ${
-                  props.publication.companyName
-                }`,
-                disabled: true
-              }}
-            />
-          </GridItem>
+          {userData &&
+            userData.admin && (
+              <GridItem xs={12}>
+                <CustomInput
+                  labelText="Empresa"
+                  formControlProps={{
+                    fullWidth: true,
+                    margin: "dense"
+                  }}
+                  labelProps={{
+                    shrink: true
+                  }}
+                  inputProps={{
+                    type: "text",
+                    value: `${props.publication.companyIdentifier} - ${
+                      props.publication.companyName
+                    }`,
+                    disabled: true
+                  }}
+                />
+              </GridItem>
+            )}
           <GridItem xs={6}>
             <CustomInput
               labelText="Fecha"
@@ -244,24 +255,26 @@ const ViewPublicationDialog = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cerrar</Button>
-        {props.publication.status === "PENDING" && (
-          <Button
-            onClick={props.onReject}
-            color="danger"
-            disabled={props.buttonsDisabled}
-          >
-            Rechazar
-          </Button>
-        )}
-        {props.publication.status === "PENDING" && (
-          <Button
-            onClick={props.onAccept}
-            color="success"
-            disabled={props.buttonsDisabled}
-          >
-            Aceptar
-          </Button>
-        )}
+        {editPermission &&
+          props.publication.status === "PENDING" && (
+            <Button
+              onClick={props.onReject}
+              color="danger"
+              disabled={props.buttonsDisabled}
+            >
+              Rechazar
+            </Button>
+          )}
+        {editPermission &&
+          props.publication.status === "PENDING" && (
+            <Button
+              onClick={props.onAccept}
+              color="success"
+              disabled={props.buttonsDisabled}
+            >
+              Aceptar
+            </Button>
+          )}
       </DialogActions>
     </Dialog>
   );

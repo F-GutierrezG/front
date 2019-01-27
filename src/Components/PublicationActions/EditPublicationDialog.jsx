@@ -171,6 +171,7 @@ class EditPublicationDialog extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const userData = JSON.parse(localStorage.getItem("user"));
 
     const autosuggestProps = {
       renderInputComponent,
@@ -190,37 +191,45 @@ class EditPublicationDialog extends React.Component {
         <DialogTitle>Editar Publicación</DialogTitle>
         <DialogContent>
           <GridContainer>
-            <GridItem xs={12}>
-              <FormControl fullWidth>
-                <InputLabel
-                  htmlFor="company-select"
-                  className={classes.selectLabel}
-                >
-                  Empresa
-                </InputLabel>
-                <Select
-                  value={this.props.publication.companyId}
-                  onChange={event => this.props.onChange("companyId", event)}
-                  MenuProps={{ className: classes.selectMenu }}
-                  classes={{ select: classes.select }}
-                >
-                  <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
-                    Empresa
-                  </MenuItem>
-                  {this.props.companies.map(company => {
-                    return (
+            {userData &&
+              userData.admin && (
+                <GridItem xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel
+                      htmlFor="company-select"
+                      className={classes.selectLabel}
+                    >
+                      Empresa
+                    </InputLabel>
+                    <Select
+                      value={this.props.publication.companyId}
+                      onChange={event =>
+                        this.props.onChange("companyId", event)
+                      }
+                      MenuProps={{ className: classes.selectMenu }}
+                      classes={{ select: classes.select }}
+                    >
                       <MenuItem
-                        key={company.id}
+                        disabled
                         classes={{ root: classes.selectMenuItem }}
-                        value={company.id}
                       >
-                        {company.identifier} - {company.name}
+                        Empresa
                       </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </GridItem>
+                      {this.props.companies.map(company => {
+                        return (
+                          <MenuItem
+                            key={company.id}
+                            classes={{ root: classes.selectMenuItem }}
+                            value={company.id}
+                          >
+                            {company.identifier} - {company.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+              )}
             <GridItem xs={6}>
               <CustomInput
                 labelText="Fecha"
