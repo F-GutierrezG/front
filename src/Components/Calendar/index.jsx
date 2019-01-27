@@ -85,7 +85,9 @@ const mapPublicationToEvent = publication => {
     link: publication.link,
     tags: publication.tags,
     companyIdentifier: publication.company_identifier,
-    companyName: publication.company_name
+    companyName: publication.company_name,
+    category: publication.category,
+    subcategory: publication.subcategory
   };
 };
 

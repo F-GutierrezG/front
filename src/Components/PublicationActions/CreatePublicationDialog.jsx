@@ -80,19 +80,13 @@ function getSuggestionValue(suggestion) {
 }
 
 const styles = theme => ({
-  root: {
-    height: 250,
-    flexGrow: 1
-  },
   container: {
     position: "relative"
   },
   suggestionsContainerOpen: {
     position: "absolute",
     zIndex: 1000,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0
+    marginTop: theme.spacing.unit
   },
   suggestion: {
     display: "block"
@@ -101,9 +95,6 @@ const styles = theme => ({
     margin: 0,
     padding: 0,
     listStyleType: "none"
-  },
-  divider: {
-    height: theme.spacing.unit * 2
   }
 });
 
@@ -151,6 +142,11 @@ class AddEventDialog extends React.Component {
     this.setState({
       [name]: newValue
     });
+  };
+
+  onChangeSuggestion = () => (event, { newValue }) => {
+    const myEvent = { target: { value: newValue } };
+    this.props.onChange("subcategory", myEvent);
   };
 
   render() {
@@ -292,10 +288,7 @@ class AddEventDialog extends React.Component {
                   className: classes.selectLabel,
                   label: "Subcategoría",
                   value: publication.subcategory,
-                  onChange: event => onChange("subcategory", event),
-                  inputRef: node => {
-                    this.popperNode = node;
-                  }
+                  onChange: this.onChangeSuggestion("subcategory")
                 }}
                 theme={{
                   suggestionsList: classes.suggestionsList,

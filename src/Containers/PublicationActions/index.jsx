@@ -155,14 +155,9 @@ class PublicationActions extends React.Component {
     publication.title = event.realTitle;
     publication.imageUrl = event.image;
     publication.image = "";
+    publication.category = event.category;
+    publication.subcategory = event.subcategory;
     return publication;
-  };
-
-  selectPublication = publication => {
-    this.setState({
-      openViewPublication: true,
-      selectedPublication: publication
-    });
   };
 
   selectedEvent = event => {
@@ -317,7 +312,9 @@ class PublicationActions extends React.Component {
       link: publication.link,
       tags: publication.tags,
       companyIdentifier: publication.company_identifier,
-      companyName: publication.company_name
+      companyName: publication.company_name,
+      category: publication.category,
+      subcategory: publication.subcategory
     };
   };
 
@@ -334,6 +331,8 @@ class PublicationActions extends React.Component {
     formData.append("additional", publication.additional);
     formData.append("image", publication.file);
     formData.append("tags", publication.tags.join(","));
+    formData.append("category", publication.category);
+    formData.append("subcategory", publication.subcategory);
 
     axios
       .post(

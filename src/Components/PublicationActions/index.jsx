@@ -161,7 +161,7 @@ PublicationActions.propTypes = {
   onChangeClone: PropTypes.func.isRequired,
   companies: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
-  subcategories: PropTypes.array.isRequired
+  subcategories: PropTypes.array
 };
 
 export default withErrors(PublicationActions);

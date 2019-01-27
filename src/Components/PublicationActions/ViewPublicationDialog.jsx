@@ -134,6 +134,40 @@ const ViewPublicationDialog = props => {
               }}
             />
           </GridItem>
+          <GridItem xs={6}>
+            <CustomInput
+              labelText="Categoría"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.category,
+                disabled: true
+              }}
+            />
+          </GridItem>
+          <GridItem xs={6}>
+            <CustomInput
+              labelText="Subcategoría"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: props.publication.subcategory,
+                disabled: true
+              }}
+            />
+          </GridItem>
           <GridItem xs={12}>
             <CustomInput
               labelText="Título"
@@ -247,7 +281,9 @@ ViewPublicationDialog.propTypes = {
     status: PropTypes.string,
     tags: PropTypes.array.isRequired,
     companyIdentifier: PropTypes.string,
-    companyName: PropTypes.string
+    companyName: PropTypes.string,
+    category: PropTypes.string,
+    subcategory: PropTypes.string
   }).isRequired,
   onClose: PropTypes.func.isRequired,
   onReject: PropTypes.func,
