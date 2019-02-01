@@ -2,10 +2,12 @@ import Publications from "Pages/Publications";
 import Users from "Pages/ManageUsers";
 import Companies from "Pages/ManageCompanies";
 import Company from "Pages/CompanyInfo";
+import SocialNetworks from "Pages/ManageSocialNetworks";
 
 // @material-ui/icons
 // import ContentPaste from "@material-ui/icons/ContentPaste";
 import DateRange from "@material-ui/icons/DateRange";
+import Share from "@material-ui/icons/Share";
 
 var dashRoutes = [
   {
@@ -13,6 +15,12 @@ var dashRoutes = [
     name: "Publicaciones",
     icon: DateRange,
     component: Publications
+  },
+  {
+    path: "/connections",
+    name: "Conexiones",
+    icon: Share,
+    component: SocialNetworks
   },
   {
     path: "/company/:company_id",
