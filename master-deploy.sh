@@ -11,7 +11,7 @@ ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_SERVER} "docker container rm
 
 ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_SERVER} 'docker image rm $(docker images registry.gitlab.com/gusisoft/onelike/front/front -q)'
 
-ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_SERVER} "docker run --log-driver=awslogs --log-opt awslogs-region=us-east-2 --log-opt awslogs-group=Front -d --restart always --name front --network front-network --ip 172.19.0.2 $REGISTRY_REPO/$FRONT:$TAG"
+ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_SERVER} "docker run -d --restart always --name front --network front-network --ip 172.19.0.2 $REGISTRY_REPO/$FRONT:$TAG"
 
 ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_SERVER} 'docker network connect onelike-network --ip 172.18.0.5 front'
 
