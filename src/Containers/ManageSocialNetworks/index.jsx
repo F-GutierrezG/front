@@ -36,7 +36,7 @@ class SocialNetworks extends Component{
                 <p style={{textAlign : "justify"}}>Conecta tu Instagram para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
                   <Button
                   size="sm"
-                  style={{background-color: "#e4405f"}}>
+                  style={{backgroundColor: "#e4405f"}}>
               		<i className="fab fa-instagram"/>{" "}
               		Pronto...
               		</Button>
