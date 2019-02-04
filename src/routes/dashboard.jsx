@@ -16,12 +16,12 @@ var dashRoutes = [
     icon: DateRange,
     component: Publications
   },
-  /*{
+  {
     path: "/connections",
     name: "Conexiones",
     icon: Share,
     component: SocialNetworks
-  },*/
+  },
   {
     path: "/company/:company_id",
     name: "Empresas",
