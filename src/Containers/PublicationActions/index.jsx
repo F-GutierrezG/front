@@ -43,6 +43,7 @@ class PublicationActions extends React.Component {
         link: false
       },
       cloneErrors: this.getCleanedCloneErrors(),
+      rejectErrors: this.getCleanedRejectErrors(),
       events: [],
       publicationButtonsDisabled: false,
       rejecting: false,
@@ -127,6 +128,12 @@ class PublicationActions extends React.Component {
       repetitions: false,
       until: false
     };
+  };
+
+  getCleanedRejectErrors = () => {
+    return {
+      rejectReason: false
+    }
   };
 
   closeError = () => {
@@ -270,6 +277,7 @@ class PublicationActions extends React.Component {
     errors.socialNetworks = publication.socialNetworks.length === 0;
     errors.message = publication.message.trim() === "";
     errors.image = publication.image === "";
+    errors.companyId = publication.companyId === "" || publication.companyId === -1;
 
     this.setState({ publicationErrors: errors });
 
@@ -279,7 +287,8 @@ class PublicationActions extends React.Component {
       errors.title ||
       errors.socialNetworks ||
       errors.message ||
-      errors.image
+      errors.image ||
+      errors.companyId
     );
   };
 
@@ -442,8 +451,9 @@ class PublicationActions extends React.Component {
     if (this.validatePublication(publication)) {
       this.setState({
         publicationButtonsDisabled: true
+      }, () => {
+        this.createPublication(publication);
       });
-      this.createPublication(publication);
     }
   };
 
@@ -522,6 +532,11 @@ class PublicationActions extends React.Component {
   };
 
   handleOnAcceptReject = () => {
+    if (!this.state.rejectReason || this.state.rejectReason.trim() === '') {
+      this.setState({ rejectErrors: { rejectReason: true } });
+      return;
+    }
+
     const token = localStorage.getItem("token");
 
     axios
@@ -547,13 +562,15 @@ class PublicationActions extends React.Component {
           openViewPublication: false,
           rejecting: false,
           rejectReason: "",
-          selectedPublication: this.getCleanedSelectedPublication()
+          selectedPublication: this.getCleanedSelectedPublication(),
+          rejectErrors: { rejectReason: false }
         });
       })
       .catch(err => {
         this.setState({
           hasError: true,
-          error: err
+          error: err,
+          rejectErrors: { rejectReason: false }
         });
       });
   };
@@ -916,6 +933,7 @@ class PublicationActions extends React.Component {
         linkPublicationErrors={this.state.linkErrors}
         editPublicationErrors={this.state.publicationErrors}
         clonePublicationErrors={this.state.cloneErrors}
+        rejectPublicationErrors={this.state.rejectErrors}
         onDeletePublication={this.handleOnDelete}
         onCancelRejectViewPublication={this.handleOnCancelReject}
         onAcceptRejectViewPublication={this.handleOnAcceptReject}

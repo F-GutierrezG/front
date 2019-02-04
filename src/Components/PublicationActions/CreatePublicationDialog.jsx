@@ -178,7 +178,7 @@ class AddEventDialog extends React.Component {
     };
 
     return (
-      <Dialog open={open} onClose={onCancel}>
+      <Dialog open={open} onClose={buttonsDisabled ? "" : onCancel}>
         <DialogTitle>Crear Publicación</DialogTitle>
         <DialogContent>
           <GridContainer>

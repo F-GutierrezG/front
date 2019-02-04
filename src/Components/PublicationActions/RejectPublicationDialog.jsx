@@ -30,6 +30,7 @@ const RejectPublicationDialog = props => {
           <GridItem xs={12}>
             <CustomInput
               labelText="Motivo de Rechazo"
+              error={props.errors.rejectReason}
               formControlProps={{
                 fullWidth: true,
                 margin: "dense"

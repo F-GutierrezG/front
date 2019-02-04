@@ -98,6 +98,7 @@ const PublicationActions = props => {
         onChangeReject={props.onChangeReject}
         rejectReason={props.rejectReason}
         buttonsDisabled={props.buttonsDisabled}
+        errors={props.rejectPublicationErrors}
       />
     </div>
   );
@@ -139,6 +140,7 @@ PublicationActions.propTypes = {
   editPublicationErrors: PropTypes.object.isRequired,
   linkPublicationErrors: PropTypes.object.isRequired,
   clonePublicationErrors: PropTypes.object.isRequired,
+  rejectPublicationErrors: PropTypes.object.isRequired,
   onCancelEdit: PropTypes.func.isRequired,
   onAcceptEdit: PropTypes.func.isRequired,
   onChangeEdit: PropTypes.func.isRequired,
