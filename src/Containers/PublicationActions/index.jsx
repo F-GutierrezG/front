@@ -100,7 +100,8 @@ class PublicationActions extends React.Component {
       status: "",
       tags: [],
       category: "",
-      subcategory: ""
+      subcategory: "",
+      rejectReason: ""
     };
   };
 
@@ -157,6 +158,7 @@ class PublicationActions extends React.Component {
     publication.image = "";
     publication.category = event.category;
     publication.subcategory = event.subcategory;
+    publication.rejectReason = event.rejectReason;
     return publication;
   };
 

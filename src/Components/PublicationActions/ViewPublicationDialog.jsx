@@ -145,6 +145,25 @@ const ViewPublicationDialog = props => {
               }}
             />
           </GridItem>
+          {props.publication.rejectReason && (
+            <GridItem xs={12}>
+              <CustomInput
+                labelText="Motivo de Rechazo"
+                formControlProps={{
+                  fullWidth: true,
+                  margin: "dense"
+                }}
+                labelProps={{
+                  shrink: true
+                }}
+                inputProps={{
+                  type: "text",
+                  value: props.publication.rejectReason,
+                  disabled: true
+                }}
+              />
+            </GridItem>
+          )}
           <GridItem xs={6}>
             <CustomInput
               labelText="Categoría"

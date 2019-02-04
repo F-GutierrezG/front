@@ -88,7 +88,8 @@ const mapPublicationToEvent = publication => {
     companyIdentifier: publication.company_identifier,
     companyName: publication.company_name,
     category: publication.category,
-    subcategory: publication.subcategory
+    subcategory: publication.subcategory,
+    rejectReason: publication.reject_reason
   };
 };
 
