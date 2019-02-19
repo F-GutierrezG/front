@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
+import { FacebookProvider} from "react-facebook";
+import axios from "axios";
 // core components
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
@@ -11,10 +13,29 @@ import Button from "Components/CustomButtons/Button.jsx";
 
 class SocialNetworks extends Component{
 
+  loadFbPages = () =>{
+    const id = JSON.parse(localStorage.getItem("user")).id;
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`https://localhost/facebook/pages/${id}`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({ fbpages: response.data });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  }
+
 	render(){
 		return(
 			<div>
-			<GridContainer justify="left">
+			<GridContainer justify="center">
           <GridItem xs={12} sm={12} md={4}>
               <Card style={{textAlign : "center"}}>
                 <CardBody>
@@ -22,8 +43,13 @@ class SocialNetworks extends Component{
   					<i className="fab fa-facebook-square fa-7x"/>
 				</span> 
                 <p style={{textAlign : "justify"}}>Conecta tu página de Facebook para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
-                  <FacebookButton
-			/>
+                    <FacebookProvider 
+                appId="287321418635324"
+                version="v3.2"
+                language="es_LA"
+                debug="true">
+                  <FacebookButton/>
+                </FacebookProvider>
                 </CardBody>
               </Card>
           </GridItem>

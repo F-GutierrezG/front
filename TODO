@@ -2,6 +2,17 @@ Conexiones
  - Generar Components para cada RRSS
  - Modularizar Container de SocialNetworks
  - Definir propiedades del Container mediante atributos
+ - Crear componente aparte para el listado de páginas (Separar de FacebookButton)
+ - Crear secuencia de "loading" para la carga del botón Facebook
+ - Corregir estado inicial de listado de página activa al realizar Login
+ - Realizar pruebas variadas según estado de inicio de sesión
 
-Publicaciones
- - Integrar con Facebook
+ Publicaciones
+ - Mostrar de alguna forma el Link que se vincula con la publicación
+ - Validar largo de texto, según RRSS
+ 
+Facebook
+ - Relacionar de mejor manera la página que se vincula con la cuenta OL
+ - Configurar variables de FB URI,appId,etc. mediante variables de entorno
+ - Generar tokens de larga duración a partir de tokens de servidor de larga duración (Evita que se activen sistemas de Spam de fb)
+ 

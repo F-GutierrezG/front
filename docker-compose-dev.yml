@@ -19,6 +19,7 @@ services:
       - REACT_APP_SOCIAL_SERVICE_URL=http://localhost/social
       - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost/notifications
       - REACT_APP_EXPORTER_SERVICE_URL=http://localhost/exporter
+      - REACT_APP_FACEBOOK_SERVICE_URL=http://localhost/facebook
     restart: always
     depends_on:
       - users-service

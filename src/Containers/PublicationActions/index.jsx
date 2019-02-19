@@ -392,6 +392,30 @@ class PublicationActions extends React.Component {
       });
   };
 
+  createFbPublication = () => {
+    const id = JSON.parse(localStorage.getItem("user")).id;
+    const publication = this.state.selectedPublication;
+    var dateParts = publication.date.split("-");
+    var timeParts = publication.time.split(":");
+    var date = new Date(dateParts[0], dateParts[1]-1, dateParts[2], timeParts[0], timeParts[1]);
+    const datetime = (date/1000).toFixed(0);
+
+     axios
+      .post("https://localhost/facebook/pages/post/",{
+      ol_id: id,
+      photo: publication.imageUrl,
+      msg: publication.message,
+      time: datetime
+      })
+      .then(response => {
+        console.log(response);
+        if(response.data.link){
+          this.setState({link: response.data.link});
+          this.handleOnAcceptLink();
+      }
+      });
+  }
+
   addOnAddPublicationListener = listener => {
     this.setState({
       onAddPublicationListeners: [
@@ -506,6 +530,7 @@ class PublicationActions extends React.Component {
         }
       )
       .then(response => {
+        if(this.state.selectedPublication.socialNetworks.includes("FACEBOOK")){this.createFbPublication();}
         const updatedPublication = response.data;
         this.state.onUpdatePublicationListeners.forEach(listener => {
           listener(updatedPublication);
