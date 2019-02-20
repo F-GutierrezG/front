@@ -397,7 +397,7 @@ class PublicationActions extends React.Component {
     const publication = this.state.selectedPublication;
     var dateParts = publication.date.split("-");
     var timeParts = publication.time.split(":");
-    var date = new Date(dateParts[0], dateParts[1]-1, dateParts[2], timeParts[0], timeParts[1]);
+    var date = new Date(Date.UTC(dateParts[0], dateParts[1]-1, dateParts[2], timeParts[0], timeParts[1]));
     const datetime = (date/1000).toFixed(0);
 
      axios
@@ -410,8 +410,27 @@ class PublicationActions extends React.Component {
       .then(response => {
         console.log(response);
         if(response.data.link){
-          this.setState({link: response.data.link});
-          this.handleOnAcceptLink();
+          const token = localStorage.getItem("token");
+          axios
+            .put(
+              `${process.env.REACT_APP_SOCIAL_SERVICE_URL}/publications/${
+                publication.id
+              }/link`,
+              {
+                link: response.data.link
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + token
+                }
+              }
+            )
+            .catch(err => {
+              this.setState({
+                hasError: true,
+                error: err
+              });
+            });
       }
       });
   }
