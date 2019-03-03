@@ -412,22 +412,27 @@ class Users extends Component {
     let firstNameError = false;
     let lastNameError = false;
     let passwordError = false;
+    let groupIdError = false;
+
+    console.log(user);
 
     if (user.email.trim() === "") emailError = true;
     if (user.firstName.trim() === "") firstNameError = true;
     if (user.lastName.trim() === "") lastNameError = true;
     if (user.password.trim() === "") passwordError = true;
+    if (user.groupId === "") groupIdError = true;
 
     this.setState({
       createUserErrors: {
         email: emailError,
         firstName: firstNameError,
         lastName: lastNameError,
-        password: passwordError
+        password: passwordError,
+        groupId: groupIdError
       }
     });
 
-    return !(emailError || firstNameError || lastNameError);
+    return !(emailError || firstNameError || lastNameError || groupIdError);
   };
 
   handleOnClickDownload = () => {

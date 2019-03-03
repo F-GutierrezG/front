@@ -76,6 +76,7 @@ const CreateUserDialog = props => (
       <FormControl fullWidth>
         <InputLabel htmlFor="group-select">Perfil</InputLabel>
         <Select
+          error={props.errors.firstName}
           value={props.user.groupId}
           onChange={evt => props.handleOnChange("groupId", evt)}
         >
