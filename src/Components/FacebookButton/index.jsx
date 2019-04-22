@@ -52,7 +52,7 @@ class FacebookButton extends Component{
     const id = JSON.parse(localStorage.getItem("user")).id;
 
      axios
-      .post("https://localhost/facebook/user/page/",{
+      .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/user/page/`,{
       ol_id: id,
       pid: event.target.value
       })
@@ -72,7 +72,7 @@ class FacebookButton extends Component{
     const id = JSON.parse(localStorage.getItem("user")).id;
     const token = localStorage.getItem("token");
     axios
-      .get(`https://localhost/facebook/status/${id}`,{
+      .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/status/${id}`,{
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -92,7 +92,7 @@ class FacebookButton extends Component{
     const id = JSON.parse(localStorage.getItem("user")).id;
     const token = localStorage.getItem("token");
     axios
-      .get(`https://localhost/facebook/pages/${id}`,{
+      .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/${id}`,{
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -181,7 +181,7 @@ class FacebookButton extends Component{
     const id = JSON.parse(localStorage.getItem("user")).id;
     const token = localStorage.getItem("token");
     axios
-      .get(`https://localhost/facebook/logout/${id}`,{
+      .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/logout/${id}`,{
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -195,7 +195,7 @@ class FacebookButton extends Component{
   doLogin = (data) => {
     const id = JSON.parse(localStorage.getItem("user")).id;
     axios
-      .post("https://localhost/facebook/login",{
+      .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/login`,{
       uid: data.profile.id,
       ol_id: id,
       name: data.profile.name,

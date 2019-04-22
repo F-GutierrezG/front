@@ -18,7 +18,7 @@ class SocialNetworks extends Component{
     const token = localStorage.getItem("token");
 
     axios
-      .get(`https://localhost/facebook/pages/${id}`, {
+      .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/${id}`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
@@ -54,29 +54,31 @@ class SocialNetworks extends Component{
               </Card>
           </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-              <Card style={{textAlign : "center"}}>
+              <Card style={{textAlign : "center",background: "repeating-linear-gradient(-55deg,  #FFF,  #FFF 10px,  #e0e0e0 10px,  #e0e0e0 20px)"}}>
                 <CardBody>
                 <span style={{color: "#e4405f"}}>
-  					<i className="fab fa-instagram fa-7x"/>
+  					<i className="fab fa-instagram fa-7x" style={{opacity:"0.6"}}/>
 				</span> 
                 <p style={{textAlign : "justify"}}>Conecta tu Instagram para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
                   <Button
+                  disabled
                   size="sm"
                   style={{backgroundColor: "#e4405f"}}>
-              		<i className="fab fa-instagram"/>{" "}
+              		<i className="fab fa-instagram" />{" "}
               		Pronto...
               		</Button>
                 </CardBody>
               </Card>
           </GridItem>
-			 <GridItem xs={12} sm={12} md={4}>
-              <Card style={{textAlign : "center"}}>
+			 <GridItem xs={12} sm={12} md={4} >
+              <Card style={{textAlign : "center",background: "repeating-linear-gradient(-55deg,  #FFF,  #FFF 10px,  #e0e0e0 10px,  #e0e0e0 20px)"}}>
                 <CardBody>
                 <span style={{color: "#55acee"}}>
-  					<i className="fab fa-twitter-square fa-7x"/>
+  					<i className="fab fa-twitter-square fa-7x" style={{opacity:"0.6"}}/>
 				</span> 
                 <p style={{textAlign : "justify"}}>Conecta con Twitter para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
                   <Button
+                  disabled
                   size="sm"
                   color="twitter">
               		<i className="fab fa-twitter"/>{" "}
@@ -86,16 +88,17 @@ class SocialNetworks extends Component{
               </Card>
           </GridItem>
            <GridItem xs={12} sm={12} md={4}>
-              <Card style={{textAlign : "center"}}>
+              <Card style={{textAlign : "center",background: "repeating-linear-gradient(-55deg,  #FFF,  #FFF 10px,  #e0e0e0 10px,  #e0e0e0 20px)"}}>
                 <CardBody>
                 <span style={{color: "#0077B5"}}>
-  					<i className="fab fa-linkedin fa-7x"/>
+  					<i className="fab fa-linkedin fa-7x" style={{opacity:"0.6"}}/>
 				</span> 
                 <p style={{textAlign : "justify"}}>Conecta tu LinkedIn para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
                   <Button
+                  disabled
                   size="sm"
                   color="linkedin">
-              		<i className="fab fa-linkedin-in"/>{" "}
+              		<i className="fab fa-linkedin-in" />{" "}
               		Pronto... 
               		</Button>
                 </CardBody>
