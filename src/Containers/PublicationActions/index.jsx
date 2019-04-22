@@ -401,7 +401,7 @@ class PublicationActions extends React.Component {
     const datetime = (date/1000).toFixed(0);
 
      axios
-      .post("https://localhost/facebook/pages/post/",{
+      .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/post/`,{
       ol_id: id,
       photo: publication.imageUrl,
       msg: publication.message,
