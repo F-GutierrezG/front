@@ -10,6 +10,7 @@ import Create from "@material-ui/icons/Create";
 import People from "@material-ui/icons/People";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
+import Connections from "@material-ui/icons/Share";
 
 import CompaniesWithError from "Components/Companies";
 
@@ -55,6 +56,19 @@ class Companies extends Component {
       status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
+          <Tooltip title="Conexiones">
+            <Link
+              to={{
+                pathname: `/connections/${company.id}`,
+                state: {title: `Conexiones de ${company.name}`}
+              }}
+            >
+              <IconButton>
+                <Connections style={{ color: "#58F077" }} />
+              </IconButton>
+            </Link>
+          </Tooltip>
+
           <Tooltip title="Administrar usuarios">
             <Link
               to={{

@@ -1,28 +1,43 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { FacebookProvider} from "react-facebook";
-import axios from "axios";
 // core components
 import GridContainer from "Components/Grid/GridContainer.jsx";
 import GridItem from "Components/Grid/GridItem.jsx";
 import Card from "Components/Card/Card.jsx";
 import CardBody from "Components/Card/CardBody.jsx";
-import FacebookButton  from "Components/FacebookButton";
+import FacebookCard  from "Components/FacebookCard";
 import Button from "Components/CustomButtons/Button.jsx";
 
+import axios from "axios";
+
 class SocialNetworks extends Component{
+    constructor(props){
+    super(props);
+    this.state = {
+      companyId: ""};
+  }
 
-  loadFbPages = () =>{
-    const id = JSON.parse(localStorage.getItem("user")).id;
-    const token = localStorage.getItem("token");
+  componentDidMount() {
+    this.loadCompanyId();
+  }
 
-    axios
-      .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/${id}`, {
+
+  loadCompanyId = () => { 
+    if(JSON.parse(localStorage.getItem("user")).admin){
+      const comId = parseInt(this.props.location.pathname.split("/").pop(), 10);
+      this.setState({companyId: comId});
+    }
+    else{
+      const token = localStorage.getItem("token");
+
+      axios
+      .get(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}`, {
         headers: { Authorization: "Bearer " + token }
       })
       .then(response => {
-        this.setState({ fbpages: response.data });
+        console.log(response.data);
+        this.setState({companyId: response.data[0].id});
       })
       .catch(err => {
         this.setState({
@@ -30,28 +45,18 @@ class SocialNetworks extends Component{
           error: err
         });
       });
+    }
   }
-
+  
 	render(){
+    const companyId = this.state.companyId;
+
 		return(
 			<div>
 			<GridContainer justify="center">
           <GridItem xs={12} sm={12} md={4}>
-              <Card style={{textAlign : "center"}}>
-                <CardBody>
-                <span style={{color: "#3b5999"}}>
-  					<i className="fab fa-facebook-square fa-7x"/>
-				</span> 
-                <p style={{textAlign : "justify"}}>Conecta tu página de Facebook para poder acceder a las funcionalidades de Calendario y Analytics	.</p>
-                    <FacebookProvider 
-                appId="287321418635324"
-                version="v3.2"
-                language="es_LA"
-                debug="true">
-                  <FacebookButton/>
-                </FacebookProvider>
-                </CardBody>
-              </Card>
+              <FacebookCard 
+              companyId={companyId}/>
           </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
               <Card style={{textAlign : "center",background: "repeating-linear-gradient(-55deg,  #FFF,  #FFF 10px,  #e0e0e0 10px,  #e0e0e0 20px)"}}>

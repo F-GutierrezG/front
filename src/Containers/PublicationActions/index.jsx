@@ -269,6 +269,11 @@ class PublicationActions extends React.Component {
     });
   };
 
+  validatePublicationDateTime = datetime => {
+    //TODO: implement a function that returns true when datetime is > to 11 min from now and return false when not
+    return true;
+  };
+
   validatePublication = publication => {
     const errors = { ...this.state.publicationErrors };
     errors.date = publication.date.trim() === "";
@@ -393,7 +398,6 @@ class PublicationActions extends React.Component {
   };
 
   createFbPublication = () => {
-    const id = JSON.parse(localStorage.getItem("user")).id;
     const publication = this.state.selectedPublication;
     var dateParts = publication.date.split("-");
     var timeParts = publication.time.split(":");
@@ -402,7 +406,7 @@ class PublicationActions extends React.Component {
 
      axios
       .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/post/`,{
-      ol_id: id,
+      company_id: publication.companyId.toString(),
       photo: publication.imageUrl,
       msg: publication.message,
       time: datetime

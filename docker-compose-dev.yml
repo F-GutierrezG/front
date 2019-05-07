@@ -20,6 +20,8 @@ services:
       - REACT_APP_NOTIFICATIONS_SERVICE_URL=http://localhost/notifications
       - REACT_APP_EXPORTER_SERVICE_URL=http://localhost/exporter
       - REACT_APP_FACEBOOK_SERVICE_URL=http://localhost/facebook
+      - REACT_APP_FACEBOOK_ID=287321418635324
+      - REACT_APP_FACEBOOK_VERSION=v3.2
     restart: always
     depends_on:
       - users-service

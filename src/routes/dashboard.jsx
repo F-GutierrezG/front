@@ -20,6 +20,14 @@ var dashRoutes = [
     path: "/connections",
     name: "Conexiones",
     icon: Share,
+    onlyUser: true,
+    component: SocialNetworks
+  },
+  {
+    path: "/connections/:company_id",
+    name: "Conexiones",
+    invisible: true,
+    onlyAdmin: true,
     component: SocialNetworks
   },
   {
