@@ -40,7 +40,7 @@ class FacebookCard extends Component{
     handleChangeActivePage = (event) => {
       this.setState({ activePage: event.target.value });
       if(this.state.activePage !== event.target.value){
-        const id = this.props.companyId.toString;
+        const id = this.props.companyId.toString();
 
         axios
         .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/company/page/`,{
