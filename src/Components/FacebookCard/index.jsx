@@ -186,7 +186,7 @@ class FacebookCard extends Component{
     return(
    <Card style={{textAlign : "center"}}>
    <CardBody>
-   <span style={{color: "#3b5999"}}>
+   <span style={{color: "#4267B2"}}>
    <i className="fab fa-facebook-square fa-7x"/>
    </span> 
    <p style={{textAlign : "justify"}}>Conecta tu página de Facebook para poder acceder a las funcionalidades de Calendario y Analytics .</p>
