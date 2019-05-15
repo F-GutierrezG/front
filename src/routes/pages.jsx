@@ -1,5 +1,6 @@
 import LoginPage from "Pages/Login.jsx";
 import ChangePasswordPage from "Pages/ChangePassword.jsx";
+import ProfileConfiguration from "Pages/ProfileConfiguration.jsx";
 
 // @material-ui/icons
 import Fingerprint from "@material-ui/icons/Fingerprint";
@@ -20,6 +21,14 @@ const pagesRoutes = [
     mini: "RC",
     icon: Fingerprint,
     component: ChangePasswordPage
+  },
+  {
+    path: "/pages/profile",
+    name: "Nuevo Perfil",
+    short: "Nuevo Perfil",
+    mini: "NP",
+    icon: Fingerprint,
+    component: ProfileConfiguration
   }
 ];
 
