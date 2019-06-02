@@ -79,6 +79,38 @@ const CreateCompanyDialog = props => (
           })}
         </Select>
       </FormControl>
+      <FormControl fullWidth error={props.errors.plan}>
+        <InputLabel
+          htmlFor="plan-select"
+          //className={classes.selectLabel}
+        >
+          Plan
+        </InputLabel>
+        <Select
+          value={props.company.plan}
+          onChange={event => props.handleOnChange("plan", event)}
+          //MenuProps={{ className: classes.selectMenu }}
+          //classes={{ select: classes.select }}
+          inputProps={{
+            name: "planSelect",
+            id: "plan-select"
+          }}
+        >
+          <MenuItem disabled /*classes={{ root: classes.selectMenuItem }}*/>
+            Plan
+          </MenuItem>
+          {props.plans.map(plan => {
+            return (
+              <MenuItem
+                key={plan.id}
+                value={plan.id}
+              >
+                {plan.name}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onCancel}>Cancelar</Button>
@@ -94,15 +126,18 @@ CreateCompanyDialog.propTypes = {
   errors: PropTypes.shape({
     identifier: PropTypes.bool.isRequired,
     name: PropTypes.bool.isRequired,
-    classification: PropTypes.bool.isRequired
+    classification: PropTypes.bool.isRequired,
+    plan: PropTypes.bool.isRequired
   }).isRequired,
   company: PropTypes.shape({
     identifier: PropTypes.string,
     name: PropTypes.string,
-    classification: PropTypes.string
+    classification: PropTypes.string,
+    plan: PropTypes.string
   }).isRequired,
   handleOnChange: PropTypes.func.isRequired,
   classifications: PropTypes.array.isRequired,
+  plans: PropTypes.array.isRequired,
   onCancel: PropTypes.func,
   onAccept: PropTypes.func
 };

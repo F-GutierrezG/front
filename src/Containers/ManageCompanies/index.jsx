@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Create from "@material-ui/icons/Create";
-import People from "@material-ui/icons/People";
+import Info from "@material-ui/icons/Info";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
 import Connections from "@material-ui/icons/Share";
@@ -20,27 +20,32 @@ class Companies extends Component {
     error: "",
     companies: [],
     classifications: [],
+    plans: [],
     createCompanyDialogOpen: false,
     editCompanyDialogOpen: false,
     createCompanyErrors: {
       identifier: false,
       name: false,
-      classification: false
+      classification: false,
+      plan: false
     },
     editCompanyErrors: {
       identifier: false,
       name: false,
-      classification: false
+      classification: false,
+      plan: false
     },
     newCompany: {
       identifier: "",
       name: "",
-      classification: ""
+      classification: "",
+      plan: ""
     },
     selectedCompany: {
       identifier: "",
       name: "",
-      classification: ""
+      classification: "",
+      plan: ""
     }
   };
 
@@ -53,6 +58,8 @@ class Companies extends Component {
       expiration: company.expiration,
       classificationId: company.classification.id,
       classificationName: company.classification.name,
+      planId: company.plan.id,
+      planName: company.plan.name,
       status: company.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
@@ -69,7 +76,7 @@ class Companies extends Component {
             </Link>
           </Tooltip>
 
-          <Tooltip title="Administrar usuarios">
+          <Tooltip title="Información">
             <Link
               to={{
                 pathname: `/company/${company.id}`,
@@ -77,7 +84,7 @@ class Companies extends Component {
               }}
             >
               <IconButton>
-                <People style={{ color: "#26c6da" }} />
+                <Info style={{ color: "#26c6da" }} />
               </IconButton>
             </Link>
           </Tooltip>
@@ -213,6 +220,25 @@ class Companies extends Component {
           error: err
         });
       });
+
+      axios
+        .get(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}/plans`, {
+          headers: { Authorization: "Bearer " + token }
+        })
+        .then(response => {
+          this.setState({
+            plans: response.data.map(plan => ({
+              id: plan.id,
+              name: plan.name
+            }))
+          });
+        })
+        .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err
+          });
+        });
   }
 
   handleCreateCompanyButton = () => {
@@ -233,12 +259,14 @@ class Companies extends Component {
       createCompanyErrors: {
         identifier: null,
         name: null,
-        classification: null
+        classification: null,
+        plan: null,
       },
       newCompany: {
         identifier: "",
         name: "",
-        classification: ""
+        classification: "",
+        plan: ""
       }
     });
   };
@@ -400,6 +428,7 @@ class Companies extends Component {
         closeError={this.closeError}
         openCreateCompany={this.state.createCompanyDialogOpen}
         classifications={this.state.classifications}
+        plans={this.state.plans}
         onCancelCreateCompany={this.handleOnCancelCreateCompanyDialog}
         onAcceptCreateCompany={this.handleOnAcceptCreateCompanyDialog}
         onChangeCreateCompany={this.handleOnChangeCreateCompanyDialog}

@@ -81,6 +81,40 @@ const EditCompanyDialog = props => (
         </Select>
       </FormControl>
 
+      <FormControl fullWidth error={props.errors.plan}>
+        <InputLabel
+          htmlFor="plan-select"
+          //className={classes.selectLabel}
+        >
+          Plan
+        </InputLabel>
+        <Select
+          value={props.company.planId}
+          onChange={event => props.handleOnChange("planId", event)}
+          //MenuProps={{ className: classes.selectMenu }}
+          //classes={{ select: classes.select }}
+          inputProps={{
+            name: "planSelect",
+            id: "plan-select"
+          }}
+        >
+          <MenuItem disabled /*classes={{ root: classes.selectMenuItem }}*/>
+            Plan
+          </MenuItem>
+          {props.plans.map(plan => {
+            return (
+              <MenuItem
+                key={plan.id}
+                //classes={{ root: classes.selectMenuItem }}
+                value={plan.id}
+              >
+                {plan.name}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+
       <CustomInput
         labelText="Fecha de corte de servicio"
         formControlProps={{

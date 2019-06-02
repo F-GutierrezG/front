@@ -33,6 +33,7 @@ const Companies = props => {
       <CreateCompanyDialog
         open={props.openCreateCompany}
         classifications={props.classifications}
+        plans={props.plans}
         onCancel={props.onCancelCreateCompany}
         onAccept={props.onAcceptCreateCompany}
         handleOnChange={props.onChangeCreateCompany}
@@ -42,6 +43,7 @@ const Companies = props => {
       <EditCompanyDialog
         open={props.openEditCompany}
         classifications={props.classifications}
+        plans={props.plans}
         onCancel={props.onCancelEditCompany}
         onAccept={props.onAcceptEditCompany}
         handleOnChange={props.onEditCompaniChange}
