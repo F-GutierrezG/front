@@ -87,6 +87,8 @@ const mapPublicationToEvent = publication => {
     companyId: publication.company_id,
     companyIdentifier: publication.company_identifier,
     companyName: publication.company_name,
+    brandId: publication.brand_id,
+    brandName: publication.brand_name,
     category: publication.category,
     subcategory: publication.subcategory,
     rejectReason: publication.reject_reason

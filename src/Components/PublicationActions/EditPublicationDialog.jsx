@@ -230,6 +230,37 @@ class EditPublicationDialog extends React.Component {
                   </FormControl>
                 </GridItem>
               )}
+            <GridItem xs={12}>
+              <FormControl fullWidth>
+                <InputLabel
+                  htmlFor="brand-select"
+                  className={classes.selectLabel}
+                >
+                  Marca
+                </InputLabel>
+                <Select
+                  value={this.props.publication.brandId}
+                  onChange={event => this.props.onChange("brandId", event)}
+                  MenuProps={{ className: classes.selectMenu }}
+                  classes={{ select: classes.select }}
+                >
+                  <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
+                    Marca
+                  </MenuItem>
+                  {this.props.brands.map(brand => {
+                    return (
+                      <MenuItem
+                        key={brand.id}
+                        classes={{ root: classes.selectMenuItem }}
+                        value={brand.id}
+                      >
+                        {brand.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </GridItem>
             <GridItem xs={6}>
               <CustomInput
                 labelText="Fecha"

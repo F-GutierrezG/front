@@ -158,6 +158,7 @@ class AddEventDialog extends React.Component {
       publication,
       onChange,
       companies,
+      brands,
       socialNetworks,
       tag,
       onChangeTag,
@@ -207,6 +208,37 @@ class AddEventDialog extends React.Component {
                         value={company.id}
                       >
                         {company.identifier} - {company.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </GridItem>
+            <GridItem xs={12}>
+              <FormControl fullWidth error={errors.brandId}>
+                <InputLabel
+                  htmlFor="brand-select"
+                  className={classes.selectLabel}
+                >
+                  Marca
+                </InputLabel>
+                <Select
+                  value={publication.brandId}
+                  onChange={event => onChange("brandId", event)}
+                  MenuProps={{ className: classes.selectMenu }}
+                  classes={{ select: classes.select }}
+                >
+                  <MenuItem disabled classes={{ root: classes.selectMenuItem }}>
+                    Marca
+                  </MenuItem>
+                  {brands.map(brand => {
+                    return (
+                      <MenuItem
+                        key={brand.id}
+                        classes={{ root: classes.selectMenuItem }}
+                        value={brand.id}
+                      >
+                        {brand.name}
                       </MenuItem>
                     );
                   })}
@@ -474,6 +506,7 @@ AddEventDialog.propTypes = {
   buttonsDisabled: PropTypes.bool.isRequired,
   socialNetworks: PropTypes.array.isRequired,
   companies: PropTypes.array.isRequired,
+  brands: PropTypes.array.isRequired,
   onChangeTag: PropTypes.func.isRequired,
   onTagKeyPress: PropTypes.func.isRequired,
   tag: PropTypes.string.isRequired,

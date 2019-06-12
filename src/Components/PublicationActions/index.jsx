@@ -48,6 +48,7 @@ const PublicationActions = props => {
         buttonsDisabled={props.buttonsDisabled}
         onDeleteTag={props.onDeleteTag}
         companies={props.companies}
+        brands={props.brands}
         categories={props.categories}
         subcategories={props.subcategories}
       />
@@ -82,6 +83,7 @@ const PublicationActions = props => {
         tag={props.tag}
         onDeleteTag={props.onEditDeleteTag}
         companies={props.companies}
+        brands={props.brands}
         categories={props.categories}
         subcategories={props.subcategories}
       />
@@ -165,6 +167,7 @@ PublicationActions.propTypes = {
   onChangeClone: PropTypes.func.isRequired,
   companies: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
+  brands: PropTypes.array.isRequired,
   subcategories: PropTypes.array
 };
 

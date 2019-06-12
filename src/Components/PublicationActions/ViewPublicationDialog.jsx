@@ -111,6 +111,25 @@ const ViewPublicationDialog = props => {
                 />
               </GridItem>
             )}
+          <GridItem xs={12}>
+            <CustomInput
+              labelText="Marca"
+              formControlProps={{
+                fullWidth: true,
+                margin: "dense"
+              }}
+              labelProps={{
+                shrink: true
+              }}
+              inputProps={{
+                type: "text",
+                value: `${
+                  props.publication.brandName
+                }`,
+                disabled: true
+              }}
+            />
+          </GridItem>
           <GridItem xs={6}>
             <CustomInput
               labelText="Fecha"
@@ -259,7 +278,7 @@ const ViewPublicationDialog = props => {
               rel="noopener noreferrer"
             >
               <img
-                style={{ width: "100px" }}
+                style={{ width: "400px" }}
                 alt={props.publication.imageUrl}
                 src={props.publication.imageUrl}
               />
@@ -314,6 +333,7 @@ ViewPublicationDialog.propTypes = {
     tags: PropTypes.array.isRequired,
     companyIdentifier: PropTypes.string,
     companyName: PropTypes.string,
+    brandName: PropTypes.string,
     category: PropTypes.string,
     subcategory: PropTypes.string
   }).isRequired,

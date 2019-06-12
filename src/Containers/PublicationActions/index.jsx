@@ -55,7 +55,8 @@ class PublicationActions extends React.Component {
       onDeletePublicationListeners: [],
       onUpdatePublicationListeners: [],
       companies: [],
-      categories: []
+      categories: [],
+      brands: []
     };
     window.publicationActionsComponent = this;
   }
@@ -72,6 +73,7 @@ class PublicationActions extends React.Component {
   getCleanedPublication = () => {
     return {
       companyId: -1,
+      brandId: -1,
       date: "",
       time: "",
       title: "",
@@ -90,6 +92,7 @@ class PublicationActions extends React.Component {
     return {
       id: 0,
       companyId: -1,
+      brandId: -1,
       date: "",
       time: "",
       title: "",
@@ -109,6 +112,7 @@ class PublicationActions extends React.Component {
   getCleanedPublicationErrors = () => {
     return {
       companyId: false,
+      brandId: false,
       date: false,
       time: false,
       title: false,
@@ -177,6 +181,7 @@ class PublicationActions extends React.Component {
       },
       () => {
         this.loadCategories(event.companyId);
+        this.loadBrands(event.companyId);
       }
     );
   };
@@ -236,6 +241,26 @@ class PublicationActions extends React.Component {
       });
   };
 
+  loadBrands = id => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`${process.env.REACT_APP_COMPANIES_SERVICE_URL}/${id}/brands`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(response => {
+        this.setState({
+          brands: response.data,
+        });
+      })
+      .catch(err => {
+        this.setState({
+          hasError: true,
+          error: err
+        });
+      });
+  };
+
   handleChangeValue = (field, event) => {
     const files = event.target.files;
     const publication = { ...this.state.publication };
@@ -247,6 +272,7 @@ class PublicationActions extends React.Component {
 
     if (field === "companyId") {
       if (event.target.value !== "") this.loadCategories(event.target.value);
+      if (event.target.value !== "") this.loadBrands(event.target.value);
       else this.setState({ categories: [] });
     }
 
@@ -281,8 +307,8 @@ class PublicationActions extends React.Component {
     errors.title = publication.title.trim() === "";
     errors.socialNetworks = publication.socialNetworks.length === 0;
     errors.message = publication.message.trim() === "";
-    errors.image = publication.image === "";
     errors.companyId = publication.companyId === "" || publication.companyId === -1;
+    errors.brandId = publication.brandId === "" || publication.brandId === -1;
 
     this.setState({ publicationErrors: errors });
 
@@ -292,8 +318,8 @@ class PublicationActions extends React.Component {
       errors.title ||
       errors.socialNetworks ||
       errors.message ||
-      errors.image ||
-      errors.companyId
+      errors.companyId ||
+      errors.brandId
     );
   };
 
@@ -348,6 +374,7 @@ class PublicationActions extends React.Component {
       tags: publication.tags,
       companyIdentifier: publication.company_identifier,
       companyName: publication.company_name,
+      brandName: publication.brand_name,
       category: publication.category,
       subcategory: publication.subcategory
     };
@@ -358,6 +385,7 @@ class PublicationActions extends React.Component {
 
     const formData = new FormData();
     formData.append("company_id", publication.companyId);
+    formData.append("brand_id", publication.brandId);
     formData.append("date", publication.date);
     formData.append("time", publication.time);
     formData.append("title", publication.title);
@@ -753,6 +781,7 @@ class PublicationActions extends React.Component {
 
     if (field === "companyId") {
       if (event.target.value !== "") this.loadCategories(event.target.value);
+      if (event.target.value !== "") this.loadBrands(event.target.value);
       else this.setState({ categories: [] });
     }
 
@@ -1009,6 +1038,7 @@ class PublicationActions extends React.Component {
         cloneDurations={cloneDurations}
         onChangeClone={this.handleOnChangeClone}
         companies={this.state.companies}
+        brands={this.state.brands}
         categories={this.state.categories}
         subcategories={this.state.subcategories}
       />
