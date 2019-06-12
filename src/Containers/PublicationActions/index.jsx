@@ -291,7 +291,8 @@ class PublicationActions extends React.Component {
     this.setState({
       openCreatePublication: false,
       publication: this.getCleanedPublication(),
-      publicationErrors: this.getCleanedPublicationErrors()
+      publicationErrors: this.getCleanedPublicationErrors(),
+      brands: []
     });
   };
 
@@ -664,7 +665,8 @@ class PublicationActions extends React.Component {
 
   handleOnCancelEdit = () => {
     this.setState({
-      openEditPublication: false
+      openEditPublication: false,
+      brands: []
     });
   };
 
