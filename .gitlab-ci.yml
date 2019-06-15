@@ -1,7 +1,8 @@
-image: alpine
+image: docker
+services:
+  - docker:dind
 
 variables:
-  COMMIT: ${CI_COMMIT_SHA}
   TAG: ${CI_COMMIT_REF_NAME}
   REGISTRY_REPO: registry.gitlab.com/gusisoft/onelike/front
   FRONT: front
@@ -17,16 +18,13 @@ Tests:
   only:
     - devel
   before_script:
-    - sudo git clean -ffdx
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
   script:
     - docker-compose -f docker-compose-dev.yml build --no-cache
     - docker-compose -f docker-compose-dev.yml up -d
   after_script:
     - docker-compose -f docker-compose-dev.yml down
-    - docker image rm -f front_front
-    - docker image rm -f front_users-service
-    - docker image rm -f front_users-service-swagger
-    - sudo git clean -ffdx
 
 Build:
   stage: build
@@ -34,58 +32,55 @@ Build:
     - stage
     - master
   before_script:
-    - sudo git clean -ffdx
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
   script:
     - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml build --no-cache
   after_script:
     - docker-compose -f docker-compose-${CI_COMMIT_REF_NAME}.yml down
-    - docker image rm -f front_front
-    - docker image rm -f $(docker images front -q)
-    - sudo git clean -ffdx
 
 Front Stage:
   stage: registry
   only:
     - stage
   before_script:
-    - sudo git clean -ffdx
+    - apk add --no-cache git
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
     - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
     - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${REACT_APP_EXPORTER_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_SERVICE_URL=${REACT_APP_FACEBOOK_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_ID=${REACT_APP_FACEBOOK_ID} --build-arg REACT_APP_FACEBOOK_VERSION=${REACT_APP_FACEBOOK_VERSION} -f Dockerfile-${CI_COMMIT_REF_NAME}
-    - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
+    - docker build $FRONT_REPO -t $FRONT:$CI_COMMIT_SHA --build-arg REACT_APP_AUTH_SERVICE_URL=${REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${REACT_APP_EXPORTER_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_SERVICE_URL=${REACT_APP_FACEBOOK_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_ID=${REACT_APP_FACEBOOK_ID} --build-arg REACT_APP_FACEBOOK_VERSION=${REACT_APP_FACEBOOK_VERSION} -f Dockerfile-${CI_COMMIT_REF_NAME}
+    - docker tag $FRONT:$CI_COMMIT_SHA $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
   after_script:
     - docker image rm -f $(docker images registry.gitlab.com/gusisoft/onelike/front/front -q)
-    - sudo git clean -ffdx
 
 Front Production:
   stage: registry
   only:
     - master
   before_script:
-    - sudo git clean -ffdx
+    - apk add --no-cache git
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
     - docker login -u gitlab-ci-token -p $DOCKER_TOKEN registry.gitlab.com
     - export MAIN_REPO="https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/gusisoft/OneLike/front.git"
     - export FRONT_REPO="${MAIN_REPO}#${CI_COMMIT_REF_NAME}"
   script:
-    - docker build $FRONT_REPO -t $FRONT:$COMMIT --build-arg REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${PROD_REACT_APP_EXPORTER_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_SERVICE_URL=${REACT_APP_FACEBOOK_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_ID=${PROD_REACT_APP_FACEBOOK_ID} --build-arg REACT_APP_FACEBOOK_VERSION=${PROD_REACT_APP_FACEBOOK_VERSION} -f Dockerfile-${CI_COMMIT_REF_NAME}
-    - docker tag $FRONT:$COMMIT $REGISTRY_REPO/$FRONT:$TAG
+    - docker build $FRONT_REPO -t $FRONT:$CI_COMMIT_SHA --build-arg REACT_APP_AUTH_SERVICE_URL=${PROD_REACT_APP_AUTH_SERVICE_URL} --build-arg REACT_APP_COMPANIES_SERVICE_URL=${PROD_REACT_APP_COMPANIES_SERVICE_URL} --build-arg REACT_APP_NOTIFICATIONS_SERVICE_URL=${PROD_REACT_APP_NOTIFICATIONS_SERVICE_URL} --build-arg REACT_APP_SOCIAL_SERVICE_URL=${PROD_REACT_APP_SOCIAL_SERVICE_URL} --build-arg REACT_APP_USERS_SERVICE_URL=${PROD_REACT_APP_USERS_SERVICE_URL} --build-arg REACT_APP_EXPORTER_SERVICE_URL=${PROD_REACT_APP_EXPORTER_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_SERVICE_URL=${REACT_APP_FACEBOOK_SERVICE_URL} --build-arg REACT_APP_FACEBOOK_ID=${PROD_REACT_APP_FACEBOOK_ID} --build-arg REACT_APP_FACEBOOK_VERSION=${PROD_REACT_APP_FACEBOOK_VERSION} -f Dockerfile-${CI_COMMIT_REF_NAME}
+    - docker tag $FRONT:$CI_COMMIT_SHA $REGISTRY_REPO/$FRONT:$TAG
     - docker push $REGISTRY_REPO/$FRONT:$TAG
   after_script:
     - docker image rm -f $(docker images registry.gitlab.com/gusisoft/onelike/front/front -q)
-    - sudo git clean -ffdx
 
 Deploy Stage:
   stage: deploy
   only:
     - stage
   before_script:
+    - apk add --no-cache openssh-client git
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
     - rm -rf ~/.ssh
@@ -94,13 +89,14 @@ Deploy Stage:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - bash ./${CI_COMMIT_REF_NAME}-deploy.sh
+    - sh ./${CI_COMMIT_REF_NAME}-deploy.sh
 
 Deploy Production:
   stage: deploy
   only:
     - master
   before_script:
+    - apk add --no-cache openssh-client git
     - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - export TAG=${CI_COMMIT_REF_NAME}_$COMMIT_TIME
     - rm -rf ~/.ssh
@@ -109,4 +105,4 @@ Deploy Production:
     - chmod 600 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - bash ./${CI_COMMIT_REF_NAME}-deploy.sh
+    - sh ./${CI_COMMIT_REF_NAME}-deploy.sh
