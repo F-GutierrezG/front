@@ -21,6 +21,7 @@ Tests:
     - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make git
     - pip install docker-compose
   script:
+    - git --version
     - docker-compose -f docker-compose-dev.yml build --no-cache
     - docker-compose -f docker-compose-dev.yml up -d
   after_script:
