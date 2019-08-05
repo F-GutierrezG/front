@@ -435,7 +435,7 @@ class PublicationActions extends React.Component {
 
      axios
       .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/post/`,{
-      company_id: publication.companyId.toString(),
+      brand_id: publication.brandId.toString(),
       photo: publication.imageUrl,
       msg: publication.message,
       time: datetime

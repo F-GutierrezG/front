@@ -31,20 +31,14 @@ class FacebookCard extends Component{
       }, 1000)
     }
 
-    handleLoading(){
-      if(this.state.loading){
-        return <span><i className="fas fa-spinner fa-spin"></i></span>;
-      }
-    }
-
     handleChangeActivePage = (event) => {
       this.setState({ activePage: event.target.value });
       if(this.state.activePage !== event.target.value){
-        const id = this.props.companyId.toString();
+        const id = this.props.brandId.toString();
 
         axios
-        .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/company/page/`,{
-          company_id: id,
+        .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/brand/page/`,{
+          brand_id: id,
           pid: event.target.value
         })
         .then(response => {
@@ -61,7 +55,7 @@ class FacebookCard extends Component{
 
     
     loadStatus = () => {
-      const id = this.props.companyId;
+      const id = this.props.brandId;
       const token = localStorage.getItem("token");
       axios
       .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/status/${id}`,{
@@ -75,13 +69,20 @@ class FacebookCard extends Component{
         }
         else{
           this.setState({auth: false, 
-            activePage: ""});
+            activePage: "",
+            loading: false});
         }
-      });
+      })
+       .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err,
+            loading: false});
+        });
     }
 
     loadPages = () =>{
-      const id = this.props.companyId;
+      const id = this.props.brandId;
       const token = localStorage.getItem("token");
       axios
       .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/pages/${id}`,{
@@ -91,13 +92,23 @@ class FacebookCard extends Component{
         //console.log(response);
         const userPages = response.data;
         if(userPages.length){
-          this.setState({pages: userPages});
+          this.setState({pages: userPages,
+            loading: false});
         }
-      });
+        else{
+          this.setState({loading: false});
+        }
+      })
+      .catch(err => {
+          this.setState({
+            hasError: true,
+            error: err,
+            loading: false});
+        });
     }
 
     doLogout = () => {
-      const id = this.props.companyId;
+      const id = this.props.brandId;
       const token = localStorage.getItem("token");
       axios
       .get(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/logout/${id}`,{
@@ -112,13 +123,13 @@ class FacebookCard extends Component{
     }
 
     doLogin = (data) => {
-      const compId = this.props.companyId;
+      const brand = this.props.brandId;
       const id = JSON.parse(localStorage.getItem("user")).id;
       axios
       .post(`${process.env.REACT_APP_FACEBOOK_SERVICE_URL}/login`,{
         uid: data.profile.id,
         ol_id: id,
-        company_id: compId.toString(),
+        brand_id: brand.toString(),
         name: data.profile.name,
         email: data.profile.email,
         access_token: data.tokenDetail.accessToken,
@@ -200,12 +211,15 @@ class FacebookCard extends Component{
    version={appVer}
    language="es_LA"
    debug="true">
-   
+   {!this.state.loading &&
    <FacebookButton
    auth={auth}
    doLogin={this.doLogin}
    doLogout={this.doLogout}/>
-
+ }
+   {this.state.loading && (
+                  <span><i className="fas fa-spinner fa-spin"></i></span>
+                )}
    </FacebookProvider>
    </GridItem>
    </GridContainer>

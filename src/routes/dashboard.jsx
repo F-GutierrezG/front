@@ -24,7 +24,7 @@ var dashRoutes = [
     component: SocialNetworks
   },
   {
-    path: "/connections/:company_id",
+    path: "/connections/:brand_id",
     name: "Conexiones",
     invisible: true,
     onlyAdmin: true,

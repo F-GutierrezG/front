@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Create from "@material-ui/icons/Create";
 import Block from "@material-ui/icons/Block";
 import DoneAll from "@material-ui/icons/DoneAll";
+import Connections from "@material-ui/icons/Share";
 
 import BrandsWithError from "Components/Brands";
 
@@ -64,6 +67,21 @@ class Brands extends Component {
       status: brand.active ? "Activo" : "Desactivo",
       actions: (
         <div className="actions-right">
+        <Tooltip title="Conexiones">
+            <Link
+              to={{
+                pathname: `/connections/${brand.id}`,
+                state: {
+                  title: `Conexiones de ${brand.name}`,
+                  listBrandsURL: this.props.listBrandsURL
+                }
+              }}
+            >
+              <IconButton>
+                <Connections style={{ color: "#58F077" }} />
+              </IconButton>
+            </Link>
+          </Tooltip>
           <Tooltip title="Editar">
             <IconButton onClick={() => this.handleOnEditBrandClick(brand.id)}>
               <Create style={{ color: "#9c27b0" }} />
